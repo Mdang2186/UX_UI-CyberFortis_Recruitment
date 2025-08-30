@@ -27,6 +27,8 @@
   <main id="mainContent" class="main-content content-transition min-h-screen">
     <!-- Search + Filters -->
     <section class="px-6 pt-6">
+      <div class="adv-filters bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/50 mb-8">
+
       <div class="flex flex-wrap items-center gap-4">
         <div class="flex-1 min-w-64">
           <div class="relative">
@@ -93,35 +95,28 @@
           <option>Tùy chọn</option>
         </select>
 
-        <button class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+        <button class="px-6 py-3 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl">
           <i class="fas fa-search mr-2"></i>Tìm kiếm
         </button>
       </div>
-    </section>
+      </div> 
 
-    <!-- KPI Cards -->
-    <section class="p-6">
+    <!-- KPI Cards --> 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
         <!-- 6 cards (giữ nguyên nội dung) -->
         <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Tổng hồ sơ</p><p class="kpi-num">1,000</p></div><div class="kpi-ico bg-blue-600"><i class="fas fa-file-alt"></i></div></div></div>
-        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Ứng viên mới</p><p class="kpi-num">200</p></div><div class="kpi-ico bg-emerald-600"><i class="fas fa-user-plus"></i></div></div></div>
-        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Đã phỏng vấn</p><p class="kpi-num">650</p></div><div class="kpi-ico bg-purple-600"><i class="fas fa-comments"></i></div></div></div>
-        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Tỷ lệ thành công</p><p class="kpi-num">37%</p><div class="mt-2"><span class="tag-up"><i class="fas fa-arrow-up mr-1"></i>+5%</span></div></div><div class="kpi-ico bg-orange-600"><i class="fas fa-chart-line"></i></div></div></div>
-        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Thời gian tuyển dụng</p><p class="kpi-num">21</p><p class="kpi-sub">ngày</p></div><div class="kpi-ico bg-rose-600"><i class="fas fa-clock"></i></div></div></div>
-        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Thời gian lấp đầy</p><p class="kpi-num">28</p><p class="kpi-sub">ngày</p></div><div class="kpi-ico bg-indigo-600"><i class="fas fa-hourglass-half"></i></div></div></div>
-      </div>
-    </section>
-
-    <!-- Charts Row 1 -->
-    <section class="px-6">
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Ứng viên mới</p><p class="kpi-num">200</p></div><div class="kpi-ico bg-sky-600"><i class="fas fa-user-plus"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Đã phỏng vấn</p><p class="kpi-num">650</p></div><div class="kpi-ico bg-cyan-600"><i class="fas fa-comments"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Tỷ lệ thành công</p><p class="kpi-num">37%</p><div class="mt-2"><span class="tag-up"><i class="fas fa-arrow-up mr-1"></i>+5%</span></div></div><div class="kpi-ico bg-teal-600"><i class="fas fa-chart-line"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Thời gian tuyển dụng</p><p class="kpi-num">21</p><p class="kpi-sub">ngày</p></div><div class="kpi-ico bg-emerald-600"><i class="fas fa-clock"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Thời gian lấp đầy</p><p class="kpi-num">28</p><p class="kpi-sub">ngày</p></div><div class="kpi-ico bg-green-600"><i class="fas fa-hourglass-half"></i></div></div></div>
+      </div> 
+    <!-- Charts Row 1 --> 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <div class="card">
           <div class="flex items-center justify-between mb-6">
             <h3 class="card-title">Nộp hồ sơ theo tuần</h3>
-            <div class="flex items-center space-x-2">
-              <div class="legend-dot bg-blue-500"></div><span class="legend-txt">Nộp hồ sơ</span>
-              <div class="legend-dot ml-4 bg-emerald-500"></div><span class="legend-txt">Phỏng vấn</span>
-            </div>
+             
           </div>
           <div class="chart-container"><canvas id="weeklyApplicationsChart"></canvas></div>
         </div>
@@ -130,29 +125,24 @@
           <h3 class="card-title mb-6">Nguồn ứng viên</h3>
           <div class="chart-container"><canvas id="sourceChart"></canvas></div>
         </div>
-      </div>
-    </section>
-
-    <!-- Charts Row 2 -->
-    <section class="px-6">
+      </div> 
+    <!-- Charts Row 2 --> 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         <div class="card"><h3 class="card-title mb-4">Kinh nghiệm</h3><div class="chart-container"><canvas id="experienceChart"></canvas></div></div>
         <div class="card"><h3 class="card-title mb-4">Trạng thái ứng viên</h3><div class="chart-container"><canvas id="candidateStatusChart"></canvas></div></div>
         <div class="card"><h3 class="card-title mb-4">Độ tuổi</h3><div class="chart-container"><canvas id="ageChart"></canvas></div></div>
-      </div>
-    </section>
+      </div> 
 
-    <!-- Conversion Funnel -->
-    <section class="px-6">
+    <!-- Conversion Funnel --> 
       <div class="card mb-8">
         <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">Tỷ lệ chuyển đổi giai đoạn tuyển dụng</h3>
 
         <div class="flex items-center justify-center gap-4 overflow-x-auto py-4">
-          <div class="funnel-step"><div class="funnel-box from-blue-500 to-blue-600"><div class="funnel-top">1,000</div><div class="funnel-cap">Hồ sơ nộp</div><div class="funnel-sub">100%</div></div><div class="funnel-arrow b-blue"></div></div>
-          <div class="funnel-step"><div class="funnel-box from-emerald-500 to-emerald-600"><div class="funnel-top">620</div><div class="funnel-cap">Qua sơ loại</div><div class="funnel-sub">62%</div></div><div class="funnel-arrow b-emerald"></div></div>
-          <div class="funnel-step"><div class="funnel-box from-amber-500 to-amber-600"><div class="funnel-top">298</div><div class="funnel-cap">Phỏng vấn vòng 1</div><div class="funnel-sub">48%</div></div><div class="funnel-arrow b-amber"></div></div>
-          <div class="funnel-step"><div class="funnel-box from-orange-500 to-orange-600"><div class="funnel-top">104</div><div class="funnel-cap">Phỏng vấn vòng 2</div><div class="funnel-sub">35%</div></div><div class="funnel-arrow b-orange"></div></div>
-          <div class="funnel-step"><div class="funnel-box from-rose-500 to-rose-600"><div class="funnel-top">37</div><div class="funnel-cap">Trúng tuyển</div><div class="funnel-sub">22%</div></div></div>
+          <div class="funnel-step"><div class="funnel-box from-blue-600 to-sky-600"><div class="funnel-top">1,000</div><div class="funnel-cap">Hồ sơ nộp</div><div class="funnel-sub">100%</div></div><div class="funnel-arrow b-sky"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-sky-600 to-cyan-600"><div class="funnel-top">620</div><div class="funnel-cap">Qua sơ loại</div><div class="funnel-sub">62%</div></div><div class="funnel-arrow b-cyan"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-cyan-600 to-teal-600"><div class="funnel-top">298</div><div class="funnel-cap">Phỏng vấn vòng 1</div><div class="funnel-sub">48%</div></div><div class="funnel-arrow b-teal"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-teal-600 to-emerald-600"><div class="funnel-top">104</div><div class="funnel-cap">Phỏng vấn vòng 2</div><div class="funnel-sub">35%</div></div><div class="funnel-arrow b-emerald"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-emerald-600 to-green-600"><div class="funnel-top">37</div><div class="funnel-cap">Trúng tuyển</div><div class="funnel-sub">22%</div></div></div>
         </div>
 
         <p class="mt-6 text-center text-sm text-gray-600">Tỷ lệ chuyển đổi tổng thể: <span class="font-bold text-blue-600">3.7%</span> (37/1,000 ứng viên)</p>
@@ -475,53 +465,9 @@
                     </div>
                 </div>
     </section>
+<footer id="footer" data-src="Footer.html"></footer>
+<link rel="prefetch" href="Footer.html" as="fetch" crossorigin="anonymous">
 
-    <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div class="col-span-1 md:col-span-2">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 bg-blue-600 rounded-lg grid place-items-center text-white font-bold">CF</div>
-              <div><h3 class="text-lg font-semibold text-gray-900">CyberFortis</h3><p class="text-gray-600 text-sm">Bảo vệ thế giới số</p></div>
-            </div>
-            <p class="text-gray-700 mb-4 max-w-md">Công ty hàng đầu về an ninh mạng tại Việt Nam với hơn 15 năm kinh nghiệm bảo vệ doanh nghiệp khỏi các mối đe dọa cyber.</p>
-            <div class="flex gap-4">
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-github"></i></a>
-            </div>
-          </div>
-          <div>
-            <h4 class="footer-title">Liên kết nhanh</h4>
-            <ul class="footer-list">
-              <li><a href="#" class="footer-link">Về chúng tôi</a></li>
-              <li><a href="#" class="footer-link">Dịch vụ</a></li>
-              <li><a href="#" class="footer-link">Tuyển dụng</a></li>
-              <li><a href="#" class="footer-link">Tin tức</a></li>
-              <li><a href="#" class="footer-link">Liên hệ</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="footer-title">Hỗ trợ</h4>
-            <ul class="footer-list">
-              <li class="text-gray-600 text-sm">📧 hr@cyberfortis.vn</li>
-              <li class="text-gray-600 text-sm">📞 (024) 3999 8888</li>
-              <li class="text-gray-600 text-sm">📍 Hà Nội, Việt Nam</li>
-              <li class="text-gray-600 text-sm">🕒 T2-T6: 8:00-17:30</li>
-            </ul>
-          </div>
-        </div>
-        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p class="text-gray-500 text-sm">© 2024 CyberFortis. Tất cả quyền được bảo lưu.</p>
-          <div class="flex gap-6 mt-4 md:mt-0">
-            <a href="#" class="footer-link">Chính sách bảo mật</a>
-            <a href="#" class="footer-link">Điều khoản sử dụng</a>
-            <a href="#" class="footer-link">Cookie</a>
-          </div>
-        </div>
-      </div>
-    </footer>
   </main>
 
   <!-- NẠP SIDEBAR & HEADER -->
@@ -530,15 +476,32 @@
   Promise.all([
     fetch('Header.html').then(r=>r.text()).then(h=>document.getElementById('header').innerHTML=h),
     fetch('Sidebar.html').then(r=>r.text()).then(h=>document.getElementById('sidebar').innerHTML=h),
-  ]).then(()=> { if (window.SidebarInit) window.SidebarInit(); });
+  ]).then(()=>{
+    if (window.SidebarInit) window.SidebarInit();
+    if (window.HeaderInit)  window.HeaderInit();   // <-- thêm dòng này
+  });
+</script>
+<script src="assets/js/layout-loader.js" data-layout-version="1.0.2" defer></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    LayoutLoader.mount({
+      headerSel:'#header',  headerUrl:'Header.html',
+      sidebarSel:'#sidebar', sidebarUrl:'Sidebar.html'
+      // KHÔNG khai báo footer ở đây
+    });
+  });
 </script>
 
+
+<link rel="stylesheet" href="assets/css/footer.css">
+<script src="assets/js/footer-loader.js" data-footer-version="1.0.0" defer></script>
+<link rel="stylesheet" href="assets/widgets/cf-chat/cf-chat.css">
+<script src="assets/widgets/cf-chat/cf-chat.js" data-cf-chat data-accent="#107eb9" data-accent2="#10b981" defer></script>
 
   <!-- App JS -->
 <script defer src="/assets/js/loading.js"></script>
   <script src="assets/js/sidebar.js" defer></script>
   <script src="assets/js/header.js" defer></script>
 <script src="assets/js/dashboard-admin.js" defer></script>
-
 </body>
 </html>

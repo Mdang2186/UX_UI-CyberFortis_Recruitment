@@ -3,25 +3,27 @@
     <!-- Left: Title + sidebar toggle -->
     <div class="flex items-center gap-4">
       <!-- New Toggle Button with Arrow Effect -->
-      <div class="sidebar-toggle-wrapper">
-        <input type="checkbox" class="toggle-checkbox" id="menuToggle">
-        <label for="menuToggle" class="toggle-button">
-          <div class="hamburger-lines">
-            <div class="line line1"></div>
-            <div class="line line2"></div>
-            <div class="line line3"></div>
-          </div>
-        </label>
-      </div>
+      <!-- Toggle Sidebar (NEW SVG hamburger) -->
+<div class="sidebar-toggle-wrapper">
+  <label class="hamburger" for="menuToggle" aria-label="Mở/đóng sidebar">
+    <input type="checkbox" id="menuToggle" class="toggle-checkbox" />
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path class="line line-top-bottom"
+            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+      <path class="line" d="M7 16 27 16"></path>
+    </svg>
+  </label>
+</div>
+
       
       <div class="flex items-center space-x-6">
         <div class="flex items-center space-x-4">
-          <div class="w-14 h-14 bg-gradient-to-br from-blue-600 via-blue-700 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl icon-wrapper">
+          <div class="w-14 h-14 bg-gradient-to-br from-blue-600 via-blue-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl icon-wrapper">
             <i class="fas fa-chart-line text-white text-xl"></i>
           </div>
           <div>
-            <h1 class="text-3xl font-black text-gray-900 tracking-tight bg-gradient-to-r from-blue-800 to-emerald-700 bg-clip-text text-transparent">
-              Data Analytics Dashboard
+            <h1 class="text-3xl font-black text-gray-900 tracking-tight bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
+              CyberFortis Recruitment
             </h1>
             <p class="text-sm text-gray-600 font-semibold mt-1">Professional HR Recruitment Analytics & Intelligence</p>
           </div>

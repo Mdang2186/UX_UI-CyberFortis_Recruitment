@@ -1,1185 +1,1488 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberFortis - Quản lý Phỏng vấn</title>
-  <!-- Tailwind, Icons, Chart.js -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CyberFortis - Quản lý Phỏng vấn</title>
+        <!-- Tailwind, Icons, Chart.js -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+            rel="stylesheet">
 
-  <!-- App CSS -->
-  <link rel="stylesheet" href="assets/css/sidebar.css">
-  <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/phongvan-admin.css">
-</head>
-<body class="bg-gray-50">
+        <!-- App CSS -->
+        <link rel="stylesheet" href="/assets/css/loading.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/header.css">
+        <link rel="stylesheet" href="assets/css/phongvan-admin.css">
+    </head>
+    <body class="bg-gray-50">
 
-  <!-- Sidebar & Header placeholders (nạp động) -->
-<aside id="sidebar" class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
-  <header id="header" class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+        <!-- Sidebar & Header placeholders (nạp động) -->
+        <aside id="sidebar"
+            class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+        <header id="header"
+            class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
 
-  <!-- Main -->
-  <main id="mainContent" class="main-content content-transition min-h-screen">
-    <!-- Search + Filters -->
-    <section class="px-6 pt-6">
-       <!-- Page Header -->
-        
-        
-        <!-- Quick Stats - Fixed 5 cards -->
-        <div class="quick-stats">
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-title">Tổng phỏng vấn</div>
-                    <div class="stat-icon blue">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                </div>
-                <div class="stat-value">1,247</div>
-                <div class="stat-change positive">
-                    <i class="fas fa-arrow-up"></i>
-                    +12% tháng này
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-title">Hôm nay</div>
-                    <div class="stat-icon green">
-                        <i class="fas fa-calendar-day"></i>
-                    </div>
-                </div>
-                <div class="stat-value">8</div>
-                <div class="stat-change positive">
-                    <i class="fas fa-check"></i>
-                    5 hoàn thành
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-title">Đang chờ</div>
-                    <div class="stat-icon orange">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                </div>
-                <div class="stat-value">24</div>
-                <div class="stat-change positive">
-                    <i class="fas fa-arrow-up"></i>
-                    +6 từ hôm qua
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-title">Tỷ lệ thành công</div>
-                    <div class="stat-icon purple">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                </div>
-                <div class="stat-value">84%</div>
-                <div class="stat-change positive">
-                    <i class="fas fa-arrow-up"></i>
-                    +7% tháng này
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-title">Đã hủy</div>
-                    <div class="stat-icon red">
-                        <i class="fas fa-times-circle"></i>
-                    </div>
-                </div>
-                <div class="stat-value">32</div>
-                <div class="stat-change negative">
-                    <i class="fas fa-arrow-down"></i>
-                    -15% tháng này
-                </div>
-            </div>
-        </div>
+        <!-- Main -->
+        <main id="mainContent"
+            class="main-content content-transition min-h-screen">
+            <!-- Search + Filters -->
+            <section class="px-6 pt-6">
+                <!-- Page Header -->
 
-        <!-- Charts Row - 2 Charts -->
-        <div class="charts-row">
-            <div class="chart-card status-chart">
-                <div class="chart-header">
-                    <h3 class="chart-title">Trạng thái phỏng vấn</h3>
-                    <span style="font-size: 12px; color: #64748b;">Tháng này</span>
-                </div>
-                
-                <div class="donut-chart">
-                    <svg width="260" height="260" viewBox="0 0 260 260">
-                        <!-- Completed: 45% -->
-                        <circle cx="130" cy="130" r="90" fill="none" stroke="#e2e8f0" stroke-width="20"/>
-                        <circle cx="130" cy="130" r="90" fill="none" stroke="#10b981" stroke-width="20" 
-                                stroke-dasharray="254 565" stroke-dashoffset="0"/>
-                        <!-- Scheduled: 35% -->
-                        <circle cx="130" cy="130" r="90" fill="none" stroke="#3b82f6" stroke-width="20" 
-                                stroke-dasharray="198 565" stroke-dashoffset="-254"/>
-                        <!-- In Progress: 15% -->
-                        <circle cx="130" cy="130" r="90" fill="none" stroke="#f59e0b" stroke-width="20" 
-                                stroke-dasharray="85 565" stroke-dashoffset="-452"/>
-                        <!-- Cancelled: 5% -->
-                        <circle cx="130" cy="130" r="90" fill="none" stroke="#ef4444" stroke-width="20" 
-                                stroke-dasharray="28 565" stroke-dashoffset="-537"/>
-                    </svg>
-                    <div class="donut-center">
-                        <div class="donut-value">1,247</div>
-                        <div class="donut-label">Tổng số</div>
-                    </div>
-                </div>
-                
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #10b981;"></div>
-                        <span>Hoàn thành (45%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #3b82f6;"></div>
-                        <span>Đã lên lịch (35%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #f59e0b;"></div>
-                        <span>Đang diễn ra (15%)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #ef4444;"></div>
-                        <span>Đã hủy (5%)</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chart-card position-trends-chart">
-                <div class="chart-header">
-                    <h3 class="chart-title">Xu hướng theo vị trí</h3>
-                    <div class="chart-time-selector">
-                        <button class="time-btn active" onclick="changePositionTimeRange('month')">Tháng</button>
-                        <button class="time-btn" onclick="changePositionTimeRange('quarter')">Quý</button>
-                        <button class="time-btn" onclick="changePositionTimeRange('year')">Năm</button>
-                    </div>
-                </div>
-                
-                <div class="multi-line-chart" style="height: 320px; position: relative; padding: 20px; flex: 1;">
-                    <svg id="positionChart" width="100%" height="280" viewBox="0 0 750 280" style="overflow: visible;">
-                        <!-- Grid lines -->
-                        <defs>
-                            <pattern id="positionGrid" width="60" height="40" patternUnits="userSpaceOnUse">
-                                <path d="M 60 0 L 0 0 0 40" fill="none" stroke="#f1f5f9" stroke-width="1"/>
-                            </pattern>
-                            <linearGradient id="frontendGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.1" />
-                                <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.3" />
-                            </linearGradient>
-                        </defs>
-                        <rect width="100%" height="100%" fill="url(#positionGrid)" />
-                        
-                        <!-- Y-axis -->
-                        <line x1="30" y1="20" x2="30" y2="240" stroke="#e2e8f0" stroke-width="2"/>
-                        
-                        <!-- Y-axis labels -->
-                        <text x="20" y="25" font-size="11" fill="#64748b" text-anchor="middle" font-weight="600">60</text>
-                        <text x="20" y="60" font-size="11" fill="#64748b" text-anchor="middle" font-weight="600">50</text>
-                        <text x="20" y="95" font-size="11" fill="#64748b" text-anchor="middle" font-weight="600">40</text>
-                        <text x="20" y="130" font-size="11" fill="#64748b" text-anchor="middle" font-weight="600">30</text>
-                        <text x="20" y="165" font-size="11" fill="#64748b" text-anchor="middle" font-weight="600">20</text>
-                        <text x="20" y="200" font-size="11" fill="#64748b" text-anchor="middle" font-weight="600">10</text>
-                        <text x="20" y="245" font-size="11" fill="#64748b" text-anchor="middle" font-weight="600">0</text>
-                        
-                        <!-- Chart content will be dynamically updated -->
-                        <g id="chartLines"></g>
-                        <g id="chartPoints"></g>
-                    </svg>
-                    
-                    <!-- X-axis labels -->
-                    <div id="xAxisLabels" style="display: flex; justify-content: space-between; margin-top: 8px; padding: 0 30px;">
-                        <!-- Labels will be dynamically updated -->
-                    </div>
-                </div>
-                
-                <div class="chart-legend" style="margin-top: 16px;">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #3b82f6;"></div>
-                        <span>Frontend</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #10b981;"></div>
-                        <span>Backend</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #f59e0b;"></div>
-                        <span>UI/UX</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #8b5cf6;"></div>
-                        <span>Fullstack</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #ef4444;"></div>
-                        <span>DevOps</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Calendar + Timeline Section -->
-        <div class="calendar-timeline-section">
-            <div class="calendar-card">
-                <div class="calendar-header">
-                    <h3 class="calendar-title">Lịch phỏng vấn</h3>
-                    <div class="calendar-nav">
-                        <button class="calendar-nav-btn" onclick="changeMonth(-1)">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <span class="calendar-month">Tháng 12, 2024</span>
-                        <button class="calendar-nav-btn" onclick="changeMonth(1)">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="calendar-grid" style="font-size: 12px;">
-                    <div class="calendar-day header">CN</div>
-                    <div class="calendar-day header">T2</div>
-                    <div class="calendar-day header">T3</div>
-                    <div class="calendar-day header">T4</div>
-                    <div class="calendar-day header">T5</div>
-                    <div class="calendar-day header">T6</div>
-                    <div class="calendar-day header">T7</div>
-                    
-                    <div class="calendar-day other-month">25</div>
-                    <div class="calendar-day other-month">26</div>
-                    <div class="calendar-day other-month">27</div>
-                    <div class="calendar-day other-month">28</div>
-                    <div class="calendar-day other-month">29</div>
-                    <div class="calendar-day other-month">30</div>
-                    <div class="calendar-day">1</div>
-                    
-                    <div class="calendar-day">2</div>
-                    <div class="calendar-day has-interviews" onclick="selectDate('2024-12-03')">
-                        3
-                        <div class="interview-dots">
-                            <div class="interview-dot scheduled"></div>
-                            <div class="interview-dot completed"></div>
+                <!-- Quick Stats - Fixed 5 cards -->
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Tổng phỏng vấn</div>
+                            <div class="stat-icon blue">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">1,247</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +12% tháng này
                         </div>
                     </div>
-                    <div class="calendar-day">4</div>
-                    <div class="calendar-day has-interviews" onclick="selectDate('2024-12-05')">
-                        5
-                        <div class="interview-dots">
-                            <div class="interview-dot scheduled"></div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Hôm nay</div>
+                            <div class="stat-icon green">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-check"></i>
+                            5 hoàn thành
                         </div>
                     </div>
-                    <div class="calendar-day">6</div>
-                    <div class="calendar-day">7</div>
-                    <div class="calendar-day">8</div>
-                    
-                    <div class="calendar-day">9</div>
-                    <div class="calendar-day has-interviews" onclick="selectDate('2024-12-10')">
-                        10
-                        <div class="interview-dots">
-                            <div class="interview-dot scheduled"></div>
-                            <div class="interview-dot scheduled"></div>
-                            <div class="interview-dot completed"></div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Đang chờ</div>
+                            <div class="stat-icon orange">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +6 từ hôm qua
                         </div>
                     </div>
-                    <div class="calendar-day">11</div>
-                    <div class="calendar-day today selected" onclick="selectDate('2024-12-12')">12</div>
-                    <div class="calendar-day">13</div>
-                    <div class="calendar-day">14</div>
-                    <div class="calendar-day">15</div>
-                    
-                    <div class="calendar-day">16</div>
-                    <div class="calendar-day">17</div>
-                    <div class="calendar-day has-interviews" onclick="selectDate('2024-12-18')">
-                        18
-                        <div class="interview-dots">
-                            <div class="interview-dot cancelled"></div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Tỷ lệ thành công</div>
+                            <div class="stat-icon purple">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">84%</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +7% tháng này
                         </div>
                     </div>
-                    <div class="calendar-day">19</div>
-                    <div class="calendar-day">20</div>
-                    <div class="calendar-day">21</div>
-                    <div class="calendar-day">22</div>
-                    
-                    <div class="calendar-day">23</div>
-                    <div class="calendar-day">24</div>
-                    <div class="calendar-day">25</div>
-                    <div class="calendar-day">26</div>
-                    <div class="calendar-day">27</div>
-                    <div class="calendar-day">28</div>
-                    <div class="calendar-day">29</div>
-                    
-                    <div class="calendar-day">30</div>
-                    <div class="calendar-day">31</div>
-                    <div class="calendar-day other-month">1</div>
-                    <div class="calendar-day other-month">2</div>
-                    <div class="calendar-day other-month">3</div>
-                    <div class="calendar-day other-month">4</div>
-                    <div class="calendar-day other-month">5</div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Đã hủy</div>
+                            <div class="stat-icon red">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">32</div>
+                        <div class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            -15% tháng này
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Interview Schedule -->
-            <div class="timeline-card">
-                <div class="timeline-header">
-                    <h3 class="timeline-title">Lịch phỏng vấn sắp tới</h3>
-                    <div class="timeline-controls">
-                        <div class="dropdown timeline-filter-dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" onclick="toggleTimelineDropdown()">
-                                <i class="fas fa-briefcase"></i>
-                                <span id="selectedPosition">Tất cả vị trí</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="dropdown-menu" id="timelineDropdownMenu">
-                                <div class="dropdown-section">
-                                    <div class="dropdown-title">Lọc theo vị trí</div>
-                                    <button class="dropdown-item active" onclick="setTimelinePositionFilter('all')">
+
+                <!-- Charts Row - 2 Charts -->
+                <div class="charts-row">
+                    <div class="chart-card status-chart">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Trạng thái phỏng vấn</h3>
+                            <span style="font-size: 12px; color: #64748b;">Tháng
+                                này</span>
+                        </div>
+
+                        <div class="donut-chart">
+                            <svg width="260" height="260" viewBox="0 0 260 260">
+                                <!-- Completed: 45% -->
+                                <circle cx="130" cy="130" r="90" fill="none"
+                                    stroke="#e2e8f0" stroke-width="20" />
+                                <circle cx="130" cy="130" r="90" fill="none"
+                                    stroke="#10b981" stroke-width="20"
+                                    stroke-dasharray="254 565"
+                                    stroke-dashoffset="0" />
+                                <!-- Scheduled: 35% -->
+                                <circle cx="130" cy="130" r="90" fill="none"
+                                    stroke="#3b82f6" stroke-width="20"
+                                    stroke-dasharray="198 565"
+                                    stroke-dashoffset="-254" />
+                                <!-- In Progress: 15% -->
+                                <circle cx="130" cy="130" r="90" fill="none"
+                                    stroke="#f59e0b" stroke-width="20"
+                                    stroke-dasharray="85 565"
+                                    stroke-dashoffset="-452" />
+                                <!-- Cancelled: 5% -->
+                                <circle cx="130" cy="130" r="90" fill="none"
+                                    stroke="#ef4444" stroke-width="20"
+                                    stroke-dasharray="28 565"
+                                    stroke-dashoffset="-537" />
+                            </svg>
+                            <div class="donut-center">
+                                <div class="donut-value">1,247</div>
+                                <div class="donut-label">Tổng số</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #10b981;"></div>
+                                <span>Hoàn thành (45%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #3b82f6;"></div>
+                                <span>Đã lên lịch (35%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #f59e0b;"></div>
+                                <span>Đang diễn ra (15%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #ef4444;"></div>
+                                <span>Đã hủy (5%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card position-trends-chart">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Xu hướng theo vị trí</h3>
+                            <div class="chart-time-selector">
+                                <button class="time-btn active"
+                                    onclick="changePositionTimeRange('month')">Tháng</button>
+                                <button class="time-btn"
+                                    onclick="changePositionTimeRange('quarter')">Quý</button>
+                                <button class="time-btn"
+                                    onclick="changePositionTimeRange('year')">Năm</button>
+                            </div>
+                        </div>
+
+                        <div class="multi-line-chart"
+                            style="height: 320px; position: relative; padding: 20px; flex: 1;">
+                            <svg id="positionChart" width="100%" height="280"
+                                viewBox="0 0 750 280"
+                                style="overflow: visible;">
+                                <!-- Grid lines -->
+                                <defs>
+                                    <pattern id="positionGrid" width="60"
+                                        height="40"
+                                        patternUnits="userSpaceOnUse">
+                                        <path d="M 60 0 L 0 0 0 40" fill="none"
+                                            stroke="#f1f5f9" stroke-width="1" />
+                                    </pattern>
+                                    <lineargradient id="frontendGradient"
+                                        x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%"
+                                            style="stop-color:#3b82f6;stop-opacity:0.1" />
+                                        <stop offset="100%"
+                                            style="stop-color:#3b82f6;stop-opacity:0.3" />
+                                    </lineargradient>
+                                </defs>
+                                <rect width="100%" height="100%"
+                                    fill="url(#positionGrid)" />
+
+                                <!-- Y-axis -->
+                                <line x1="30" y1="20" x2="30" y2="240"
+                                    stroke="#e2e8f0" stroke-width="2" />
+
+                                <!-- Y-axis labels -->
+                                <text x="20" y="25" font-size="11"
+                                    fill="#64748b" text-anchor="middle"
+                                    font-weight="600">60</text>
+                                <text x="20" y="60" font-size="11"
+                                    fill="#64748b" text-anchor="middle"
+                                    font-weight="600">50</text>
+                                <text x="20" y="95" font-size="11"
+                                    fill="#64748b" text-anchor="middle"
+                                    font-weight="600">40</text>
+                                <text x="20" y="130" font-size="11"
+                                    fill="#64748b" text-anchor="middle"
+                                    font-weight="600">30</text>
+                                <text x="20" y="165" font-size="11"
+                                    fill="#64748b" text-anchor="middle"
+                                    font-weight="600">20</text>
+                                <text x="20" y="200" font-size="11"
+                                    fill="#64748b" text-anchor="middle"
+                                    font-weight="600">10</text>
+                                <text x="20" y="245" font-size="11"
+                                    fill="#64748b" text-anchor="middle"
+                                    font-weight="600">0</text>
+
+                                <!-- Chart content will be dynamically updated -->
+                                <g id="chartLines"></g>
+                                <g id="chartPoints"></g>
+                            </svg>
+
+                            <!-- X-axis labels -->
+                            <div id="xAxisLabels"
+                                style="display: flex; justify-content: space-between; margin-top: 8px; padding: 0 30px;">
+                                <!-- Labels will be dynamically updated -->
+                            </div>
+                        </div>
+
+                        <div class="chart-legend" style="margin-top: 16px;">
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #3b82f6;"></div>
+                                <span>Frontend</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #10b981;"></div>
+                                <span>Backend</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #f59e0b;"></div>
+                                <span>UI/UX</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #8b5cf6;"></div>
+                                <span>Fullstack</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color"
+                                    style="background: #ef4444;"></div>
+                                <span>DevOps</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar + Timeline Section -->
+                <div class="calendar-timeline-section">
+                    <div class="calendar-card">
+                        <div class="calendar-header">
+                            <h3 class="calendar-title">Lịch phỏng vấn</h3>
+                            <div class="calendar-nav">
+                                <button class="calendar-nav-btn"
+                                    onclick="changeMonth(-1)">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="calendar-month">Tháng 12,
+                                    2024</span>
+                                <button class="calendar-nav-btn"
+                                    onclick="changeMonth(1)">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="calendar-grid" style="font-size: 12px;">
+                            <div class="calendar-day header">CN</div>
+                            <div class="calendar-day header">T2</div>
+                            <div class="calendar-day header">T3</div>
+                            <div class="calendar-day header">T4</div>
+                            <div class="calendar-day header">T5</div>
+                            <div class="calendar-day header">T6</div>
+                            <div class="calendar-day header">T7</div>
+
+                            <div class="calendar-day other-month">25</div>
+                            <div class="calendar-day other-month">26</div>
+                            <div class="calendar-day other-month">27</div>
+                            <div class="calendar-day other-month">28</div>
+                            <div class="calendar-day other-month">29</div>
+                            <div class="calendar-day other-month">30</div>
+                            <div class="calendar-day">1</div>
+
+                            <div class="calendar-day">2</div>
+                            <div class="calendar-day has-interviews"
+                                onclick="selectDate('2024-12-03')">
+                                3
+                                <div class="interview-dots">
+                                    <div class="interview-dot scheduled"></div>
+                                    <div class="interview-dot completed"></div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">4</div>
+                            <div class="calendar-day has-interviews"
+                                onclick="selectDate('2024-12-05')">
+                                5
+                                <div class="interview-dots">
+                                    <div class="interview-dot scheduled"></div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">6</div>
+                            <div class="calendar-day">7</div>
+                            <div class="calendar-day">8</div>
+
+                            <div class="calendar-day">9</div>
+                            <div class="calendar-day has-interviews"
+                                onclick="selectDate('2024-12-10')">
+                                10
+                                <div class="interview-dots">
+                                    <div class="interview-dot scheduled"></div>
+                                    <div class="interview-dot scheduled"></div>
+                                    <div class="interview-dot completed"></div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">11</div>
+                            <div class="calendar-day today selected"
+                                onclick="selectDate('2024-12-12')">12</div>
+                            <div class="calendar-day">13</div>
+                            <div class="calendar-day">14</div>
+                            <div class="calendar-day">15</div>
+
+                            <div class="calendar-day">16</div>
+                            <div class="calendar-day">17</div>
+                            <div class="calendar-day has-interviews"
+                                onclick="selectDate('2024-12-18')">
+                                18
+                                <div class="interview-dots">
+                                    <div class="interview-dot cancelled"></div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">19</div>
+                            <div class="calendar-day">20</div>
+                            <div class="calendar-day">21</div>
+                            <div class="calendar-day">22</div>
+
+                            <div class="calendar-day">23</div>
+                            <div class="calendar-day">24</div>
+                            <div class="calendar-day">25</div>
+                            <div class="calendar-day">26</div>
+                            <div class="calendar-day">27</div>
+                            <div class="calendar-day">28</div>
+                            <div class="calendar-day">29</div>
+
+                            <div class="calendar-day">30</div>
+                            <div class="calendar-day">31</div>
+                            <div class="calendar-day other-month">1</div>
+                            <div class="calendar-day other-month">2</div>
+                            <div class="calendar-day other-month">3</div>
+                            <div class="calendar-day other-month">4</div>
+                            <div class="calendar-day other-month">5</div>
+                        </div>
+                    </div>
+
+                    <!-- Interview Schedule -->
+                    <div class="timeline-card">
+                        <div class="timeline-header">
+                            <h3 class="timeline-title">Lịch phỏng vấn sắp
+                                tới</h3>
+                            <div class="timeline-controls">
+                                <div class="dropdown timeline-filter-dropdown">
+                                    <button
+                                        class="btn btn-secondary dropdown-toggle"
+                                        onclick="toggleTimelineDropdown()">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span id="selectedPosition">Tất cả vị
+                                            trí</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu"
+                                        id="timelineDropdownMenu">
+                                        <div class="dropdown-section">
+                                            <div class="dropdown-title">Lọc theo
+                                                vị trí</div>
+                                            <button class="dropdown-item active"
+                                                onclick="setTimelinePositionFilter('all')">
+                                                <i class="fas fa-list"></i>
+                                                Tất cả vị trí
+                                            </button>
+                                            <button class="dropdown-item"
+                                                onclick="setTimelinePositionFilter('frontend')">
+                                                <i class="fas fa-code"></i>
+                                                Frontend Developer
+                                            </button>
+                                            <button class="dropdown-item"
+                                                onclick="setTimelinePositionFilter('backend')">
+                                                <i class="fas fa-server"></i>
+                                                Backend Developer
+                                            </button>
+                                            <button class="dropdown-item"
+                                                onclick="setTimelinePositionFilter('uiux')">
+                                                <i
+                                                    class="fas fa-paint-brush"></i>
+                                                UI/UX Designer
+                                            </button>
+                                            <button class="dropdown-item"
+                                                onclick="setTimelinePositionFilter('devops')">
+                                                <i class="fas fa-cogs"></i>
+                                                DevOps Engineer
+                                            </button>
+                                            <button class="dropdown-item"
+                                                onclick="setTimelinePositionFilter('fullstack')">
+                                                <i
+                                                    class="fas fa-layer-group"></i>
+                                                Full-stack Developer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="timeline-date" id="timeline-date">
+                                    <i class="fas fa-calendar"></i>
+                                    12/12/2024
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="timeline-content" id="timeline-content">
+                            <div class="interview-card">
+                                <div class="interview-time">09:00</div>
+                                <div class="interview-details">
+                                    <div class="candidate-info-timeline">
+                                        <div
+                                            class="candidate-avatar-timeline blue">NT</div>
+                                        <div class="candidate-text">
+                                            <div class="candidate-name">Nguyễn
+                                                Văn Thành</div>
+                                            <div
+                                                class="candidate-position">Frontend
+                                                Developer</div>
+                                        </div>
+                                    </div>
+                                    <div class="interview-meta">
+                                        <div class="interview-round">Vòng 2 -
+                                            Technical</div>
+                                        <div class="interview-time-range">09:00
+                                            - 10:30</div>
+                                        <div class="interview-location">
+                                            <i
+                                                class="fas fa-map-marker-alt"></i>
+                                            Phòng họp A1
+                                        </div>
+                                        <div class="interview-interviewer">
+                                            <i class="fas fa-user"></i>
+                                            Nguyễn Thị Lan
+                                        </div>
+                                    </div>
+                                    <div class="interview-badges">
+                                        <span class="status-badge confirmed">ĐÃ
+                                            XÁC NHẬN</span>
+                                        <span class="priority-badge high">Ưu
+                                            tiên cao</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="interview-card">
+                                <div class="interview-time">10:30</div>
+                                <div class="interview-details">
+                                    <div class="candidate-info-timeline">
+                                        <div
+                                            class="candidate-avatar-timeline green">PD</div>
+                                        <div class="candidate-text">
+                                            <div class="candidate-name">Phạm Văn
+                                                Dũng</div>
+                                            <div
+                                                class="candidate-position">Backend
+                                                Developer</div>
+                                        </div>
+                                    </div>
+                                    <div class="interview-meta">
+                                        <div class="interview-round">Vòng 1 -
+                                            HR</div>
+                                        <div class="interview-time-range">10:30
+                                            - 11:30</div>
+                                        <div class="interview-location">
+                                            <i class="fas fa-video"></i>
+                                            Google Meet
+                                        </div>
+                                        <div class="interview-interviewer">
+                                            <i class="fas fa-user"></i>
+                                            Trần Văn Minh
+                                        </div>
+                                    </div>
+                                    <div class="interview-badges">
+                                        <span class="status-badge scheduled">ĐÃ
+                                            LÊN LỊCH</span>
+                                        <span
+                                            class="priority-badge medium">Trung
+                                            bình</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="interview-card">
+                                <div class="interview-time">14:00</div>
+                                <div class="interview-details">
+                                    <div class="candidate-info-timeline">
+                                        <div
+                                            class="candidate-avatar-timeline purple">LH</div>
+                                        <div class="candidate-text">
+                                            <div class="candidate-name">Lê Thị
+                                                Hương</div>
+                                            <div
+                                                class="candidate-position">UI/UX
+                                                Designer</div>
+                                        </div>
+                                    </div>
+                                    <div class="interview-meta">
+                                        <div class="interview-round">Vòng 3 -
+                                            Final</div>
+                                        <div class="interview-time-range">14:00
+                                            - 15:00</div>
+                                        <div class="interview-location">
+                                            <i
+                                                class="fas fa-map-marker-alt"></i>
+                                            Phòng họp B2
+                                        </div>
+                                        <div class="interview-interviewer">
+                                            <i class="fas fa-user"></i>
+                                            Đỗ Công Minh
+                                        </div>
+                                    </div>
+                                    <div class="interview-badges">
+                                        <span class="status-badge pending">CHỜ
+                                            XÁC NHẬN</span>
+                                        <span
+                                            class="priority-badge low">Thấp</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="interview-card">
+                                <div class="interview-time">15:30</div>
+                                <div class="interview-details">
+                                    <div class="candidate-info-timeline">
+                                        <div
+                                            class="candidate-avatar-timeline orange">HN</div>
+                                        <div class="candidate-text">
+                                            <div class="candidate-name">Hoàng
+                                                Văn Nam</div>
+                                            <div
+                                                class="candidate-position">DevOps
+                                                Engineer</div>
+                                        </div>
+                                    </div>
+                                    <div class="interview-meta">
+                                        <div class="interview-round">Vòng 2 -
+                                            Technical</div>
+                                        <div class="interview-time-range">15:30
+                                            - 17:00</div>
+                                        <div class="interview-location">
+                                            <i
+                                                class="fas fa-map-marker-alt"></i>
+                                            Phòng họp C1
+                                        </div>
+                                        <div class="interview-interviewer">
+                                            <i class="fas fa-user"></i>
+                                            Lê Văn Cường
+                                        </div>
+                                    </div>
+                                    <div class="interview-badges">
+                                        <span class="status-badge confirmed">ĐÃ
+                                            XÁC NHẬN</span>
+                                        <span class="priority-badge high">Ưu
+                                            tiên cao</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="interview-card">
+                                <div class="interview-time">16:00</div>
+                                <div class="interview-details">
+                                    <div class="candidate-info-timeline">
+                                        <div
+                                            class="candidate-avatar-timeline blue">TB</div>
+                                        <div class="candidate-text">
+                                            <div class="candidate-name">Trần Văn
+                                                Bình</div>
+                                            <div
+                                                class="candidate-position">Full-stack
+                                                Developer</div>
+                                        </div>
+                                    </div>
+                                    <div class="interview-meta">
+                                        <div class="interview-round">Vòng 1 -
+                                            HR</div>
+                                        <div class="interview-time-range">16:00
+                                            - 17:00</div>
+                                        <div class="interview-location">
+                                            <i class="fas fa-video"></i>
+                                            Zoom Meeting
+                                        </div>
+                                        <div class="interview-interviewer">
+                                            <i class="fas fa-user"></i>
+                                            Nguyễn Thị Lan
+                                        </div>
+                                    </div>
+                                    <div class="interview-badges">
+                                        <span class="status-badge scheduled">ĐÃ
+                                            LÊN LỊCH</span>
+                                        <span
+                                            class="priority-badge medium">Trung
+                                            bình</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interview Table -->
+                <div class="table-section">
+                    <div class="table-header">
+                        <h3 class="table-title">Danh sách phỏng vấn</h3>
+                    </div>
+
+                    <div class="table-toolbar">
+                        <div class="table-filters">
+                            <div class="search-box">
+                                <input type="text"
+                                    placeholder="Tìm kiếm ứng viên, vị trí..."
+                                    onkeyup="searchInterviews(this.value)">
+                                <i class="fas fa-search"></i>
+                            </div>
+
+                            <div class="filter-dropdown">
+                                <button class="filter-btn"
+                                    onclick="toggleStatusFilter()">
+                                    <span>
+                                        <i class="fas fa-tasks"></i>
+                                        <span id="selectedStatus">Tất cả trạng
+                                            thái</span>
+                                    </span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-menu"
+                                    id="statusFilterMenu">
+                                    <button class="dropdown-item active"
+                                        onclick="setStatusFilter('all')">
+                                        <i class="fas fa-list"></i>
+                                        Tất cả trạng thái
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setStatusFilter('scheduled')">
+                                        <i class="fas fa-calendar-check"></i>
+                                        Đã lên lịch
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setStatusFilter('completed')">
+                                        <i class="fas fa-check-circle"></i>
+                                        Hoàn thành
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setStatusFilter('cancelled')">
+                                        <i class="fas fa-times-circle"></i>
+                                        Đã hủy
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setStatusFilter('in-progress')">
+                                        <i class="fas fa-clock"></i>
+                                        Đang diễn ra
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="filter-dropdown">
+                                <button class="filter-btn"
+                                    onclick="togglePositionFilter()">
+                                    <span>
+                                        <i class="fas fa-briefcase"></i>
+                                        <span id="selectedPosition">Tất cả vị
+                                            trí</span>
+                                    </span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-menu"
+                                    id="positionFilterMenu">
+                                    <button class="dropdown-item active"
+                                        onclick="setPositionFilter('all')">
                                         <i class="fas fa-list"></i>
                                         Tất cả vị trí
                                     </button>
-                                    <button class="dropdown-item" onclick="setTimelinePositionFilter('frontend')">
+                                    <button class="dropdown-item"
+                                        onclick="setPositionFilter('frontend')">
                                         <i class="fas fa-code"></i>
-                                        Frontend Developer
+                                        Frontend
                                     </button>
-                                    <button class="dropdown-item" onclick="setTimelinePositionFilter('backend')">
+                                    <button class="dropdown-item"
+                                        onclick="setPositionFilter('backend')">
                                         <i class="fas fa-server"></i>
-                                        Backend Developer
+                                        Backend
                                     </button>
-                                    <button class="dropdown-item" onclick="setTimelinePositionFilter('uiux')">
+                                    <button class="dropdown-item"
+                                        onclick="setPositionFilter('uiux')">
                                         <i class="fas fa-paint-brush"></i>
-                                        UI/UX Designer
+                                        UI/UX
                                     </button>
-                                    <button class="dropdown-item" onclick="setTimelinePositionFilter('devops')">
-                                        <i class="fas fa-cogs"></i>
-                                        DevOps Engineer
-                                    </button>
-                                    <button class="dropdown-item" onclick="setTimelinePositionFilter('fullstack')">
+                                    <button class="dropdown-item"
+                                        onclick="setPositionFilter('fullstack')">
                                         <i class="fas fa-layer-group"></i>
-                                        Full-stack Developer
+                                        Fullstack
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setPositionFilter('pm')">
+                                        <i class="fas fa-user-tie"></i>
+                                        Product Manager
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                        <span class="timeline-date" id="timeline-date">
-                            <i class="fas fa-calendar"></i>
-                            12/12/2024
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="timeline-content" id="timeline-content">
-                    <div class="interview-card">
-                        <div class="interview-time">09:00</div>
-                        <div class="interview-details">
-                            <div class="candidate-info-timeline">
-                                <div class="candidate-avatar-timeline blue">NT</div>
-                                <div class="candidate-text">
-                                    <div class="candidate-name">Nguyễn Văn Thành</div>
-                                    <div class="candidate-position">Frontend Developer</div>
+
+                            <div class="filter-dropdown">
+                                <button class="filter-btn"
+                                    onclick="toggleDateFilter()">
+                                    <span>
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span id="selectedDateRange">Tất cả thời
+                                            gian</span>
+                                    </span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dateFilterMenu">
+                                    <button class="dropdown-item active"
+                                        onclick="setDateFilter('all')">
+                                        <i class="fas fa-list"></i>
+                                        Tất cả thời gian
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setDateFilter('today')">
+                                        <i class="fas fa-calendar-day"></i>
+                                        Hôm nay
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setDateFilter('tomorrow')">
+                                        <i class="fas fa-calendar-plus"></i>
+                                        Ngày mai
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setDateFilter('week')">
+                                        <i class="fas fa-calendar-week"></i>
+                                        Tuần này
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setDateFilter('month')">
+                                        <i class="fas fa-calendar"></i>
+                                        Tháng này
+                                    </button>
+                                    <button class="dropdown-item"
+                                        onclick="setDateFilter('custom')">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        Tùy chọn
+                                    </button>
                                 </div>
                             </div>
-                            <div class="interview-meta">
-                                <div class="interview-round">Vòng 2 - Technical</div>
-                                <div class="interview-time-range">09:00 - 10:30</div>
-                                <div class="interview-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Phòng họp A1
-                                </div>
-                                <div class="interview-interviewer">
-                                    <i class="fas fa-user"></i>
-                                    Nguyễn Thị Lan
-                                </div>
-                            </div>
-                            <div class="interview-badges">
-                                <span class="status-badge confirmed">ĐÃ XÁC NHẬN</span>
-                                <span class="priority-badge high">Ưu tiên cao</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="interview-card">
-                        <div class="interview-time">10:30</div>
-                        <div class="interview-details">
-                            <div class="candidate-info-timeline">
-                                <div class="candidate-avatar-timeline green">PD</div>
-                                <div class="candidate-text">
-                                    <div class="candidate-name">Phạm Văn Dũng</div>
-                                    <div class="candidate-position">Backend Developer</div>
-                                </div>
-                            </div>
-                            <div class="interview-meta">
-                                <div class="interview-round">Vòng 1 - HR</div>
-                                <div class="interview-time-range">10:30 - 11:30</div>
-                                <div class="interview-location">
-                                    <i class="fas fa-video"></i>
-                                    Google Meet
-                                </div>
-                                <div class="interview-interviewer">
-                                    <i class="fas fa-user"></i>
-                                    Trần Văn Minh
-                                </div>
-                            </div>
-                            <div class="interview-badges">
-                                <span class="status-badge scheduled">ĐÃ LÊN LỊCH</span>
-                                <span class="priority-badge medium">Trung bình</span>
-                            </div>
+
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Thêm mới
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="interview-card">
-                        <div class="interview-time">14:00</div>
-                        <div class="interview-details">
-                            <div class="candidate-info-timeline">
-                                <div class="candidate-avatar-timeline purple">LH</div>
-                                <div class="candidate-text">
-                                    <div class="candidate-name">Lê Thị Hương</div>
-                                    <div class="candidate-position">UI/UX Designer</div>
-                                </div>
-                            </div>
-                            <div class="interview-meta">
-                                <div class="interview-round">Vòng 3 - Final</div>
-                                <div class="interview-time-range">14:00 - 15:00</div>
-                                <div class="interview-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Phòng họp B2
-                                </div>
-                                <div class="interview-interviewer">
-                                    <i class="fas fa-user"></i>
-                                    Đỗ Công Minh
-                                </div>
-                            </div>
-                            <div class="interview-badges">
-                                <span class="status-badge pending">CHỜ XÁC NHẬN</span>
-                                <span class="priority-badge low">Thấp</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="interview-card">
-                        <div class="interview-time">15:30</div>
-                        <div class="interview-details">
-                            <div class="candidate-info-timeline">
-                                <div class="candidate-avatar-timeline orange">HN</div>
-                                <div class="candidate-text">
-                                    <div class="candidate-name">Hoàng Văn Nam</div>
-                                    <div class="candidate-position">DevOps Engineer</div>
-                                </div>
-                            </div>
-                            <div class="interview-meta">
-                                <div class="interview-round">Vòng 2 - Technical</div>
-                                <div class="interview-time-range">15:30 - 17:00</div>
-                                <div class="interview-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Phòng họp C1
-                                </div>
-                                <div class="interview-interviewer">
-                                    <i class="fas fa-user"></i>
-                                    Lê Văn Cường
-                                </div>
-                            </div>
-                            <div class="interview-badges">
-                                <span class="status-badge confirmed">ĐÃ XÁC NHẬN</span>
-                                <span class="priority-badge high">Ưu tiên cao</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="interview-card">
-                        <div class="interview-time">16:00</div>
-                        <div class="interview-details">
-                            <div class="candidate-info-timeline">
-                                <div class="candidate-avatar-timeline blue">TB</div>
-                                <div class="candidate-text">
-                                    <div class="candidate-name">Trần Văn Bình</div>
-                                    <div class="candidate-position">Full-stack Developer</div>
-                                </div>
-                            </div>
-                            <div class="interview-meta">
-                                <div class="interview-round">Vòng 1 - HR</div>
-                                <div class="interview-time-range">16:00 - 17:00</div>
-                                <div class="interview-location">
-                                    <i class="fas fa-video"></i>
-                                    Zoom Meeting
-                                </div>
-                                <div class="interview-interviewer">
-                                    <i class="fas fa-user"></i>
-                                    Nguyễn Thị Lan
-                                </div>
-                            </div>
-                            <div class="interview-badges">
-                                <span class="status-badge scheduled">ĐÃ LÊN LỊCH</span>
-                                <span class="priority-badge medium">Trung bình</span>
-                            </div>
-                        </div>
+
+                    <div class="table-container">
+                        <table class="interview-table">
+                            <thead>
+                                <tr>
+                                    <th>Ứng viên</th>
+                                    <th>Vị trí</th>
+                                    <th>Ngày & Giờ</th>
+                                    <th>Người phỏng vấn</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">NA</div>
+                                            <div class="candidate-details">
+                                                <h4>Nguyễn Văn An</h4>
+                                                <p>nguyenvanan@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge frontend">Frontend</span>
+                                    </td>
+                                    <td>
+                                        <div>12/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">09:00
+                                            - 10:00</div>
+                                    </td>
+                                    <td>Trần Minh Tuấn</td>
+                                    <td>
+                                        <span class="table-status scheduled">Đã
+                                            lên lịch</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Nguyễn Văn An', 'scheduled')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">LM</div>
+                                            <div class="candidate-details">
+                                                <h4>Lê Thị Mai</h4>
+                                                <p>lethimai@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge uiux">UI/UX</span>
+                                    </td>
+                                    <td>
+                                        <div>12/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">10:30
+                                            - 11:30</div>
+                                    </td>
+                                    <td>Lê Thị Hoa</td>
+                                    <td>
+                                        <span
+                                            class="table-status completed">Hoàn
+                                            thành</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Lê Thị Mai', 'completed')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">TB</div>
+                                            <div class="candidate-details">
+                                                <h4>Trần Thị Bình</h4>
+                                                <p>tranthibinh@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge pm">PM</span>
+                                    </td>
+                                    <td>
+                                        <div>12/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">14:00
+                                            - 15:00</div>
+                                    </td>
+                                    <td>Võ Minh Khang</td>
+                                    <td>
+                                        <span class="table-status scheduled">Đã
+                                            lên lịch</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Trần Thị Bình', 'scheduled')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">LC</div>
+                                            <div class="candidate-details">
+                                                <h4>Lê Minh Cường</h4>
+                                                <p>leminhcuong@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge backend">Backend</span>
+                                    </td>
+                                    <td>
+                                        <div>12/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">16:00
+                                            - 17:00</div>
+                                    </td>
+                                    <td>Nguyễn Đức Nam</td>
+                                    <td>
+                                        <span class="table-status scheduled">Đã
+                                            lên lịch</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Lê Minh Cường', 'scheduled')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">PD</div>
+                                            <div class="candidate-details">
+                                                <h4>Phạm Văn Đức</h4>
+                                                <p>phamvanduc@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge fullstack">Fullstack</span>
+                                    </td>
+                                    <td>
+                                        <div>12/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">17:30
+                                            - 18:30</div>
+                                    </td>
+                                    <td>Trần Minh Tuấn</td>
+                                    <td>
+                                        <span class="table-status scheduled">Đã
+                                            lên lịch</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Phạm Văn Đức', 'scheduled')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">HT</div>
+                                            <div class="candidate-details">
+                                                <h4>Hoàng Văn Thắng</h4>
+                                                <p>hoangvanthang@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge backend">Backend</span>
+                                    </td>
+                                    <td>
+                                        <div>13/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">09:30
+                                            - 10:30</div>
+                                    </td>
+                                    <td>Lê Thị Hoa</td>
+                                    <td>
+                                        <span class="table-status scheduled">Đã
+                                            lên lịch</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Hoàng Văn Thắng', 'scheduled')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">NL</div>
+                                            <div class="candidate-details">
+                                                <h4>Nguyễn Thị Lan</h4>
+                                                <p>nguyenthilan@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge uiux">UI/UX</span>
+                                    </td>
+                                    <td>
+                                        <div>13/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">14:00
+                                            - 15:30</div>
+                                    </td>
+                                    <td>Võ Minh Khang</td>
+                                    <td>
+                                        <span
+                                            class="table-status in-progress">Đang
+                                            diễn ra</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Nguyễn Thị Lan', 'in-progress')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="candidate-info">
+                                            <div
+                                                class="candidate-avatar">VK</div>
+                                            <div class="candidate-details">
+                                                <h4>Vũ Minh Khôi</h4>
+                                                <p>vuminhkhoi@email.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="position-badge fullstack">Fullstack</span>
+                                    </td>
+                                    <td>
+                                        <div>11/12/2024</div>
+                                        <div
+                                            style="color: #64748b; font-size: 12px;">16:00
+                                            - 17:00</div>
+                                    </td>
+                                    <td>Trần Minh Tuấn</td>
+                                    <td>
+                                        <span class="table-status cancelled">Đã
+                                            hủy</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-menu-btn"
+                                                onclick="showActionMenu(event, 'Vũ Minh Khôi', 'cancelled')"
+                                                title="Thao tác">
+                                                <i
+                                                    class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
-        
 
+            <footer id="footer" data-src="Footer.html"></footer>
+            <link rel="prefetch" href="Footer.html" as="fetch"
+                crossorigin="anonymous">
 
-        <!-- Interview Table -->
-        <div class="table-section">
-            <div class="table-header">
-                <h3 class="table-title">Danh sách phỏng vấn</h3>
-            </div>
-            
-            <div class="table-toolbar">
-                <div class="table-filters">
-                    <div class="search-box">
-                        <input type="text" placeholder="Tìm kiếm ứng viên, vị trí..." onkeyup="searchInterviews(this.value)">
-                        <i class="fas fa-search"></i>
+            <!-- Action Menu Popup -->
+            <div id="actionMenuPopup" class="modal-overlay"
+                onclick="closeActionMenu(event)">
+                <div class="action-menu" onclick="event.stopPropagation()">
+                    <div id="actionMenuContent">
+                        <!-- Content will be dynamically updated based on interview status -->
                     </div>
-                    
-                    <div class="filter-dropdown">
-                        <button class="filter-btn" onclick="toggleStatusFilter()">
-                            <span>
-                                <i class="fas fa-tasks"></i>
-                                <span id="selectedStatus">Tất cả trạng thái</span>
-                            </span>
-                            <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <!-- Edit Interview Modal -->
+            <div id="editModal" class="modal-overlay"
+                onclick="closeModal('editModal', event)">
+                <div class="modal" onclick="event.stopPropagation()">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Chỉnh sửa phỏng vấn</h3>
+                        <button class="modal-close"
+                            onclick="closeModal('editModal')">
+                            <i class="fas fa-times"></i>
                         </button>
-                        <div class="dropdown-menu" id="statusFilterMenu">
-                            <button class="dropdown-item active" onclick="setStatusFilter('all')">
-                                <i class="fas fa-list"></i>
-                                Tất cả trạng thái
-                            </button>
-                            <button class="dropdown-item" onclick="setStatusFilter('scheduled')">
-                                <i class="fas fa-calendar-check"></i>
-                                Đã lên lịch
-                            </button>
-                            <button class="dropdown-item" onclick="setStatusFilter('completed')">
-                                <i class="fas fa-check-circle"></i>
-                                Hoàn thành
-                            </button>
-                            <button class="dropdown-item" onclick="setStatusFilter('cancelled')">
-                                <i class="fas fa-times-circle"></i>
-                                Đã hủy
-                            </button>
-                            <button class="dropdown-item" onclick="setStatusFilter('in-progress')">
-                                <i class="fas fa-clock"></i>
-                                Đang diễn ra
-                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Ứng
+                                viên</label>
+                            <input type="text" id="candidateName"
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;"
+                                readonly>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Ngày
+                                phỏng vấn</label>
+                            <input type="date"
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                        </div>
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ
+                                    bắt đầu</label>
+                                <input type="time"
+                                    style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ
+                                    kết thúc</label>
+                                <input type="time"
+                                    style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Người
+                                phỏng vấn</label>
+                            <select
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                                <option>Trần Minh Tuấn</option>
+                                <option>Lê Thị Hoa</option>
+                                <option>Võ Minh Khang</option>
+                                <option>Nguyễn Đức Nam</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Địa
+                                điểm</label>
+                            <input type="text"
+                                placeholder="Phòng họp hoặc link meeting"
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn btn-secondary"
+                                onclick="closeModal('editModal')">Hủy</button>
+                            <button class="btn btn-primary"
+                                onclick="saveInterview()">Lưu thay đổi</button>
                         </div>
                     </div>
-                    
-                    <div class="filter-dropdown">
-                        <button class="filter-btn" onclick="togglePositionFilter()">
-                            <span>
-                                <i class="fas fa-briefcase"></i>
-                                <span id="selectedPosition">Tất cả vị trí</span>
-                            </span>
-                            <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <!-- Reschedule Modal -->
+            <div id="rescheduleModal" class="modal-overlay"
+                onclick="closeModal('rescheduleModal', event)">
+                <div class="modal" onclick="event.stopPropagation()">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Đổi lịch phỏng vấn</h3>
+                        <button class="modal-close"
+                            onclick="closeModal('rescheduleModal')">
+                            <i class="fas fa-times"></i>
                         </button>
-                        <div class="dropdown-menu" id="positionFilterMenu">
-                            <button class="dropdown-item active" onclick="setPositionFilter('all')">
-                                <i class="fas fa-list"></i>
-                                Tất cả vị trí
-                            </button>
-                            <button class="dropdown-item" onclick="setPositionFilter('frontend')">
-                                <i class="fas fa-code"></i>
-                                Frontend
-                            </button>
-                            <button class="dropdown-item" onclick="setPositionFilter('backend')">
-                                <i class="fas fa-server"></i>
-                                Backend
-                            </button>
-                            <button class="dropdown-item" onclick="setPositionFilter('uiux')">
-                                <i class="fas fa-paint-brush"></i>
-                                UI/UX
-                            </button>
-                            <button class="dropdown-item" onclick="setPositionFilter('fullstack')">
-                                <i class="fas fa-layer-group"></i>
-                                Fullstack
-                            </button>
-                            <button class="dropdown-item" onclick="setPositionFilter('pm')">
-                                <i class="fas fa-user-tie"></i>
-                                Product Manager
-                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <div
+                            style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                            <h4
+                                style="margin: 0 0 8px 0; color: #1e293b; font-size: 16px;">Lịch
+                                hiện tại</h4>
+                            <p style="margin: 0; color: #64748b;"
+                                id="currentSchedule">12/12/2024 - 09:00 đến
+                                10:00</p>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Ngày
+                                mới</label>
+                            <input type="date" id="newDate"
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                        </div>
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ
+                                    bắt đầu mới</label>
+                                <input type="time" id="newStartTime"
+                                    style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ
+                                    kết thúc mới</label>
+                                <input type="time" id="newEndTime"
+                                    style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Lý
+                                do đổi lịch</label>
+                            <textarea placeholder="Nhập lý do đổi lịch..."
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; min-height: 80px; resize: vertical;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" checked
+                                    style="width: 16px; height: 16px;">
+                                <span
+                                    style="font-size: 14px; color: #64748b;">Gửi
+                                    thông báo đổi lịch cho ứng viên</span>
+                            </label>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn btn-secondary"
+                                onclick="closeModal('rescheduleModal')">Hủy</button>
+                            <button class="btn btn-primary"
+                                onclick="confirmReschedule()">Xác nhận đổi
+                                lịch</button>
                         </div>
                     </div>
-                    
-                    <div class="filter-dropdown">
-                        <button class="filter-btn" onclick="toggleDateFilter()">
-                            <span>
-                                <i class="fas fa-calendar-alt"></i>
-                                <span id="selectedDateRange">Tất cả thời gian</span>
-                            </span>
-                            <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <!-- Add Notes Modal -->
+            <div id="notesModal" class="modal-overlay"
+                onclick="closeModal('notesModal', event)">
+                <div class="modal" onclick="event.stopPropagation()">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Thêm ghi chú phỏng vấn</h3>
+                        <button class="modal-close"
+                            onclick="closeModal('notesModal')">
+                            <i class="fas fa-times"></i>
                         </button>
-                        <div class="dropdown-menu" id="dateFilterMenu">
-                            <button class="dropdown-item active" onclick="setDateFilter('all')">
-                                <i class="fas fa-list"></i>
-                                Tất cả thời gian
-                            </button>
-                            <button class="dropdown-item" onclick="setDateFilter('today')">
-                                <i class="fas fa-calendar-day"></i>
-                                Hôm nay
-                            </button>
-                            <button class="dropdown-item" onclick="setDateFilter('tomorrow')">
-                                <i class="fas fa-calendar-plus"></i>
-                                Ngày mai
-                            </button>
-                            <button class="dropdown-item" onclick="setDateFilter('week')">
-                                <i class="fas fa-calendar-week"></i>
-                                Tuần này
-                            </button>
-                            <button class="dropdown-item" onclick="setDateFilter('month')">
-                                <i class="fas fa-calendar"></i>
-                                Tháng này
-                            </button>
-                            <button class="dropdown-item" onclick="setDateFilter('custom')">
-                                <i class="fas fa-calendar-alt"></i>
-                                Tùy chọn
+                    </div>
+                    <div class="modal-body">
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Loại
+                                ghi chú</label>
+                            <select
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                                <option>Ghi chú chung</option>
+                                <option>Đánh giá kỹ năng</option>
+                                <option>Phản hồi ứng viên</option>
+                                <option>Lưu ý đặc biệt</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Nội
+                                dung ghi chú</label>
+                            <textarea placeholder="Nhập ghi chú chi tiết..."
+                                style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; min-height: 120px; resize: vertical;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Mức
+                                độ ưu tiên</label>
+                            <div style="display: flex; gap: 12px;">
+                                <label
+                                    style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <input type="radio" name="priority"
+                                        value="low"
+                                        style="width: 16px; height: 16px;">
+                                    <span
+                                        style="font-size: 14px; color: #10b981;">Thấp</span>
+                                </label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <input type="radio" name="priority"
+                                        value="medium" checked
+                                        style="width: 16px; height: 16px;">
+                                    <span
+                                        style="font-size: 14px; color: #f59e0b;">Trung
+                                        bình</span>
+                                </label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <input type="radio" name="priority"
+                                        value="high"
+                                        style="width: 16px; height: 16px;">
+                                    <span
+                                        style="font-size: 14px; color: #ef4444;">Cao</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn btn-secondary"
+                                onclick="closeModal('notesModal')">Hủy</button>
+                            <button class="btn btn-primary"
+                                onclick="saveNotes()">Lưu ghi chú</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidate Details Modal -->
+            <div id="detailsModal" class="modal-overlay"
+                onclick="closeModal('detailsModal', event)">
+                <div class="modal" style="max-width: 600px;"
+                    onclick="event.stopPropagation()">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Chi tiết ứng viên</h3>
+                        <button class="modal-close"
+                            onclick="closeModal('detailsModal')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div
+                            style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding: 16px; background: #f8fafc; border-radius: 8px;">
+                            <div
+                                style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 20px;">NA</div>
+                            <div>
+                                <h4
+                                    style="margin: 0 0 4px 0; font-size: 18px; color: #1e293b;"
+                                    id="candidateDetailName">Nguyễn Văn An</h4>
+                                <p
+                                    style="margin: 0 0 4px 0; color: #64748b;">nguyenvanan@email.com</p>
+                                <span
+                                    style="background: #dbeafe; color: #1d4ed8; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">Frontend
+                                    Developer</span>
+                            </div>
+                        </div>
+
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                            <div>
+                                <h5
+                                    style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Kinh
+                                    nghiệm</h5>
+                                <p
+                                    style="margin: 0; color: #64748b; font-size: 14px;">3
+                                    năm</p>
+                            </div>
+                            <div>
+                                <h5
+                                    style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Số
+                                    điện thoại</h5>
+                                <p
+                                    style="margin: 0; color: #64748b; font-size: 14px;">0123
+                                    456 789</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <h5
+                                style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Kỹ
+                                năng chính</h5>
+                            <div
+                                style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span
+                                    style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">React</span>
+                                <span
+                                    style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">JavaScript</span>
+                                <span
+                                    style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">TypeScript</span>
+                                <span
+                                    style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">CSS</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <h5
+                                style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Lịch
+                                sử phỏng vấn</h5>
+                            <div
+                                style="background: #f8fafc; padding: 12px; border-radius: 8px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <span
+                                        style="font-size: 14px; color: #1e293b; font-weight: 500;">Vòng
+                                        1 - HR</span>
+                                    <span
+                                        style="background: #dcfce7; color: #16a34a; padding: 2px 6px; border-radius: 8px; font-size: 11px; font-weight: 600;">HOÀN
+                                        THÀNH</span>
+                                </div>
+                                <p
+                                    style="margin: 0; font-size: 12px; color: #64748b;">05/12/2024
+                                    - Đánh giá: Tốt</p>
+                            </div>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button class="btn btn-secondary"
+                                onclick="closeModal('detailsModal')">Đóng</button>
+                            <button class="btn btn-primary" onclick="viewCV()">
+                                <i class="fas fa-eye"></i>
+                                Xem CV
                             </button>
                         </div>
                     </div>
-                    
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Thêm mới
-                    </button>
                 </div>
-            </div>
-            
-            <div class="table-container">
-                <table class="interview-table">
-                    <thead>
-                        <tr>
-                            <th>Ứng viên</th>
-                            <th>Vị trí</th>
-                            <th>Ngày & Giờ</th>
-                            <th>Người phỏng vấn</th>
-                            <th>Trạng thái</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">NA</div>
-                                    <div class="candidate-details">
-                                        <h4>Nguyễn Văn An</h4>
-                                        <p>nguyenvanan@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge frontend">Frontend</span>
-                            </td>
-                            <td>
-                                <div>12/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">09:00 - 10:00</div>
-                            </td>
-                            <td>Trần Minh Tuấn</td>
-                            <td>
-                                <span class="table-status scheduled">Đã lên lịch</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Nguyễn Văn An', 'scheduled')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">LM</div>
-                                    <div class="candidate-details">
-                                        <h4>Lê Thị Mai</h4>
-                                        <p>lethimai@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge uiux">UI/UX</span>
-                            </td>
-                            <td>
-                                <div>12/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">10:30 - 11:30</div>
-                            </td>
-                            <td>Lê Thị Hoa</td>
-                            <td>
-                                <span class="table-status completed">Hoàn thành</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Lê Thị Mai', 'completed')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">TB</div>
-                                    <div class="candidate-details">
-                                        <h4>Trần Thị Bình</h4>
-                                        <p>tranthibinh@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge pm">PM</span>
-                            </td>
-                            <td>
-                                <div>12/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">14:00 - 15:00</div>
-                            </td>
-                            <td>Võ Minh Khang</td>
-                            <td>
-                                <span class="table-status scheduled">Đã lên lịch</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Trần Thị Bình', 'scheduled')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">LC</div>
-                                    <div class="candidate-details">
-                                        <h4>Lê Minh Cường</h4>
-                                        <p>leminhcuong@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge backend">Backend</span>
-                            </td>
-                            <td>
-                                <div>12/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">16:00 - 17:00</div>
-                            </td>
-                            <td>Nguyễn Đức Nam</td>
-                            <td>
-                                <span class="table-status scheduled">Đã lên lịch</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Lê Minh Cường', 'scheduled')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">PD</div>
-                                    <div class="candidate-details">
-                                        <h4>Phạm Văn Đức</h4>
-                                        <p>phamvanduc@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge fullstack">Fullstack</span>
-                            </td>
-                            <td>
-                                <div>12/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">17:30 - 18:30</div>
-                            </td>
-                            <td>Trần Minh Tuấn</td>
-                            <td>
-                                <span class="table-status scheduled">Đã lên lịch</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Phạm Văn Đức', 'scheduled')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">HT</div>
-                                    <div class="candidate-details">
-                                        <h4>Hoàng Văn Thắng</h4>
-                                        <p>hoangvanthang@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge backend">Backend</span>
-                            </td>
-                            <td>
-                                <div>13/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">09:30 - 10:30</div>
-                            </td>
-                            <td>Lê Thị Hoa</td>
-                            <td>
-                                <span class="table-status scheduled">Đã lên lịch</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Hoàng Văn Thắng', 'scheduled')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">NL</div>
-                                    <div class="candidate-details">
-                                        <h4>Nguyễn Thị Lan</h4>
-                                        <p>nguyenthilan@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge uiux">UI/UX</span>
-                            </td>
-                            <td>
-                                <div>13/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">14:00 - 15:30</div>
-                            </td>
-                            <td>Võ Minh Khang</td>
-                            <td>
-                                <span class="table-status in-progress">Đang diễn ra</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Nguyễn Thị Lan', 'in-progress')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td>
-                                <div class="candidate-info">
-                                    <div class="candidate-avatar">VK</div>
-                                    <div class="candidate-details">
-                                        <h4>Vũ Minh Khôi</h4>
-                                        <p>vuminhkhoi@email.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="position-badge fullstack">Fullstack</span>
-                            </td>
-                            <td>
-                                <div>11/12/2024</div>
-                                <div style="color: #64748b; font-size: 12px;">16:00 - 17:00</div>
-                            </td>
-                            <td>Trần Minh Tuấn</td>
-                            <td>
-                                <span class="table-status cancelled">Đã hủy</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-menu-btn" onclick="showActionMenu(event, 'Vũ Minh Khôi', 'cancelled')" title="Thao tác">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+            </main>
 
-    <!-- Footer -->
-    <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div class="col-span-1 md:col-span-2">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 bg-blue-600 rounded-lg grid place-items-center text-white font-bold">CF</div>
-              <div><h3 class="text-lg font-semibold text-gray-900">CyberFortis</h3><p class="text-gray-600 text-sm">Bảo vệ thế giới số</p></div>
-            </div>
-            <p class="text-gray-700 mb-4 max-w-md">Công ty hàng đầu về an ninh mạng tại Việt Nam với hơn 15 năm kinh nghiệm bảo vệ doanh nghiệp khỏi các mối đe dọa cyber.</p>
-            <div class="flex gap-4">
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-github"></i></a>
-            </div>
-          </div>
-          <div>
-            <h4 class="footer-title">Liên kết nhanh</h4>
-            <ul class="footer-list">
-              <li><a href="#" class="footer-link">Về chúng tôi</a></li>
-              <li><a href="#" class="footer-link">Dịch vụ</a></li>
-              <li><a href="#" class="footer-link">Tuyển dụng</a></li>
-              <li><a href="#" class="footer-link">Tin tức</a></li>
-              <li><a href="#" class="footer-link">Liên hệ</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="footer-title">Hỗ trợ</h4>
-            <ul class="footer-list">
-              <li class="text-gray-600 text-sm">📧 hr@cyberfortis.vn</li>
-              <li class="text-gray-600 text-sm">📞 (024) 3999 8888</li>
-              <li class="text-gray-600 text-sm">📍 Hà Nội, Việt Nam</li>
-              <li class="text-gray-600 text-sm">🕒 T2-T6: 8:00-17:30</li>
-            </ul>
-          </div>
-        </div>
-        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p class="text-gray-500 text-sm">© 2024 CyberFortis. Tất cả quyền được bảo lưu.</p>
-          <div class="flex gap-6 mt-4 md:mt-0">
-            <a href="#" class="footer-link">Chính sách bảo mật</a>
-            <a href="#" class="footer-link">Điều khoản sử dụng</a>
-            <a href="#" class="footer-link">Cookie</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <style>
-        #sidebar-toggle:checked ~ footer {
-            margin-left: 80px;
-        }
-    </style>
-
-    <!-- Action Menu Popup -->
-    <div id="actionMenuPopup" class="modal-overlay" onclick="closeActionMenu(event)">
-        <div class="action-menu" onclick="event.stopPropagation()">
-            <div id="actionMenuContent">
-                <!-- Content will be dynamically updated based on interview status -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Interview Modal -->
-    <div id="editModal" class="modal-overlay" onclick="closeModal('editModal', event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3 class="modal-title">Chỉnh sửa phỏng vấn</h3>
-                <button class="modal-close" onclick="closeModal('editModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Ứng viên</label>
-                    <input type="text" id="candidateName" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" readonly>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Ngày phỏng vấn</label>
-                    <input type="date" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ bắt đầu</label>
-                        <input type="time" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ kết thúc</label>
-                        <input type="time" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                    </div>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Người phỏng vấn</label>
-                    <select style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                        <option>Trần Minh Tuấn</option>
-                        <option>Lê Thị Hoa</option>
-                        <option>Võ Minh Khang</option>
-                        <option>Nguyễn Đức Nam</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Địa điểm</label>
-                    <input type="text" placeholder="Phòng họp hoặc link meeting" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal('editModal')">Hủy</button>
-                    <button class="btn btn-primary" onclick="saveInterview()">Lưu thay đổi</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reschedule Modal -->
-    <div id="rescheduleModal" class="modal-overlay" onclick="closeModal('rescheduleModal', event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3 class="modal-title">Đổi lịch phỏng vấn</h3>
-                <button class="modal-close" onclick="closeModal('rescheduleModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 8px 0; color: #1e293b; font-size: 16px;">Lịch hiện tại</h4>
-                    <p style="margin: 0; color: #64748b;" id="currentSchedule">12/12/2024 - 09:00 đến 10:00</p>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Ngày mới</label>
-                    <input type="date" id="newDate" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ bắt đầu mới</label>
-                        <input type="time" id="newStartTime" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Giờ kết thúc mới</label>
-                        <input type="time" id="newEndTime" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                    </div>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Lý do đổi lịch</label>
-                    <textarea placeholder="Nhập lý do đổi lịch..." style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; min-height: 80px; resize: vertical;"></textarea>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <input type="checkbox" checked style="width: 16px; height: 16px;">
-                        <span style="font-size: 14px; color: #64748b;">Gửi thông báo đổi lịch cho ứng viên</span>
-                    </label>
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal('rescheduleModal')">Hủy</button>
-                    <button class="btn btn-primary" onclick="confirmReschedule()">Xác nhận đổi lịch</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Notes Modal -->
-    <div id="notesModal" class="modal-overlay" onclick="closeModal('notesModal', event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3 class="modal-title">Thêm ghi chú phỏng vấn</h3>
-                <button class="modal-close" onclick="closeModal('notesModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Loại ghi chú</label>
-                    <select style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
-                        <option>Ghi chú chung</option>
-                        <option>Đánh giá kỹ năng</option>
-                        <option>Phản hồi ứng viên</option>
-                        <option>Lưu ý đặc biệt</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Nội dung ghi chú</label>
-                    <textarea placeholder="Nhập ghi chú chi tiết..." style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; min-height: 120px; resize: vertical;"></textarea>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Mức độ ưu tiên</label>
-                    <div style="display: flex; gap: 12px;">
-                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                            <input type="radio" name="priority" value="low" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; color: #10b981;">Thấp</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                            <input type="radio" name="priority" value="medium" checked style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; color: #f59e0b;">Trung bình</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                            <input type="radio" name="priority" value="high" style="width: 16px; height: 16px;">
-                            <span style="font-size: 14px; color: #ef4444;">Cao</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal('notesModal')">Hủy</button>
-                    <button class="btn btn-primary" onclick="saveNotes()">Lưu ghi chú</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Candidate Details Modal -->
-    <div id="detailsModal" class="modal-overlay" onclick="closeModal('detailsModal', event)">
-        <div class="modal" style="max-width: 600px;" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3 class="modal-title">Chi tiết ứng viên</h3>
-                <button class="modal-close" onclick="closeModal('detailsModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding: 16px; background: #f8fafc; border-radius: 8px;">
-                    <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 20px;">NA</div>
-                    <div>
-                        <h4 style="margin: 0 0 4px 0; font-size: 18px; color: #1e293b;" id="candidateDetailName">Nguyễn Văn An</h4>
-                        <p style="margin: 0 0 4px 0; color: #64748b;">nguyenvanan@email.com</p>
-                        <span style="background: #dbeafe; color: #1d4ed8; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">Frontend Developer</span>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-                    <div>
-                        <h5 style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Kinh nghiệm</h5>
-                        <p style="margin: 0; color: #64748b; font-size: 14px;">3 năm</p>
-                    </div>
-                    <div>
-                        <h5 style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Số điện thoại</h5>
-                        <p style="margin: 0; color: #64748b; font-size: 14px;">0123 456 789</p>
-                    </div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <h5 style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Kỹ năng chính</h5>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <span style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">React</span>
-                        <span style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">JavaScript</span>
-                        <span style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">TypeScript</span>
-                        <span style="background: #e9d5ff; color: #7c3aed; padding: 4px 8px; border-radius: 12px; font-size: 12px;">CSS</span>
-                    </div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <h5 style="margin: 0 0 8px 0; color: #374151; font-size: 14px; font-weight: 600;">Lịch sử phỏng vấn</h5>
-                    <div style="background: #f8fafc; padding: 12px; border-radius: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="font-size: 14px; color: #1e293b; font-weight: 500;">Vòng 1 - HR</span>
-                            <span style="background: #dcfce7; color: #16a34a; padding: 2px 6px; border-radius: 8px; font-size: 11px; font-weight: 600;">HOÀN THÀNH</span>
-                        </div>
-                        <p style="margin: 0; font-size: 12px; color: #64748b;">05/12/2024 - Đánh giá: Tốt</p>
-                    </div>
-                </div>
-                
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal('detailsModal')">Đóng</button>
-                    <button class="btn btn-primary" onclick="viewCV()">
-                        <i class="fas fa-eye"></i>
-                        Xem CV
-                    </button>
-                </div>
-            </div>
-        </div>
-  </main>
-
-  <!-- NẠP SIDEBAR & HEADER -->
-<script>
-  fetch('Sidebar.html').then(r=>r.text()).then(h=>{ document.getElementById('sidebar').innerHTML=h; });
-  fetch('Header.html').then(r=>r.text()).then(h=>{ document.getElementById('header').innerHTML=h; });
+            <!-- NẠP SIDEBAR & HEADER -->
+            <!-- NẠP SIDEBAR & HEADER -->
+            <script>
+  Promise.all([
+    fetch('Header.html').then(r=>r.text()).then(h=>document.getElementById('header').innerHTML=h),
+    fetch('Sidebar.html').then(r=>r.text()).then(h=>document.getElementById('sidebar').innerHTML=h),
+  ]).then(()=>{
+    if (window.SidebarInit) window.SidebarInit();
+    if (window.HeaderInit)  window.HeaderInit();   // <-- thêm dòng này
+  });
+</script>
+            <script src="assets/js/layout-loader.js" data-layout-version="1.0.2"
+                defer></script>
+            <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    LayoutLoader.mount({
+      headerSel:'#header',  headerUrl:'Header.html',
+      sidebarSel:'#sidebar', sidebarUrl:'Sidebar.html'
+      // KHÔNG khai báo footer ở đây
+    });
+  });
 </script>
 
+            <link rel="stylesheet" href="assets/widgets/cf-chat/cf-chat.css">
+            <script src="assets/widgets/cf-chat/cf-chat.js" data-cf-chat
+                data-accent="#107eb9" data-accent2="#10b981" defer></script>
 
-  <!-- App JS -->
-  <script src="assets/js/sidebar.js" defer></script>
-  <script src="assets/js/header.js" defer></script>
-<script src="assets/js/phongvan-admin.js" defer></script>
-</body>
-</html>
+            <link rel="stylesheet" href="assets/css/footer.css">
+            <script src="assets/js/footer-loader.js" data-footer-version="1.0.0"
+                defer></script>
+
+            <!-- App JS -->
+            <script defer src="/assets/js/loading.js"></script>
+            <script src="assets/js/sidebar.js" defer></script>
+            <script src="assets/js/header.js" defer></script>
+            <script src="assets/js/phongvan-admin.js" defer></script>
+        </body>
+    </html>

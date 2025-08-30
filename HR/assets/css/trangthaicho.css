@@ -823,20 +823,7 @@
             flex: 1;
             justify-content: center;
         }
-
-        /* Footer */
-        footer {
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            padding: 24px 32px;
-            margin-left: 250px;
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #sidebar-toggle:checked ~ footer {
-            margin-left: 80px;
-        }
-
+ 
         /* Responsive */
         @media (max-width: 1200px) {
             .quick-stats {

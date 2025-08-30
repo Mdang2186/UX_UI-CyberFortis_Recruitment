@@ -14,6 +14,17 @@ body{
   font-family:'Inter',ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   color:var(--ink-900); background:#F8FAFC;
 }
+/* Full-fit cho mọi canvas trong card biểu đồ */
+.chart-container{
+  position: relative;
+  height: 360px;         /* đã set ở HTML; giữ làm fallback */
+}
+.chart-container > canvas{
+  position: absolute; inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
 
 .main-content{ margin-left:var(--sidebar-w); margin-top:var(--header-h); min-height:calc(100vh - var(--header-h)); transition:margin-left .3s }
 .main-content.main-content-collapsed{ margin-left:var(--sidebar-wc) }
@@ -28,7 +39,7 @@ body{
 .card-title{ font-size:1.05rem; font-weight:800; color:#0f172a }
 
 /* Chart container: no frame */
-.chart-container{ position:relative; height:300px; background:transparent; border:none; box-shadow:none; padding:0 }
+.chart-container{ position:relative; height:360px; background:transparent; border:none; box-shadow:none; padding:0 }
 .chart-container canvas{ display:block!important; width:100%!important; height:100%!important }
 
 /* Funnel boxes vẫn dùng gradient nội bộ (nếu bạn đang có) */
@@ -105,3 +116,116 @@ body.modal-open {
 #positionDetail textarea {
   outline: none;
 }
+/* ==== Horizontal rail (không chạm thiết kế bên trong thẻ) ==== */
+.job-rail__track{
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 2px 2px 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+.job-rail__track::-webkit-scrollbar{ height:10px }
+.job-rail__track::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:9999px }
+.job-rail__track:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+
+/* Thu NHỎ thẻ: áp vào mọi phần tử con trực tiếp của track (không cần sửa class card) */
+.job-rail__track > *{
+  flex: 0 0 320px;            /* chiều rộng card ~320px */
+  max-width: 360px;
+  scroll-snap-align: start;
+}
+.job-rail__track > *{
+  flex: 0 0 320px;            /* chiều rộng card ~320px */
+  max-width: 360px;
+  scroll-snap-align: start;
+}
+@media (min-width: 1024px){
+  .job-rail__track > *{ flex-basis: 340px; } /* desktop nhỉnh lên chút */
+}
+ 
+/* Thu NHỎ thẻ: áp vào mọi phần tử con trực tiếp của track (không cần sửa class card) */
+/* ========== WIDER CARDS (rail gắn .cards-wide) ========== */
+.cards-wide .job-rail__track > *{
+  flex-basis: 420px;          /* rộng hơn */
+  max-width: 460px;
+  scroll-snap-align: start;
+}
+@media (min-width:1280px){
+  .cards-wide .job-rail__track > *{ flex-basis: 460px; }
+}
+/* Full-bleed bằng negative margin: không còn cần width calc */
+:root{
+  --rail-gutter: 32px;      /* khoảng thở bên phải để thẻ cuối không bị cắt */
+}
+
+/* Rail chỉ “tràn” theo chiều ngang, không ảnh hưởng sidebar */
+.job-rail.full-bleed{
+  margin-inline-start: calc(var(--shell-left) * -1);
+  padding-inline-start: var(--shell-left);
+  margin-inline-end: calc(var(--rail-gutter) * -1);
+  padding-inline-end: var(--rail-gutter);
+
+  width: auto;          /* để track tự co theo nội dung/viewport */
+  max-width: none;
+  overflow-x: visible;
+}
+
+@supports not (width: 100dvw){
+  .job-rail.full-bleed{ width: 100%; margin-left:0; padding-left:0; }
+}
+
+
+/* ========== SHORTER HEIGHT (đã có .is-compact; nén thêm chút) ========== */
+.is-compact article{ padding:14px !important; border-radius:18px !important; }
+.is-compact article header{ margin-bottom:8px !important; }
+.is-compact article h3{
+  font-size:1.125rem !important; line-height:1.35 !important; margin-bottom:2px !important;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1;  /* tiêu đề 1 dòng */
+  overflow:hidden;
+}
+.is-compact article .info-grid{ gap:8px !important; margin-bottom:10px !important; }
+.is-compact article .info-grid > div{ padding:8px 10px !important; border-radius:10px !important; }
+.is-compact article .stats{ padding:6px 10px !important; margin-bottom:8px !important; }
+.is-compact article .stats *{ font-size:13px !important; }
+.is-compact article .skills{
+  margin-bottom:10px !important; gap:6px !important;
+  max-height:40px; overflow:hidden;                      /* giới hạn 2 hàng tag */
+  -webkit-mask-image:linear-gradient(#000 85%,transparent);
+          mask-image:linear-gradient(#000 85%,transparent);
+}
+.is-compact article .skills > *{ padding:4px 8px !important; font-size:11px !important; border-radius:10px !important; }
+.is-compact article button{ padding:8px 12px !important; border-radius:12px !important; }
+html, body { overflow-x: clip; }  /* giống hidden nhưng không tạo stacking mới */
+
+/* ===== Card emphasis (không đổi layout) ===== */
+.job-rail .job-rail__track > * {
+  transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+  will-change: transform;
+}
+ 
+/* hover: nổi nhẹ + đổ bóng sâu + viền sáng hơn */
+.job-rail .job-rail__track > *:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 14px 40px rgba(2,6,23,.12);
+  border-color: rgba(59,130,246,.35); /* blue-500/35 */
+}
+
+/* focus bằng bàn phím cũng được nhấn mạnh */
+.job-rail .job-rail__track > *:focus-within {
+  outline: 0;
+  box-shadow: 0 16px 44px rgba(2,6,23,.16), 0 0 0 3px rgba(59,130,246,.25);
+  transform: translateY(-4px);
+}
+
+/* ấn giữ: không bật cao quá */
+.job-rail .job-rail__track > *:active { transform: translateY(-2px) }
+
+/* hiệu ứng “glare” nhẹ khi hover (đính trên card, rất subtle) */
+.job-rail .job-rail__track > *::after{
+  content:""; pointer-events:none; position:absolute; inset:-2px;
+  background: radial-gradient(120px 60px at var(--mx,20%) -10%, rgba(255,255,255,.45), transparent 60%);
+  opacity:0; transition: opacity .25s ease;
+}
+.job-rail .job-rail__track > *:hover::after{ opacity:1 }

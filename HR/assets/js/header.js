@@ -71,10 +71,12 @@
   }
 
   // ===== SIDEBAR TOGGLE FUNCTIONS =====
-  function getSidebarState() {
-    const { toggleCheckbox } = getEls();
-    return toggleCheckbox ? toggleCheckbox.checked : false;
-  }
+function getSidebarState() {
+  const { sidebar } = getEls();
+  // true = ĐANG ĐÓNG (collapsed), false = ĐANG MỞ
+  return sidebar ? sidebar.classList.contains('sidebar-collapsed') : false;
+}
+
 
   function ensureOverlay(){
   let ov = document.getElementById('sbOverlay');
@@ -90,37 +92,29 @@ function setSidebarState(collapsed) {
   const { toggleCheckbox, sidebar, mainContent } = getEls();
   const overlay = ensureOverlay();
 
-  // Checkbox: checked = đang MỞ (đảo logic so với trước)
-  if (toggleCheckbox) toggleCheckbox.checked = !collapsed;
+  if (toggleCheckbox) toggleCheckbox.checked = !collapsed; // ← MỞ = checked
 
   if (sidebar) sidebar.classList.toggle('sidebar-collapsed', collapsed);
   if (mainContent) mainContent.classList.toggle('main-content-collapsed', collapsed);
 
-  // Lưu cả hai key để tương thích code cũ (nếu còn dùng)
   try {
     localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0');
-    localStorage.setItem('sb.state', collapsed ? '1' : '0'); // compat với sidebar.js
+    localStorage.setItem('sb.state', collapsed ? '1' : '0');
   } catch (e) {}
 
-  // Dropdown đóng khi toggle
   closeUser(); closeNotif();
 
-  // Overlay: hiện khi MỞ (expanded)
-  if (!collapsed){
-    overlay.classList.add('show');
-  } else {
-    overlay.classList.remove('show');
-  }
+  if (!collapsed) overlay.classList.add('show'); else overlay.classList.remove('show');
 
-  // Phát event cho component khác (nếu cần)
   window.dispatchEvent(new CustomEvent('sidebarToggle', { detail: { collapsed } }));
 }
 
 
-  function toggleSidebar() {
-    const isCurrentlyCollapsed = getSidebarState();
-    setSidebarState(!isCurrentlyCollapsed);
-  }
+
+function toggleSidebar() {
+  const collapsed = getSidebarState();   // true = đang đóng
+  setSidebarState(!collapsed);           // đảo trạng thái
+}
 
   function restoreSidebarState() {
     try {
@@ -317,89 +311,108 @@ document.addEventListener('DOMContentLoaded', function() {
         notifDropdown.classList.remove('show');
         userDropdown.classList.remove('show');
     });
-});
-/* Bind nút toggle mới */
-const menuToggle = el('menuToggle');
-const checkbox = el('checkbox');
-
-if (menuToggle && checkbox) {
-  menuToggle.addEventListener('click', function(e) {
-    // Nếu click vào container nhưng không phải checkbox
-    if (e.target !== checkbox) {
-      checkbox.checked = !checkbox.checked;
-    }
-    // Trigger toggle sidebar
-    toggle();
-  });
-  
-  // Cũng bind trực tiếp vào checkbox
-  checkbox.addEventListener('change', toggle);
-}
-// === Sidebar toggle: checked = OPEN (icon = X) ===
-(function(){
-  const cb      = document.getElementById('menuToggle'); // <input type="checkbox">
-  const label   = document.querySelector('label.toggle-button[for="menuToggle"]');
-  const sidebar = document.getElementById('sidebar');
-  const main    = document.getElementById('mainContent') || document.querySelector('#mainContent,.main-content');
-  if(!cb || !label || !sidebar) return;
-
-  const LS_KEY  = 'sidebar-collapsed';     // '1' = ĐÓNG, '0' = MỞ
-  const SB_CLS  = 'sidebar-collapsed';
-  const MC_CLS  = 'main-content-collapsed';
-
-  const isCollapsed = () => sidebar.classList.contains(SB_CLS);
-
-  function syncIconFromSidebar(){
-    const collapsed = isCollapsed();
-    // nếu đang ĐÓNG mà checkbox vẫn checked → sửa về false (☰)
-    if (cb.checked === collapsed) cb.checked = !collapsed;
-    label.setAttribute('aria-pressed', String(!collapsed));
-  }
-
-  function apply(collapsed){
-    sidebar.classList.toggle(SB_CLS, collapsed);
-    if (main) main.classList.toggle(MC_CLS, collapsed);
-    try{ localStorage.setItem(LS_KEY, collapsed ? '1':'0'); }catch(e){}
-    syncIconFromSidebar();  // đảm bảo icon đúng: MỞ = X, ĐÓNG = ☰
-  }
-
-  function toggle(){ apply(!isCollapsed()); }
-
-  // Khôi phục ban đầu từ localStorage (ưu tiên), fallback theo class hiện có
-  (function restore(){
-    let collapsed = isCollapsed();
-    try{
-      const s = localStorage.getItem(LS_KEY);
-      if (s === '1') collapsed = true;
-      if (s === '0') collapsed = false;
-    }catch(e){}
-    apply(collapsed);
-  })();
-
-  // Bấm ở đâu trên nút cũng toggle — và chỉ toggle 1 lần
-  const handle = (e) => {
-    e.preventDefault(); e.stopPropagation();
-    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-    toggle();
+});// ====== Helpers ======
+function getEls(){
+  return {
+    toggle: document.getElementById('menuToggle'),
+    sidebar: document.getElementById('sidebar'),
+    main: document.querySelector('.main-content') || document.getElementById('mainContent'),
+    overlay: document.getElementById('overlay')
   };
-  label.addEventListener('click', handle, true);  // capture để “đè” handler cũ
-  cb.addEventListener('click', handle, true);
+}
 
-  // Vô hiệu hóa mọi 'change' gây đảo chiều (nếu có script cũ)
-  cb.addEventListener('change', (e) => {
-    // Giữ nguyên mapping: checked = MỞ
-    e.preventDefault(); e.stopPropagation();
-    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-    // đồng bộ lại cho chắc
+function isCollapsed(sidebar){
+  return sidebar?.classList.contains('sidebar-collapsed');
+}
+
+function syncIconFromSidebar(){
+  const { toggle, sidebar } = getEls();
+  if(!toggle || !sidebar) return;
+  const collapsed = isCollapsed(sidebar);
+  // mở => checked = true (để ra X)
+  toggle.checked = !collapsed;
+  toggle.setAttribute('aria-expanded', String(!collapsed));
+  toggle.setAttribute('aria-pressed',  String(!collapsed));
+}
+
+function applySidebar(collapsed){
+  const { toggle, sidebar, main, overlay } = getEls();
+  if(!sidebar) return;
+
+  sidebar.classList.toggle('sidebar-collapsed', collapsed);
+  if(main)   main.classList.toggle('main-content-collapsed', collapsed);
+
+  // Overlay tùy bạn dùng; giữ logic cũ (chỉ bỏ "nền mờ" của NÚT, không đụng overlay trang)
+  if(overlay){
+    overlay.classList.toggle('opacity-0', collapsed);
+    overlay.classList.toggle('pointer-events-none', collapsed);
+    overlay.classList.toggle('opacity-100', !collapsed);
+  }
+
+  // đồng bộ icon
+  if(toggle){
+    toggle.checked = !collapsed;                 // mở = checked
+    toggle.setAttribute('aria-expanded', String(!collapsed));
+  }
+
+  try{
+    localStorage.setItem('sidebar-collapsed', collapsed ? '1':'0');
+  }catch(e){}
+
+  // phát sự kiện cho phần khác (nếu có)
+  window.dispatchEvent(new CustomEvent('sidebarToggle', { detail:{ collapsed } }));
+}
+
+// ====== Events ======
+(function initSidebarToggle(){
+  const { toggle, sidebar, overlay } = getEls();
+  if(!sidebar) return;
+
+  // 1) Khởi tạo từ DOM/Storage
+  let collapsed = sidebar.classList.contains('sidebar-collapsed');
+  try{
+    const saved = localStorage.getItem('sidebar-collapsed');
+    if(saved === '1' || saved === '0'){
+      collapsed = (saved === '1');
+      applySidebar(collapsed);
+    }else{
+      // nếu chưa có storage, đồng bộ icon theo DOM hiện tại
+      syncIconFromSidebar();
+    }
+  }catch(e){
     syncIconFromSidebar();
-  }, true);
+  }
 
-  // Nếu có script khác tự đổi class của sidebar → đồng bộ lại icon ngay
-  new MutationObserver(syncIconFromSidebar)
-    .observe(sidebar, { attributes:true, attributeFilter:['class'] });
+  // 2) Click vào toggle: đảo trạng thái (checked = mở)
+  if(toggle){
+    toggle.addEventListener('change', ()=>{
+      const willOpen = toggle.checked;
+      applySidebar(!willOpen); // collapsed = ngược lại
+    });
+  }
 
-  // ESC để đóng
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !isCollapsed()) apply(true);
+  // 3) Overlay click / ESC: đóng
+  if(overlay){
+    overlay.addEventListener('click', ()=> applySidebar(true));
+  }
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') applySidebar(true);
   });
+
+  // 4) Theo dõi mọi thay đổi class từ code khác (luôn nhận biết trạng thái)
+  const mo = new MutationObserver(()=> syncIconFromSidebar());
+  mo.observe(sidebar, { attributes:true, attributeFilter:['class'] });
+
+  // 5) Nhận sự kiện từ nơi khác (nếu dùng)
+  window.addEventListener('sidebarToggle', syncIconFromSidebar);
+
+  // 6) Đồng bộ giữa các tab
+  window.addEventListener('storage', (e)=>{
+    if(e.key === 'sidebar-collapsed'){
+      applySidebar(e.newValue === '1');
+    }
+  });
+
+  // 7) Đồng bộ lần cuối sau khi layout render
+  requestAnimationFrame(syncIconFromSidebar);
 })();

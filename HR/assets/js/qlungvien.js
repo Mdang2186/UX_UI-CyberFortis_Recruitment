@@ -16,19 +16,21 @@ function toggleSection(sectionId){
 }
 
 // ============ USER DROPDOWN ============
-function toggleUserDropdown(){
-  const dropdown = document.getElementById('userDropdown');
-  const chevron = document.getElementById('avatarChevron');
-  dropdown.classList.toggle('opacity-0');
-  dropdown.classList.toggle('invisible');
-  chevron.classList.toggle('rotate-180');
-}
-function expandAvatar(){}  // handled by CSS
-function collapseAvatar(){} // handled by CSS
-function toggleUserMenu(){
-  const userMenu = document.getElementById('userMenu');
-  if(userMenu){ userMenu.classList.toggle('opacity-0'); userMenu.classList.toggle('invisible'); }
-}
+// ============ USER DROPDOWN (proxy, không đè header) ============
+(function(){
+  // Nếu header.js đã gắn hàm toàn cục rồi thì giữ nguyên
+  if (typeof window.toggleUserDropdown === 'function') return;
+
+  // Fallback tối giản (trường hợp chạy trang độc lập)
+  window.toggleUserDropdown = function(){
+    const dd = document.getElementById('userDropdown');
+    const chevron = document.getElementById('avatarChevron');
+    if (!dd) return;
+    dd.classList.toggle('show');             // dùng đúng class mà header.css đang styling
+    if (chevron) chevron.classList.toggle('rotate-180');
+  };
+})();
+
 
 // ============ FILTER DROPDOWNS ============
 function toggleFilter(filterId){
@@ -118,8 +120,8 @@ function initializeCharts(){
         labels:['Website','LinkedIn','Facebook','Khác'],
         datasets:[{
           data:[45,30,15,10],
-          backgroundColor:['#3B82F6','#10B981','#8B5CF6','#F59E0B'],
-          hoverBackgroundColor:['#2563EB','#059669','#7C3AED','#D97706'],
+          backgroundColor:['#2563eb','#0284c7','#06b6d4','#34d399'],
+          hoverBackgroundColor:['#2563eb','#0284c7','#06b6d4','#34d399'],
           hoverOffset:10
         }]
       },
@@ -144,8 +146,8 @@ function initializeCharts(){
         labels:['Mới','PV1','PV2','Đã tuyển','Trượt'],
         datasets:[{
           data:[350,180,95,120,255],
-          backgroundColor:['#60A5FA','#EAB308','#F97316','#10B981','#EF4444'],
-          hoverBackgroundColor:['#2563EB','#CA8A04','#EA580C','#059669','#DC2626'],
+          backgroundColor:['#3b82f6','#0ea5e9','#06b6d4','#14b8a6','#10b981'],
+          hoverBackgroundColor:['#3b82f6','#0ea5e9','#06b6d4','#14b8a6','#10b981'],
           hoverOffset:10
         }]
       },
@@ -169,11 +171,11 @@ function initializeCharts(){
         labels:['T2','T3','T4','T5','T6','T7','CN'],
         datasets:[
           {label:'Ứng viên mới', data:[12,19,15,25,22,18,8],
-           borderColor:'#3B82F6', backgroundColor:'rgba(59,130,246,.10)', tension:.4, fill:true, borderWidth:4},
+           borderColor:'#2a74ebff', backgroundColor:'rgba(59,130,246,.10)', tension:.4, fill:true, borderWidth:4},
           {label:'Đã tuyển', data:[2,3,5,4,6,3,1],
-           borderColor:'#10B981', backgroundColor:'rgba(16,185,129,.10)', tension:.4, fill:true, borderWidth:4},
+           borderColor:'#16c1e8ff', backgroundColor:'rgba(16,185,129,.10)', tension:.4, fill:true, borderWidth:4},
           {label:'Trượt', data:[5,8,6,12,9,7,3],
-           borderColor:'#EF4444', backgroundColor:'rgba(239,68,68,.10)', tension:.4, fill:true, borderWidth:4}
+           borderColor:'#1ef4acff', backgroundColor:'rgba(239,68,68,.10)', tension:.4, fill:true, borderWidth:4}
         ]
       },
       options:{
@@ -200,7 +202,7 @@ function initializeCharts(){
         datasets:[{
           label:'Số lượng ứng viên',
           data:[120,300,200,100,50],
-          backgroundColor:['#60A5FA','#F59E0B','#10B981','#F97316','#8B5CF6'],
+          backgroundColor:['#3b82f6','#0284c7','#0891b2','#0d9488','#059669'],
           borderRadius:8, borderSkipped:false
         }]
       },
@@ -309,7 +311,130 @@ function resetFilters(){
 }
 
 // ============ ADD CANDIDATE (thay cho Export) ============
-function openAddCandidate(){
-  // TODO: gắn với modal/drawer thêm ứng viên thực tế của bạn
+function openAddCandidate(){ 
   alert('Mở form thêm ứng viên');
 }
+// ==== User dropdown: portal + z-index động + định vị theo nút ====
+(function(){
+  const BTN_ID = 'userBtn';
+  const DD_ID  = 'userDropdown';
+  const ROOT_ID= 'ui-portal-root';
+  const GAP = 10;
+
+  const $ = (s, r=document)=>r.querySelector(s);
+
+  // Tìm z-index cao nhất trên trang, rồi +2
+  function getTopZ(){
+    let max = 9999;
+    const nodes = document.body.getElementsByTagName('*');
+    for (let i=0;i<nodes.length;i++){
+      const z = window.getComputedStyle(nodes[i]).zIndex;
+      if (z && !Number.isNaN(+z)) max = Math.max(max, +z);
+    }
+    return max + 2;
+  }
+
+  function ensureRoot(){
+    let root = document.getElementById(ROOT_ID);
+    if(!root){
+      root = document.createElement('div');
+      root.id = ROOT_ID;
+      document.body.appendChild(root);
+    }
+    // luôn đẩy root lên cao nhất hiện tại
+    root.style.zIndex = String(getTopZ());
+    return root;
+  }
+
+  // Đưa dropdown ra portal và nhớ chỗ cũ để trả về
+  function toPortal(dd){
+    if(dd.__portaled) return;
+    dd.__orig = { parent: dd.parentNode, next: dd.nextSibling };
+    ensureRoot().appendChild(dd);
+    dd.classList.add('portal-item');
+    dd.__portaled = true;
+  }
+  function restore(dd){
+    if(!dd.__portaled || !dd.__orig) return;
+    const { parent, next } = dd.__orig;
+    if(parent) parent.insertBefore(dd, next || null);
+    dd.classList.remove('portal-item');
+    dd.style.left = dd.style.top = '';
+    dd.__portaled = false;
+  }
+
+  // Đo size thật (tạm show để đo)
+  function measure(dd){
+    const was = dd.classList.contains('show');
+    if(!was){ dd.style.visibility='hidden'; dd.classList.add('show'); }
+    const w = dd.offsetWidth || 260;
+    const h = dd.offsetHeight|| 200;
+    if(!was){ dd.classList.remove('show'); dd.style.visibility=''; }
+    return { w, h };
+  }
+
+  // Đặt cạnh nút; tự lật khi đụng mép
+  function place(dd, btn){
+    const r = btn.getBoundingClientRect();
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const { w:dw, h:dh } = measure(dd);
+
+    let left = Math.min(vw - dw - GAP, Math.max(GAP, r.right - dw));
+    let top  = r.bottom + GAP;
+    if (top + dh > vh) top = Math.max(GAP, r.top - dh - GAP);
+
+    dd.style.left = left + 'px';
+    dd.style.top  = top  + 'px';
+  }
+
+  function openUser(){
+    const btn = document.getElementById(BTN_ID);
+    const dd  = document.getElementById(DD_ID);
+    if(!btn || !dd) return;
+
+    toPortal(dd);
+    place(dd, btn);
+    dd.classList.add('show');
+    btn.setAttribute('aria-expanded','true');
+
+    if(!dd.__bound){
+      // reposition khi resize/scroll
+      dd.__relayout = ()=>{ if(dd.classList.contains('show')) { ensureRoot(); place(dd, btn); } };
+      window.addEventListener('resize', dd.__relayout);
+      window.addEventListener('scroll', dd.__relayout, true);
+      // click ngoài để đóng
+      dd.__outside = (e)=>{ if(!dd.contains(e.target) && !btn.contains(e.target)) closeUser(); };
+      document.addEventListener('click', dd.__outside);
+      // đồng bộ z-index nếu có overlay khác bật
+      dd.__tick = setInterval(()=>{ const root=ensureRoot(); root.style.zIndex = String(getTopZ()); }, 300);
+      dd.__bound = true;
+    }
+  }
+
+  function closeUser(){
+    const btn = document.getElementById(BTN_ID);
+    const dd  = document.getElementById(DD_ID);
+    if(!dd) return;
+    dd.classList.remove('show');
+    btn?.setAttribute('aria-expanded','false');
+    // trả về DOM gốc để tránh tác động layout trang khác
+    restore(dd);
+    if(dd.__tick){ clearInterval(dd.__tick); dd.__tick=null; }
+  }
+
+  // API toggle: nếu đã có của header thì dùng cái đó; không thì dùng bản này
+  if (typeof window.toggleUserDropdown !== 'function') {
+    window.toggleUserDropdown = function(){
+      const dd = document.getElementById(DD_ID);
+      if(!dd) return;
+      dd.classList.contains('show') ? closeUser() : openUser();
+    };
+  }
+
+  // bind nút nếu chưa có
+  const btn = document.getElementById(BTN_ID);
+  if(btn && !btn.__bound){
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); window.toggleUserDropdown(); });
+    btn.__bound = true;
+  }
+})();

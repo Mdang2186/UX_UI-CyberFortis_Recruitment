@@ -190,244 +190,193 @@
             alert('Đang tải xuống hướng dẫn sử dụng...');
             // In real implementation, this would trigger a file download
         }
+ document.addEventListener('DOMContentLoaded', () => {
+  const DISABLE_HASH_NAV = true; // ← bật/tắt ở đây
 
-        // Chat Functions
-        let chatOpen = false;
-        let messageCount = 0;
+  if (DISABLE_HASH_NAV) {
+    // chặn tất cả link tab trong thanh cài đặt
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('.settings-nav-item[href^="#"], .settings-nav a[href^="#"]');
+      if (!link) return;
 
-        function toggleChat() {
-            if (chatOpen) {
-                closeChat();
-            } else {
-                openChat();
-            }
+      e.preventDefault(); // tắt nhảy đầu trang
+
+      // mở đúng section (tận dụng code sẵn có của bạn)
+      const sectionId =
+        link.dataset.target || link.getAttribute('data-section') ||
+        link.getAttribute('href').slice(1);
+
+      const y = window.scrollY;      // giữ nguyên vị trí cuộn
+      showSection(sectionId, link);  // hàm bạn đã có
+      requestAnimationFrame(() => window.scrollTo({ top: y, left: 0 }));
+    }, { passive: false });
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  // Tắt hành vi anchor '#…' để khỏi cuộn/nhảy
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    // Cho phép deep-link thật sự nếu bạn muốn, còn lại thì chặn
+    if (href === '#' || /^#(?!$)/.test(href)) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+});
+document.addEventListener('DOMContentLoaded', () => {
+  // ---- state để append khi Lưu ----
+  const uploadState = {
+    logo   : { file:null, blobUrl:null },
+    favicon: { file:null, blobUrl:null } // luôn là PNG 32x32 hoặc ICO giữ nguyên
+  };
+
+  // Ngăn thả file vào window làm mở ảnh
+  ['dragover','drop'].forEach(evt => {
+    window.addEventListener(evt, e => e.preventDefault(), { passive:false });
+  });
+
+  // Khởi tạo hai dropzone
+  initUploader({
+    root: document.getElementById('logoDropzone'),
+    input: document.getElementById('logoInput'),
+    maxMB: 2,
+    acceptTypes: ['image/png','image/jpeg','image/svg+xml'],
+    onFileReady: (file, url) => { uploadState.logo = { file, blobUrl:url }; }
+  });
+
+  initUploader({
+    root: document.getElementById('faviconDropzone'),
+    input: document.getElementById('faviconInput'),
+    maxMB: 0.5, // 512KB
+    acceptTypes: ['image/png','image/x-icon'],
+    // Favicon: tự co về 32x32 PNG nếu là PNG > 32
+    transform: async (file) => {
+      if (file.type === 'image/png') {
+        const img = await readImage(file);
+        const size = Math.max(img.naturalWidth, img.naturalHeight);
+        if (size !== 32) {
+          const resized = await resizePng(img, 32, 32);
+          return new File([resized], 'favicon.png', { type:'image/png' });
         }
+      }
+      return file; // giữ nguyên ICO hoặc PNG 32x32
+    },
+    onFileReady: (file, url) => { uploadState.favicon = { file, blobUrl:url }; }
+  });
 
-        function openChat() {
-            document.getElementById('chatWindow').classList.add('show');
-            document.getElementById('chatFloat').classList.remove('has-notification');
-            chatOpen = true;
-            
-            // Focus on input
-            setTimeout(() => {
-                document.getElementById('chatInput').focus();
-            }, 300);
-        }
+  // Hook nút Lưu (nếu bạn dùng AJAX)
+  const btnSave = document.querySelector('#btnSave');
+  const form = document.querySelector('#settingsForm'); // đổi đúng id form của bạn
 
-        function closeChat() {
-            document.getElementById('chatWindow').classList.remove('show');
-            chatOpen = false;
-        }
+  btnSave?.addEventListener('click', async () => {
+    if (!form) return;
+    const y = window.scrollY;
 
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            // Add user message
-            addMessage(message, 'user');
-            input.value = '';
-            
-            // Show typing indicator
-            showTypingIndicator();
-            
-            // Simulate bot response
-            setTimeout(() => {
-                hideTypingIndicator();
-                const response = getBotResponse(message);
-                addMessage(response, 'bot');
-            }, 1500 + Math.random() * 1000);
-        }
+    const fd = new FormData(form);
+    if (uploadState.logo.file)    fd.set('companyLogo', uploadState.logo.file);
+    if (uploadState.favicon.file) fd.set('favicon',     uploadState.favicon.file);
 
-        function sendQuickMessage(message) {
-            // Remove quick actions
-            const actions = document.querySelector('.chat-actions');
-            if (actions) {
-                actions.style.display = 'none';
-            }
-            
-            // Send message
-            addMessage(message, 'user');
-            
-            // Show typing indicator
-            showTypingIndicator();
-            
-            // Simulate bot response
-            setTimeout(() => {
-                hideTypingIndicator();
-                const response = getBotResponse(message);
-                addMessage(response, 'bot');
-            }, 1500);
-        }
+    try {
+      const res = await fetch('/api/settings', { method:'POST', body: fd });
+      // TODO: toast thông báo theo response
+    } finally {
+      requestAnimationFrame(() => window.scrollTo({ top: y, left: 0 }));
+    }
+  });
 
-        function addMessage(content, sender) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            
-            const time = new Date().toLocaleTimeString('vi-VN', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
-            const avatar = sender === 'user' ? 'You' : 'CB';
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar">${avatar}</div>
-                <div>
-                    <div class="message-content">${content}</div>
-                    <div class="message-time">${time}</div>
-                </div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            messageCount++;
-        }
+  // ============ Helpers ============
 
-        function showTypingIndicator() {
-            const messagesContainer = document.getElementById('chatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot';
-            typingDiv.id = 'typingIndicator';
-            
-            typingDiv.innerHTML = `
-                <div class="message-avatar">CB</div>
-                <div>
-                    <div class="typing-indicator">
-                        <div class="typing-dots">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+  function initUploader({ root, input, maxMB, acceptTypes, transform, onFileReady }){
+    if (!root || !input) return;
 
-        function hideTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        }
+    const area = root.querySelector('.cf-upl__area');
+    const preview = root.querySelector('.cf-upl__preview');
+    const img = preview.querySelector('img');
+    const btns = preview.querySelector('.cf-upl__actions');
 
-        function getBotResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            // Predefined responses
-            if (lowerMessage.includes('thêm ứng viên') || lowerMessage.includes('ứng viên mới')) {
-                return `Để thêm ứng viên mới, bạn có thể:
-                
-1. Vào trang "Ứng viên" từ menu bên trái
-2. Click nút "Thêm ứng viên mới" 
-3. Điền đầy đủ thông tin cá nhân
-4. Upload CV (định dạng PDF, DOC, DOCX)
-5. Chọn vị trí ứng tuyển
-6. Click "Lưu thông tin"
+    // chọn file bằng click
+    area.addEventListener('click', () => input.click());
+    btns.querySelector('[data-action="change"]').addEventListener('click', () => input.click());
+    btns.querySelector('[data-action="remove"]').addEventListener('click', () => clearFile());
 
-Bạn cũng có thể import hàng loạt từ file Excel. Cần hỗ trợ thêm không?`;
-            }
-            
-            if (lowerMessage.includes('xếp lịch') || lowerMessage.includes('phỏng vấn')) {
-                return `Để xếp lịch phỏng vấn:
+    // drag & drop
+    ;['dragenter','dragover'].forEach(evt=>{
+      root.addEventListener(evt, e=>{ e.preventDefault(); e.stopPropagation(); root.classList.add('is-drag'); }, { passive:false });
+    });
+    ;['dragleave','drop'].forEach(evt=>{
+      root.addEventListener(evt, e=>{ e.preventDefault(); e.stopPropagation(); root.classList.remove('is-drag'); }, { passive:false });
+    });
+    root.addEventListener('drop', e=>{
+      const file = (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) || null;
+      if (file) handleFile(file);
+    });
 
-1. Vào trang "Trạng thái chờ" hoặc "Phỏng vấn"
-2. Tìm ứng viên cần xếp lịch
-3. Click icon lịch (📅) trong cột "Thao tác"
-4. Chọn ngày, giờ và người phỏng vấn
-5. Nhập địa điểm hoặc link meeting
-6. Click "Xác nhận xếp lịch"
+    // chọn bằng input
+    input.addEventListener('change', () => {
+      const file = input.files && input.files[0];
+      if (file) handleFile(file);
+    });
 
-Hệ thống sẽ tự động gửi email thông báo. Bạn có câu hỏi gì khác không?`;
-            }
-            
-            if (lowerMessage.includes('báo cáo') || lowerMessage.includes('xuất')) {
-                return `Để xuất báo cáo thống kê:
+    async function handleFile(file){
+      // validate type
+      if (acceptTypes && !acceptTypes.includes(file.type)) {
+        alert(`Định dạng không hợp lệ: ${file.type}`);
+        return;
+      }
+      // validate size
+      if (maxMB && file.size > maxMB * 1024 * 1024) {
+        alert(`Kích thước vượt quá ${maxMB}MB`);
+        return;
+      }
+      // transform (ví dụ resize favicon)
+      if (typeof transform === 'function') {
+        file = await transform(file);
+      }
+      // preview
+      const url = URL.createObjectURL(file);
+      img.src = url;
+      area.hidden = true;
+      preview.hidden = false;
+      // callback
+      onFileReady?.(file, url);
+    }
 
-1. Vào trang "Thống kê & Báo cáo"
-2. Chọn loại báo cáo cần xuất
-3. Thiết lập khoảng thời gian
-4. Chọn các bộ lọc (vị trí, trạng thái...)
-5. Click "Xuất báo cáo"
-6. Chọn định dạng (Excel/PDF)
+    function clearFile(){
+      area.hidden = false;
+      preview.hidden = true;
+      img.src = '';
+      input.value = '';
+      onFileReady?.(null, null);
+    }
+  }
 
-Báo cáo sẽ được tải xuống hoặc gửi email. Cần hướng dẫn chi tiết hơn không?`;
-            }
-            
-            if (lowerMessage.includes('liên hệ') || lowerMessage.includes('nhân viên')) {
-                return `Tôi sẽ kết nối bạn với nhân viên hỗ trợ ngay bây giờ. Vui lòng chờ trong giây lát...
+  function readImage(file){
+    return new Promise((resolve, reject)=>{
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  }
 
-Trong lúc chờ, bạn cũng có thể:
-• Email: support@cyberfortis.com
-• Hotline: 1900-xxxx (24/7)
-
-Nhân viên hỗ trợ sẽ phản hồi trong vòng 2-3 phút. Bạn có thể mô tả vấn đề cần hỗ trợ để chúng tôi chuẩn bị tốt hơn.`;
-            }
-            
-            if (lowerMessage.includes('mật khẩu') || lowerMessage.includes('đổi')) {
-                return `Để đổi mật khẩu:
-
-1. Vào menu "Hồ sơ Admin"
-2. Click tab "Bảo mật"
-3. Nhập mật khẩu hiện tại
-4. Nhập mật khẩu mới (ít nhất 8 ký tự, có chữ hoa, thường và số)
-5. Click "Cập nhật mật khẩu"
-
-Nếu quên mật khẩu hiện tại, bạn có thể dùng tính năng "Quên mật khẩu" ở trang đăng nhập. Cần hỗ trợ thêm không?`;
-            }
-            
-            // Default responses
-            const defaultResponses = [
-                `Cảm ơn bạn đã liên hệ! Tôi hiểu bạn đang cần hỗ trợ về "${message}". 
-
-Để tôi có thể hỗ trợ tốt hơn, bạn có thể:
-• Mô tả chi tiết vấn đề gặp phải
-• Cho biết bước nào bạn đang thực hiện
-• Hoặc chọn "Liên hệ nhân viên" để được hỗ trợ trực tiếp
-
-Tôi luôn sẵn sàng giúp đỡ!`,
-                
-                `Tôi đã ghi nhận câu hỏi của bạn về "${message}". 
-
-Một số tài nguyên hữu ích:
-• Xem FAQ ở trên trang này
-• Tải hướng dẫn sử dụng chi tiết
-• Liên hệ hotline 1900-xxxx
-
-Bạn có muốn tôi kết nối với nhân viên hỗ trợ không?`
-            ];
-            
-            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-        }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
-            }
-        }
-
-        // Auto-resize textarea
-        document.getElementById('chatInput').addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-        });
-
-        // Simulate new message notification
-        function simulateNotification() {
-            if (!chatOpen) {
-                document.getElementById('chatFloat').classList.add('has-notification');
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Simulate a notification after 10 seconds
-            setTimeout(simulateNotification, 10000);
-        });
+  function resizePng(img, w, h){
+    return new Promise((resolve)=>{
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      // fill transparent background
+      ctx.clearRect(0,0,w,h);
+      // giữ tỉ lệ, fit vào khung
+      const ratio = Math.min(w / img.naturalWidth, h / img.naturalHeight);
+      const dw = Math.round(img.naturalWidth * ratio);
+      const dh = Math.round(img.naturalHeight * ratio);
+      const dx = Math.round((w - dw)/2);
+      const dy = Math.round((h - dh)/2);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, dx, dy, dw, dh);
+      canvas.toBlob(b=> resolve(b), 'image/png', 1);
+    });
+  }
+});

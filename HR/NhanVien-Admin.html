@@ -12,6 +12,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- App CSS -->
+<link rel="stylesheet" href="/assets/css/loading.css">
   <link rel="stylesheet" href="assets/css/sidebar.css">
   <link rel="stylesheet" href="assets/css/header.css">
   <link rel="stylesheet" href="assets/css/qlnhanvien.css">
@@ -209,61 +210,6 @@
         </div>
       </section>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div class="col-span-1 md:col-span-2">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 bg-blue-600 rounded-lg grid place-items-center text-white font-bold">CF</div>
-              <div><h3 class="text-lg font-semibold text-gray-900">CyberFortis</h3><p class="text-gray-600 text-sm">Bảo vệ thế giới số</p></div>
-            </div>
-            <p class="text-gray-700 mb-4 max-w-md">Công ty hàng đầu về an ninh mạng tại Việt Nam với hơn 15 năm kinh nghiệm bảo vệ doanh nghiệp khỏi các mối đe dọa cyber.</p>
-            <div class="flex gap-4">
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
-              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-github"></i></a>
-            </div>
-          </div>
-          <div>
-            <h4 class="footer-title">Liên kết nhanh</h4>
-            <ul class="footer-list">
-              <li><a href="#" class="footer-link">Về chúng tôi</a></li>
-              <li><a href="#" class="footer-link">Dịch vụ</a></li>
-              <li><a href="#" class="footer-link">Tuyển dụng</a></li>
-              <li><a href="#" class="footer-link">Tin tức</a></li>
-              <li><a href="#" class="footer-link">Liên hệ</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="footer-title">Hỗ trợ</h4>
-            <ul class="footer-list">
-              <li class="text-gray-600 text-sm">📧 hr@cyberfortis.vn</li>
-              <li class="text-gray-600 text-sm">📞 (024) 3999 8888</li>
-              <li class="text-gray-600 text-sm">📍 Hà Nội, Việt Nam</li>
-              <li class="text-gray-600 text-sm">🕒 T2-T6: 8:00-17:30</li>
-            </ul>
-          </div>
-        </div>
-        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p class="text-gray-500 text-sm">© 2024 CyberFortis. Tất cả quyền được bảo lưu.</p>
-          <div class="flex gap-6 mt-4 md:mt-0">
-            <a href="#" class="footer-link">Chính sách bảo mật</a>
-            <a href="#" class="footer-link">Điều khoản sử dụng</a>
-            <a href="#" class="footer-link">Cookie</a>
-          </div>
-        </div>
-      </div>
-    </footer> 
-  </main>
-
-  <!-- Sidebar/Header -->
-  <script>
-    fetch('Sidebar.html').then(r=>r.text()).then(h=>{ document.getElementById('sidebar').innerHTML=h; });
-    fetch('Header.html').then(r=>r.text()).then(h=>{ document.getElementById('header').innerHTML=h; });
-  </script>
-
   <!-- ======= MODALS ======= -->
   <!-- Modal: Thêm nhân viên -->
   <div id="modalAddEmp" class="nv-modal-backdrop" aria-hidden="true">
@@ -401,10 +347,45 @@
         <button id="ac_save" class="nv-btn-primary">Tạo tài khoản</button>
       </div>
     </div>
-  </div>
+  </div> 
+<footer id="footer" data-src="Footer.html"></footer>
+<link rel="prefetch" href="Footer.html" as="fetch" crossorigin="anonymous">
+
+  </main>
+
+  <!-- NẠP SIDEBAR & HEADER -->
+  <!-- NẠP SIDEBAR & HEADER -->
+<script>
+  Promise.all([
+    fetch('Header.html').then(r=>r.text()).then(h=>document.getElementById('header').innerHTML=h),
+    fetch('Sidebar.html').then(r=>r.text()).then(h=>document.getElementById('sidebar').innerHTML=h),
+  ]).then(()=>{
+    if (window.SidebarInit) window.SidebarInit();
+    if (window.HeaderInit)  window.HeaderInit();   // <-- thêm dòng này
+  });
+</script>
+<script src="assets/js/layout-loader.js" data-layout-version="1.0.2" defer></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    LayoutLoader.mount({
+      headerSel:'#header',  headerUrl:'Header.html',
+      sidebarSel:'#sidebar', sidebarUrl:'Sidebar.html'
+      // KHÔNG khai báo footer ở đây
+    });
+  });
+</script>
+
+<link rel="stylesheet" href="assets/widgets/cf-chat/cf-chat.css">
+<script src="assets/widgets/cf-chat/cf-chat.js" data-cf-chat data-accent="#107eb9" data-accent2="#10b981" defer></script>
+
+<link rel="stylesheet" href="assets/css/footer.css">
+<script src="assets/js/footer-loader.js" data-footer-version="1.0.0" defer></script>
+
+
   <!-- ======= /MODALS ======= -->
 
   <!-- App JS -->
+<script defer src="/assets/js/loading.js"></script>
   <script src="assets/js/sidebar.js" defer></script>
   <script src="assets/js/header.js" defer></script>
   <script src="assets/js/qlnhanvien.js" defer></script>

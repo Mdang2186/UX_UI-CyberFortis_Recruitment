@@ -11,6 +11,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- App CSS -->
+<link rel="stylesheet" href="/assets/css/loading.css">
   <link rel="stylesheet" href="assets/css/sidebar.css">
   <link rel="stylesheet" href="assets/css/header.css">
   <link rel="stylesheet" href="assets/css/chat-admin.css">
@@ -2412,8 +2413,11 @@
   fetch('Header.html').then(r=>r.text()).then(h=>{ document.getElementById('header').innerHTML=h; });
 </script>
 
+<link rel="stylesheet" href="assets/widgets/cf-chat/cf-chat.css">
+<script src="assets/widgets/cf-chat/cf-chat.js" data-cf-chat data-accent="#107eb9" data-accent2="#10b981" defer></script>
 
   <!-- App JS -->
+<script defer src="/assets/js/loading.js"></script>
   <script src="assets/js/sidebar.js" defer></script>
   <script src="assets/js/header.js" defer></script>
 <script src="assets/js/chat-admin.js" defer></script>

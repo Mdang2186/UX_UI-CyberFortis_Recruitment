@@ -21,7 +21,7 @@
 .section-divider{ height:1px; margin:14px 8px; background:linear-gradient(90deg,transparent,#e5e7eb 50%,transparent); }
 .nav-item{ display:flex; align-items:center; gap:12px; margin:4px 6px; padding:10px 12px; color:#475569; border-radius:12px; text-decoration:none; transition:.2s ease; }
 .nav-item:hover{ background:#f3f4f6; transform:translateX(4px); }
-.nav-item.active{ background:#eff6ff; color:#2563eb; border-right:2px solid #2563eb; }
+.nav-item.active{ background:#eff6ff; color:#2563eb; border-right:2px solid #4b76d4; }
 .nav-icon{ width:20px; text-align:center; }
 .nav-text{ white-space:nowrap; }
 
@@ -42,7 +42,7 @@
 /* Popup user (mặc định ẩn) */
 .sidebar-user-dropdown{
   position:absolute; left:12px; right:12px; bottom:70px;
-  background:#fff; border:1px solid #e5e7eb; border-radius:12px;
+  background:#ffffff; border:1px solid #e5e7eb; border-radius:12px;
   box-shadow:0 20px 40px -8px rgba(0,0,0,.15);
   opacity:0; visibility:hidden; transform:translateY(6px);
   transition:all .18s ease; z-index:90;   /* z-index cao để nổi lên trên biểu đồ */
@@ -100,7 +100,7 @@
 
 /* Active (tô nền) – giữ đúng style hiện tại của bạn */
 .nav-item.active{
-  background:#eff6ff; color:#69aab0; border-right:2px solid #3487d4;
+  background:#dfebfa; color:#69aab0; border-right:2px solid #3487d4;
 }
 /* Sidebar Styles */
         #sidebar-toggle {
@@ -234,7 +234,7 @@
             margin: 2px 12px;
             border-radius: 12px;
             text-decoration: none;
-            color: #37609a;
+            color: rgb(27, 88, 169);
             transition: all 0.2s ease;
             position: relative;
             cursor: pointer;
@@ -242,13 +242,13 @@
 
         .nav-item:hover {
             background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            color: #1e293b;
+            color: #1c548d;
             transform: translateX(2px);
         }
 
         .nav-item.active {
-            background: linear-gradient(135deg, #162e8d 0%, #3abb99 100%);
-            color: white;
+            background: linear-gradient(135deg, #174e9f 0%, #2eba95 100%);
+            color: rgb(255, 255, 255);
             box-shadow: 0 4px 12px rgba(26, 90, 174, 0.3);
         }
 
@@ -259,7 +259,7 @@
             align-items: center;
             justify-content: center;
             margin-right: 12px;
-            color: #3f67ac;
+            color: #2351a2;
             transition: all 0.2s ease;
             flex-shrink: 0;
         }

@@ -12,8 +12,7 @@
   padding-left:calc(var(--sidebar-w,256px) + 16px);
   padding-right:16px; padding-bottom:24px;
   transition:padding-left .3s cubic-bezier(.4,0,.2,1);
-  background:var(--bg-grad);
-  font-family:Arial; color:#0f172a;
+  background:var(--bg-grad); 
 }
 #nvapp{ width:100%; max-width:1320px; margin:0 auto; padding:0 4px }
 
@@ -93,10 +92,7 @@
 .nv-act{ padding:.28rem .45rem; border:1px solid #e5e7eb; background:#fff; border-radius:.55rem; cursor:pointer }
 .nv-act i{ font-size:.85rem }
 .nv-act.blue{ color:#2563eb } .nv-act.green{ color:#16a34a } .nv-act.red{ color:#ef4444 }
-
-/* Footer */
-.nv-foot{ display:flex; justify-content:space-between; color:#6b7280; margin:12px 2px }
-
+ 
 /* ===== Modals ===== */
 .nv-modal-backdrop{
   position:fixed; inset:0; display:none; align-items:center; justify-content:center;
@@ -105,13 +101,13 @@
 .nv-modal-backdrop.show{ display:flex }
 .nv-modal{
   width:min(720px,100%); background:#fff; border-radius:16px; border:1px solid #e5e7eb;
-  box-shadow:0 20px 48px rgba(2,6,23,.2); overflow:hidden; font-family:arial
+  box-shadow:0 20px 48px rgba(2,6,23,.2); overflow:hidden 
 }
 .nv-modal-h{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #e5e7eb }
-.nv-modal-h h3{ margin:0; font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px }
+.nv-modal-h h3{ margin:0; font-size:18px; font-weight:200; display:flex; align-items:center; gap:8px }
 .nv-x{ width:36px; height:36px; border:none; border-radius:10px; background:#f1f5f9; cursor:pointer }
 .nv-modal-b{ padding:14px 16px; display:grid; gap:10px }
-.nv-field label{ display:block; font-weight:700; color:#374151; margin-bottom:6px }
+.nv-field label{ display:block; font-weight:200; color:#374151; margin-bottom:6px }
 .nv-check{ display:flex; align-items:center; gap:8px; font-weight:700; margin-top:6px }
 .nv-modal-f{ padding:12px 16px; display:flex; gap:8px; justify-content:flex-end; border-top:1px solid #e5e7eb }
 
@@ -125,18 +121,9 @@
   .nv-search input{ width:200px }
 }
 
-/* ========== FIX FONT/DẤU TIẾNG VIỆT ========== */
-html, body,
-#mainContent,
-.nv-card, .nv-kpi, .nv-ip, .nv-btn, .nv-chip,
-.nv-tbl, .nv-card-t, .nv-title {
-  font-family: Arial !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-.nv-kpi .nv-kpi-t{ text-transform:none; letter-spacing:0; font-weight:700 }
-.nv-btn.base, .nv-btn-primary, .nv-chip{ font-weight:700; letter-spacing:0 }
+/* ========== FIX FONT/DẤU TIẾNG VIỆT ========== */ 
+.nv-kpi .nv-kpi-t{ text-transform:none; letter-spacing:0; font-weight:200 }
+.nv-btn.base, .nv-btn-primary, .nv-chip{ font-weight:200; letter-spacing:0 }
 .nv-card-t, .nv-title{ text-transform:none; letter-spacing:.1px }
 .nv-kpi .nv-kpi-t, .nv-card .nv-card-t, .nv-btn, .nv-chip{ text-transform:none }
 

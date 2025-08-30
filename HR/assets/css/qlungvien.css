@@ -29,6 +29,65 @@
   --sidebar-w:250px;
   --sidebar-wc:80px;
 }
+/* ========== TABLE LOOK & FEEL ========== */
+.cf-table { border-collapse: separate; border-spacing: 0; font-size: 14px; }
+.cf-table thead th { background: #fff; position: sticky; top: 0; z-index: 5; }
+.cf-table thead { box-shadow: inset 0 -1px 0 rgba(0,0,0,.06); }
+.cf-table tbody tr { transition: background-color .15s ease, box-shadow .15s ease; }
+.cf-table tbody tr.hover-row:hover { background: #f8fafc; }
+
+/* zebra nhẹ cho khả năng quét mắt */
+.cf-table tbody tr:nth-child(odd) { background: #fcfcfd; }
+.cf-table tbody tr.hover-row:hover { background: #f1f5f9; }
+
+/* Sticky first 2 columns — KHÔNG đụng HTML */
+.cf-table th:first-child, .cf-table td:first-child { width: 56px; }
+.table-sticky thead th:first-child,
+.table-sticky tbody td:first-child {
+  position: sticky; left: 0; z-index: 6; background:#fff;
+  box-shadow: inset -1px 0 0 #e5e7eb;
+}
+.table-sticky thead th:nth-child(2),
+.table-sticky tbody td:nth-child(2) {
+  position: sticky; left: 56px; z-index: 5; background:#fff;
+  box-shadow: inset -1px 0 0 #e5e7eb;
+}
+
+/* Hành động chỉ hiện khi hover dòng */
+.row-actions { opacity: 0; transition: opacity .15s ease; }
+tr.group:hover .row-actions { opacity: 1; }
+
+/* Chip trạng thái (nếu chưa có) */
+.status-chip { padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap:6px;}
+.status-chip::before { content: ""; width:8px; height:8px; border-radius: 999px; display:inline-block; }
+.status-pv1 { color:#0369a1; background:#e0f2fe; }
+.status-pv1::before { background:#0284c7; }
+.status-pv2 { color:#0e7490; background:#cffafe; }
+.status-pv2::before { background:#06b6d4; }
+.status-da-tuyen { color:#047857; background:#d1fae5; }
+.status-da-tuyen::before { background:#10b981; }
+
+/* Scrollbar đẹp cho vùng cuộn dọc đã có class .table-scroll */
+.table-scroll { scrollbar-width: thin; scrollbar-color:#cbd5e1 transparent; }
+.table-scroll::-webkit-scrollbar{ width:8px; height:8px; }
+.table-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:8px; }
+.table-scroll:hover::-webkit-scrollbar-thumb{ background:#94a3b8; }
+
+/* Header sort icon bằng CSS (không thêm SVG) */
+.cf-table thead th.sortable { position: sticky; cursor: pointer; color:#475569; }
+.cf-table thead th.sortable::after {
+  content:""; display:inline-block; margin-left:6px; width:8px; height:12px;
+  -webkit-mask: linear-gradient(#000 0 0) center/8px 12px no-repeat;
+          mask: linear-gradient(#000 0 0) center/8px 12px no-repeat;
+  background:#cbd5e1;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M4 6l4-4 4 4H4zm8 4l-4 4-4-4h8z'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M4 6l4-4 4 4H4zm8 4l-4 4-4-4h8z'/%3E%3C/svg%3E");
+}
+.cf-table thead th.sort-asc::after  { background:#2563eb; transform: rotate(180deg); }
+.cf-table thead th.sort-desc::after { background:#2563eb; }
+
+/* Khi chọn checkbox → highlight cả dòng (CSS :has, trình duyệt mới) */
+.cf-table tbody tr:has(td:first-child input:checked) { background:#eff6ff; box-shadow: inset 0 0 0 2px #bfdbfe; }
 
 /* ============================= LAYOUT CORE ================================ */
 .app-header{
@@ -114,40 +173,7 @@ tbody td{ padding:.75rem 1rem; }
 .filter-opt:hover{ background:#f8fafc; }
 
 /* ============================ SIDEBAR ENHANCE ============================= */
-.sidebar{ transition:width .3s ease; }
-.sidebar.collapsed{ width:80px; }
-.main-content{ transition:margin-left .3s ease; }
-.main-content.expanded{ margin-left:80px; }
-.sidebar-text{ opacity:1; transition:opacity .3s ease; }
-.sidebar.collapsed .sidebar-text{ opacity:0; display:none; }
-.sidebar-section{ margin-bottom:8px; }
-.sidebar-section-header{
-  padding:12px 16px; font-size:12px; font-weight:600; text-transform:uppercase;
-  color:#6b7280; letter-spacing:.05em; cursor:pointer; transition:.2s ease; border-radius:8px; margin:0 8px;
-}
-.sidebar-section-header:hover{ background-color:var(--blue-600-10); color:var(--blue-600); }
-.sidebar-section-content{ max-height:500px; overflow:hidden; transition:max-height .3s ease; }
-.sidebar-section.collapsed .sidebar-section-content{ max-height:0; }
-.sidebar-subsection{ padding-left:16px; }
-.sidebar.collapsed .sidebar-section-header{ text-align:center; padding:12px 8px; display:flex; align-items:center; justify-content:center; }
-.sidebar.collapsed .sidebar-subsection, .sidebar.collapsed .sidebar-section-content{ display:none; }
-
-.sidebar-collapsed-icons{ display:none; padding:20px 0; }
-.sidebar.collapsed .sidebar-collapsed-icons{ display:block; }
-.sidebar.collapsed .sidebar-sections{ display:none; }
-
-.sidebar-icon-item{
-  display:flex; align-items:center; justify-content:center;
-  width:48px; height:48px; margin:8px auto; border-radius:12px;
-  transition:.2s ease; cursor:pointer;
-}
-.sidebar-icon-item.active{
-  background:linear-gradient(135deg,var(--blue-600),var(--blue-500));
-  color:#fff; box-shadow:0 4px 12px var(--blue-600-20);
-}
-.sidebar-icon-item:not(.active){ color:#6b7280; background:rgba(107,114,128,.10); }
-.sidebar-icon-item:not(.active):hover{ color:var(--blue-600); background:var(--blue-600-10); }
-/* Hàng bộ lọc ngang + ẩn scrollbar gọn gàng */
+ /* Hàng bộ lọc ngang + ẩn scrollbar gọn gàng */
 .filters-row::-webkit-scrollbar{ height:8px }
 .filters-row::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:8px }
 .filters-row{ scrollbar-width:thin; scrollbar-color:#cbd5e1 transparent }
@@ -269,3 +295,25 @@ tbody td{ padding:.75rem 1rem; }
 
 /* Dòng kết quả bên dưới */
 .result-note{ line-height:1.2; }
+/* Root portal – không chặn click nền */
+#ui-portal-root{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  isolation: isolate; /* tạo stacking context độc lập */
+}
+
+/* Dropdown khi ở trong portal */
+#ui-portal-root .portal-item{
+  position: absolute;   /* JS sẽ set left/top */
+  pointer-events: auto; /* nhận click bình thường */
+}
+
+/* Bảo hiểm: nếu style cũ có z-index thấp */
+#userDropdown{
+  opacity: 0; visibility: hidden; transform: translateY(-4px);
+  transition: opacity .15s ease, transform .15s ease;
+}
+#userDropdown.show{
+  opacity: 1; visibility: visible; transform: translateY(0);
+}

@@ -1,4 +1,4 @@
-/* CyberFortis Mini Loader – icon nhỏ giữa trang, tắt ngay khi trang load xong */
+/* CyberFortis Mini Loader – dots pastel xanh dương/xanh lục */
 (function(){
   const api = {};
   const CLS_SHOW = 'show';
@@ -8,16 +8,20 @@
     if(!el){
       el = document.createElement('div');
       el.id = 'cfMini';
-      el.className = 'cf-mini';
-      el.innerHTML = '<div class="cf-spinner"></div>';
-      document.body.appendChild(el);
     }
+    el.className = 'cf-mini';
+    // Markup dots (5 chấm)
+    el.innerHTML = `
+      <section class="dots-container" aria-label="Đang tải">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div>
+      </section>`;
+    if(!el.parentNode) document.body.appendChild(el);
     return el;
   }
 
   function show(){
     const el = ensure();
-    // hiển thị ngay (không overlay, không nền)
     requestAnimationFrame(()=> el.classList.add(CLS_SHOW));
   }
 
@@ -25,17 +29,13 @@
     const el = document.getElementById('cfMini');
     if(!el) return;
     el.classList.remove(CLS_SHOW);
-    // “tắt ngay” → remove sớm; vẫn để 1 frame cho CSS update
     requestAnimationFrame(()=> el.remove());
   }
 
-  // Auto: hiện khi DOM đang tải; ẩn khi window load xong
   function auto(){
-    // Nếu trang đã complete thì không cần show
     if (document.readyState === 'complete') return;
     show();
     window.addEventListener('load', hide, { once:true });
-    // nếu back/forward từ bfcache
     window.addEventListener('pageshow', e => { if(e.persisted) hide(); }, { once:true });
   }
 
@@ -44,7 +44,7 @@
   api.auto  = auto;
   window.CFmini = api;
 
-  // Tự chạy nếu script “defer” trong <head> (khuyến nghị)
+  // Tự chạy nếu không tắt bằng data-auto="false"
   if (!document.currentScript || document.currentScript.dataset.auto !== 'false') {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', auto, { once:true });
