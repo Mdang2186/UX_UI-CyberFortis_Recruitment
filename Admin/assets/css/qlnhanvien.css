@@ -1,0 +1,201 @@
+/* ================================
+   NhanVien - CSS (Arial, gọn gàng)
+   KHÔNG đụng header/sidebar
+=================================== */
+
+:root{ --bg-grad:linear-gradient(180deg,#f8fafc,#ffffff 28%,#ffffff) }
+*,*::before,*::after{ box-sizing:border-box }
+
+#mainContent{
+  min-height:100dvh;
+  padding-top:calc(var(--header-h,64px) + 16px);
+  padding-left:calc(var(--sidebar-w,256px) + 16px);
+  padding-right:16px; padding-bottom:24px;
+  transition:padding-left .3s cubic-bezier(.4,0,.2,1);
+  background:var(--bg-grad); 
+}
+#nvapp{ width:100%; max-width:1320px; margin:0 auto; padding:0 4px }
+
+/* Heading */
+.nv-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px }
+.nv-title{ margin:0; font-size:26px; font-weight:800; letter-spacing:.2px }
+.nv-sub{ margin:6px 0 0; color:#64748b }
+.nv-btn-primary{
+  display:inline-flex; align-items:center; gap:8px;
+  background:#3b82f6; color:#fff; border:none; padding:10px 14px;
+  border-radius:12px; font-weight:800; box-shadow:0 10px 18px -10px rgba(59,130,246,.45); cursor:pointer;
+}
+.nv-btn-primary:hover{ filter:brightness(1.05) }
+
+/* Filters */
+.nv-filters{
+  display:grid; grid-template-columns:1.2fr repeat(3,.9fr) auto; gap:12px;
+  background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:12px;
+  box-shadow:0 10px 24px rgba(2,6,23,.06);
+}
+.nv-fi label{ display:block; font-size:.82rem; color:#64748b; margin-bottom:6px; font-weight:700 }
+.nv-ip{ width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:12px; background:#fff; outline:0; font-family:arial }
+.nv-ip:focus{ border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.15) }
+.nv-ip.sm{ padding:8px 10px; border-radius:10px }
+.nv-filter-actions{ display:flex; align-items:flex-end; gap:8px }
+.nv-btn.base{ border:1px solid #e5e7eb; background:#fff; padding:10px 14px; border-radius:12px; font-weight:800; cursor:pointer; font-family:arial }
+.nv-btn.base.primary{ background:linear-gradient(90deg,#3E73FF,#17B890); color:#fff; border:none }
+
+/* KPI */
+.nv-kpis{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:12px 0 }
+.nv-kpi{ position:relative; overflow:hidden; background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:16px 14px; box-shadow:0 12px 28px rgba(2,6,23,.07); transition:transform .2s, box-shadow .2s }
+.nv-kpi::after{ content:""; position:absolute; inset:0; border-radius:arial; box-shadow:inset 0 0 0 1px rgba(15,23,42,.04) }
+.nv-kpi .nv-kpi-t{ color:#475569; font-weight:900; font-size:.9rem; letter-spacing:.2px; text-transform:uppercase }
+.nv-kpi .nv-kpi-n{ font-size:36px; line-height:1; font-weight:900; margin-top:6px; letter-spacing:.2px; color:#0b1220 }
+.nv-kpi:hover{ transform:translateY(-2px); box-shadow:0 18px 36px rgba(2,6,23,.12) }
+.nv-kpi.blue{ background:linear-gradient(180deg,#eef2ff,#fff) }
+.nv-kpi.green{ background:linear-gradient(180deg,#e8fff3,#fff) }
+.nv-kpi.amber{ background:linear-gradient(180deg,#fff5e6,#fff) }
+.nv-kpi.purple{ background:linear-gradient(180deg,#f3f1ff,#fff) }
+
+/* Cards + Charts */
+.nv-grid{ display:grid; gap:12px }
+.nv-grid.nv-2{ grid-template-columns:repeat(2,minmax(0,1fr)) }
+.nv-grid.nv-4{ grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:12px }
+.nv-card{ background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:12px; box-shadow:0 10px 24px rgba(2,6,23,.06); overflow:visible }
+.nv-card.mini{ padding:10px }
+.nv-card-h{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px }
+.nv-card-t{ font-weight:800; color:#0f172a; display:flex; align-items:center; gap:8px; font-size:1rem }
+.nv-card-t i{ color:#64748b }
+.nv-chart{ position:relative }
+.nv-chart.h320{ height:320px } .nv-chart.h340{ height:340px } .nv-chart.h220{ height:220px }
+.nv-chart canvas{ display:block !important; width:100% !important; height:100% !important; font-family:arial }
+
+/* Tables */
+.nv-actions{ display:flex; align-items:center; gap:10px }
+.nv-search{ position:relative }
+.nv-search i{ position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8 }
+.nv-search input{ width:260px; height:36px; padding:8px 12px 8px 36px; border:1px solid #e5e7eb; border-radius:10px; outline:0; font-family:arial }
+.nv-chip{ padding:.45rem .8rem; border-radius:999px; font-size:.82rem; font-weight:800; border:1px solid #e5e7eb; background:#fff; cursor:pointer; display:inline-flex; gap:.45rem; align-items:center; font-family:arial }
+.nv-chip.blue{ background:#dbeafe; color:#1d4ed8; border-color:#c7d2fe }
+.nv-chip.green{ background:#dcfce7; color:#16a34a; border-color:#bbf7d0 }
+.nv-table-wrap{ max-height:420px; overflow:auto; border:1px solid #e5e7eb; border-radius:14px }
+.nv-table-wrap::-webkit-scrollbar{ width:8px; height:8px } .nv-table-wrap::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:8px }
+.nv-tbl{ width:100%; border-collapse:separate; border-spacing:0; font-family:arial }
+.nv-tbl thead th{ position:sticky; top:0; background:#f8fafc; border-bottom:1px solid #e5e7eb; font-size:.72rem; text-transform:uppercase; color:#64748b; letter-spacing:.5px; padding:.8rem 1rem; text-align:left }
+.nv-tbl tbody td{ padding:.8rem 1rem; border-bottom:1px solid #f1f5f9; white-space:nowrap; color:#374151 }
+.nv-cell-user{ display:flex; align-items:center; gap:12px }
+.nv-badge{ width:32px; height:32px; border-radius:999px; display:grid; place-items:center; color:#fff; font-weight:800; font-size:.78rem }
+.b-blue{ background-image:linear-gradient(135deg,#3E73FF,#18356E) }
+.b-green{ background-image:linear-gradient(135deg,#17B890,#0c8b73) }
+.b-purple{ background-image:linear-gradient(135deg,#8b5cf6,#ec4899) }
+.nv-name{ font-weight:800 }
+.nv-status{ padding:.2rem .55rem; border-radius:999px; font-size:.72rem; font-weight:800 }
+.st-blue{ background:#dbeafe; color:#1d4ed8 } .st-yellow{ background:#fef3c7; color:#a16207 }
+.st-green{ background:#dcfce7; color:#15803d } .st-gray{ background:#e5e7eb; color:#334155 } .st-red{ background:#fee2e2; color:#b91c1c }
+.nv-row-actions{ display:flex; align-items:center; gap:8px }
+.nv-act{ padding:.28rem .45rem; border:1px solid #e5e7eb; background:#fff; border-radius:.55rem; cursor:pointer }
+.nv-act i{ font-size:.85rem }
+.nv-act.blue{ color:#2563eb } .nv-act.green{ color:#16a34a } .nv-act.red{ color:#ef4444 }
+ 
+/* ===== Modals ===== */
+.nv-modal-backdrop{
+  position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+  background:rgba(15,23,42,.35); z-index:1000; padding:16px
+}
+.nv-modal-backdrop.show{ display:flex }
+.nv-modal{
+  width:min(720px,100%); background:#fff; border-radius:16px; border:1px solid #e5e7eb;
+  box-shadow:0 20px 48px rgba(2,6,23,.2); overflow:hidden 
+}
+.nv-modal-h{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #e5e7eb }
+.nv-modal-h h3{ margin:0; font-size:18px; font-weight:200; display:flex; align-items:center; gap:8px }
+.nv-x{ width:36px; height:36px; border:none; border-radius:10px; background:#f1f5f9; cursor:pointer }
+.nv-modal-b{ padding:14px 16px; display:grid; gap:10px }
+.nv-field label{ display:block; font-weight:200; color:#374151; margin-bottom:6px }
+.nv-check{ display:flex; align-items:center; gap:8px; font-weight:700; margin-top:6px }
+.nv-modal-f{ padding:12px 16px; display:flex; gap:8px; justify-content:flex-end; border-top:1px solid #e5e7eb }
+
+/* Responsive */
+@media (max-width:1200px){ .nv-grid.nv-4{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:900px){
+  .nv-filters{ grid-template-columns:1fr 1fr }
+  .nv-kpis{ grid-template-columns:repeat(2,1fr) }
+  .nv-grid.nv-2{ grid-template-columns:1fr }
+  .nv-grid.nv-4{ grid-template-columns:1fr }
+  .nv-search input{ width:200px }
+}
+
+/* ========== FIX FONT/DẤU TIẾNG VIỆT ========== */ 
+.nv-kpi .nv-kpi-t{ text-transform:none; letter-spacing:0; font-weight:200 }
+.nv-btn.base, .nv-btn-primary, .nv-chip{ font-weight:200; letter-spacing:0 }
+.nv-card-t, .nv-title{ text-transform:none; letter-spacing:.1px }
+.nv-kpi .nv-kpi-t, .nv-card .nv-card-t, .nv-btn, .nv-chip{ text-transform:none }
+
+.main-content{
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+  transition: margin-left .3s cubic-bezier(.4,0,.2,1);
+}
+/* khi sidebar thu gọn */
+.main-content.main-content-collapsed{
+  margin-left: var(--sidebar-wc) !important;
+}
+/* layout nội dung chính */
+.main-content{
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+  transition: margin-left .3s cubic-bezier(.4,0,.2,1);
+}
+.main-content.main-content-collapsed{
+  margin-left: var(--sidebar-wc);
+}
+/* Nội dung chính tự giãn theo trạng thái sidebar */
+.main-content{
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+  transition: margin-left .3s cubic-bezier(.4,0,.2,1);
+}
+.main-content.main-content-collapsed{ margin-left: var(--sidebar-wc); }
+
+/* ==== FULLSCREEN FIX (put at the very end of qlnhanvien.css) ==== */
+:root{
+  /* fallback nếu sidebar.css/header.css chưa set biến */
+  --header-h: 64px;
+  --sidebar-w: 256px;   /* rộng sidebar mở */
+  --sidebar-wc: 80px;   /* rộng sidebar thu gọn */
+}
+
+/* 1) Bảo đảm viewport chuẩn */
+html, body { height: 100%; }
+body { min-height: 100dvh; overflow: hidden; } /* body không scroll, mainContent scroll */
+
+/* 2) Chỉ dùng padding của #mainContent để chừa chỗ header + sidebar */
+#mainContent{
+  position: relative;
+  height: 100dvh;                 /* luôn full chiều cao màn hình */
+  padding-top: calc(var(--header-h) + 16px);
+  padding-left: calc(var(--sidebar-w) + 16px);
+  padding-right: 16px;
+  padding-bottom: 20px;
+  overflow: auto;                  /* main scroll */
+  background: var(--bg-grad, linear-gradient(180deg,#f8fafc,#fff 28%,#fff));
+  box-sizing: border-box;
+}
+
+/* Khi sidebar thu gọn, chỉ đổi padding-left */
+#mainContent.main-content-collapsed{
+  padding-left: calc(var(--sidebar-wc) + 16px);
+}
+
+/* 3) Vô hiệu hóa margin cũ của .main-content để tránh “đệm kép” */
+.main-content{
+  margin: 0 !important;
+}
+
+/* 4) Bảo vệ chart/tables khi full-screen (không co bẹp) */
+.nv-chart { min-height: 220px; }
+.nv-table-wrap{ max-height: min(60vh, 560px); }
+
+/* 5) Mobile: nếu sidebar ẩn hẳn thì cho padding-left = 16px */
+@media (max-width: 900px){
+  #mainContent{ padding-left: 16px; }
+}

@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analytics Dashboard - Professional HR Recruitment Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary-blue-900: #1e3a8a;
+            --primary-blue-800: #1e40af;
+            --primary-blue-700: #1d4ed8;
+            --primary-blue-600: #2563eb;
+            --primary-blue-500: #3b82f6;
+            --primary-blue-400: #60a5fa;
+            --primary-blue-300: #93c5fd;
+            --primary-blue-200: #bfdbfe;
+            --primary-blue-100: #dbeafe;
+            --primary-blue-50: #eff6ff;
+            
+            --primary-green-900: #14532d;
+            --primary-green-800: #166534;
+            --primary-green-700: #15803d;
+            --primary-green-600: #16a34a;
+            --primary-green-500: #22c55e;
+            --primary-green-400: #4ade80;
+            --primary-green-300: #86efac;
+            --primary-green-200: #bbf7d0;
+            --primary-green-100: #dcfce7;
+            --primary-green-50: #f0fdf4;
+            
+            --emerald-900: #064e3b;
+            --emerald-800: #065f46;
+            --emerald-700: #047857;
+            --emerald-600: #059669;
+            --emerald-500: #10b981;
+            --emerald-400: #34d399;
+            --emerald-300: #6ee7b7;
+            --emerald-200: #a7f3d0;
+            --emerald-100: #d1fae5;
+            --emerald-50: #ecfdf5;
+        }
+        
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            letter-spacing: -0.025em;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.05),
+                0 4px 6px rgba(0, 0, 0, 0.02),
+                0 10px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.05),
+                0 10px 15px rgba(0, 0, 0, 0.08),
+                0 20px 25px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+        
+        .metric-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .metric-card.blue-gradient {
+            background: linear-gradient(135deg, var(--primary-blue-600) 0%, var(--primary-blue-800) 100%);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+            color: white;
+        }
+        
+        .metric-card.green-gradient {
+            background: linear-gradient(135deg, var(--emerald-500) 0%, var(--emerald-700) 100%);
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+            color: white;
+        }
+        
+        .metric-card.blue-light-gradient {
+            background: linear-gradient(135deg, var(--primary-blue-500) 0%, var(--primary-blue-700) 100%);
+            box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
+            color: white;
+        }
+        
+        .metric-card.green-light-gradient {
+            background: linear-gradient(135deg, var(--emerald-400) 0%, var(--emerald-600) 100%);
+            box-shadow: 0 8px 32px rgba(52, 211, 153, 0.3);
+            color: white;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .metric-value {
+            font-size: 2.75rem;
+            font-weight: 900;
+            line-height: 1;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 380px;
+            padding: 20px;
+        }
+        
+        .chart-container-large {
+            position: relative;
+            height: 480px;
+            padding: 24px;
+        }
+        
+        .chart-container-small {
+            position: relative;
+            height: 320px;
+            padding: 16px;
+        }
+        
+        .filter-tab {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            color: #64748b;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .filter-tab:hover {
+            background: rgba(255, 255, 255, 1);
+            border-color: var(--primary-blue-300);
+            color: var(--primary-blue-700);
+            transform: translateY(-1px);
+        }
+        
+        .filter-tab.active {
+            background: linear-gradient(135deg, var(--primary-blue-600), var(--primary-blue-700));
+            border-color: var(--primary-blue-600);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .quick-stat-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quick-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .quick-stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .quick-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            background: rgba(241, 245, 249, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .progress-fill {
+            height: 10px;
+            border-radius: 12px;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .table-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .table-row {
+            border-bottom: 1px solid rgba(241, 245, 249, 0.8);
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .table-row:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.02) 0%, rgba(16, 185, 129, 0.02) 100%);
+            transform: translateX(4px);
+        }
+        
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 24px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+        }
+        
+        .status-hired {
+            background: linear-gradient(135deg, var(--emerald-100), var(--emerald-200));
+            color: var(--emerald-800);
+            border: 1px solid var(--emerald-300);
+        }
+        
+        .status-pending {
+            background: linear-gradient(135deg, var(--primary-blue-100), var(--primary-blue-200));
+            color: var(--primary-blue-800);
+            border: 1px solid var(--primary-blue-300);
+        }
+        
+        .status-rejected {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+            opacity: 0.03;
+        }
+        
+        .floating-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: var(--primary-blue-500);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: var(--emerald-500);
+            top: 60%;
+            right: 15%;
+            animation-delay: -7s;
+        }
+        
+        .floating-circle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            background: var(--primary-blue-400);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -14s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+        
+        .icon-wrapper {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .icon-wrapper:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        @media (max-width: 1024px) {
+            .metric-value { font-size: 2.25rem; }
+            .chart-container-large { height: 400px; padding: 20px; }
+            .chart-container { height: 320px; padding: 16px; }
+        }
+        
+        @media (max-width: 640px) {
+            .metric-value { font-size: 1.875rem; }
+            .chart-container-large { height: 350px; padding: 16px; }
+            .chart-container { height: 280px; padding: 12px; }
+            .chart-container-small { height: 250px; padding: 12px; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-blue-400), var(--emerald-400));
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-blue-500), var(--emerald-500));
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="glass-card border-b border-white/20 px-6 py-6 sticky top-0 z-50 shadow-lg">
+        <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center space-y-4 xl:space-y-0">
+            <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl flex items-center justify-center shadow-xl icon-wrapper">
+                        <i class="fas fa-chart-line text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-black text-gray-900 tracking-tight bg-gradient-to-r from-blue-800 to-emerald-700 bg-clip-text text-transparent">
+                            Data Analytics Dashboard
+                        </h1>
+                        <p class="text-sm text-gray-600 font-semibold mt-1">Professional HR Recruitment Analytics & Intelligence</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-6">
+                <!-- Time Period Filters -->
+                <div class="flex space-x-2 bg-white/60 backdrop-blur-xl p-2 rounded-2xl border border-white/30 shadow-lg">
+                    <button class="filter-tab active px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300" onclick="updatePeriod('month')" id="monthBtn">
+                        Tháng này
+                    </button>
+                    <button class="filter-tab px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300" onclick="updatePeriod('quarter')" id="quarterBtn">
+                        Quý này
+                    </button>
+                    <button class="filter-tab px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300" onclick="updatePeriod('year')" id="yearBtn">
+                        Năm này
+                    </button>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button class="glass-card px-5 py-3 rounded-xl text-sm font-semibold text-gray-700 hover:text-blue-700 transition-all duration-300 icon-wrapper">
+                        <i class="fas fa-sync-alt mr-2 text-blue-500"></i>Làm mới
+                    </button>
+                    <button class="glass-card px-5 py-3 rounded-xl text-sm font-semibold text-gray-700 hover:text-emerald-700 transition-all duration-300 icon-wrapper">
+                        <i class="fas fa-download mr-2 text-emerald-500"></i>Xuất Excel
+                    </button>
+                    <button class="glass-card px-5 py-3 rounded-xl text-sm font-semibold text-gray-700 hover:text-blue-700 transition-all duration-300 icon-wrapper">
+                        <i class="fas fa-print mr-2 text-blue-500"></i>In báo cáo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="min-h-screen overflow-x-auto">
+        <div class="relative p-6 space-y-8 min-w-[1200px]">
+            <!-- Quick Stats - 4 Cards with Border Only -->
+            <div class="glass-card p-8 rounded-3xl">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="quick-stat-card p-6 rounded-2xl border-2 border-blue-300 hover:border-blue-400 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 border-2 border-blue-500 rounded-xl flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-chart-line text-blue-600 text-lg"></i>
+                            </div>
+                            <span class="text-2xl font-black text-blue-700" id="quickStat1">8.2%</span>
+                        </div>
+                        <p class="text-gray-800 text-sm font-bold">Hiệu suất tuyển dụng</p>
+                        <p class="text-gray-500 text-xs mt-1">Tỷ lệ chuyển đổi tổng thể</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-6 rounded-2xl border-2 border-emerald-300 hover:border-emerald-400 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 border-2 border-emerald-500 rounded-xl flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-star text-emerald-600 text-lg"></i>
+                            </div>
+                            <span class="text-2xl font-black text-emerald-700" id="quickStat2">7.8</span>
+                        </div>
+                        <p class="text-gray-800 text-sm font-bold">Điểm trung bình</p>
+                        <p class="text-gray-500 text-xs mt-1">Đánh giá ứng viên trung bình</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-6 rounded-2xl border-2 border-blue-400 hover:border-blue-500 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 border-2 border-blue-600 rounded-xl flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-users text-blue-700 text-lg"></i>
+                            </div>
+                            <span class="text-2xl font-black text-blue-800" id="quickStat3">LinkedIn</span>
+                        </div>
+                        <p class="text-gray-800 text-sm font-bold">Nguồn tốt nhất</p>
+                        <p class="text-gray-500 text-xs mt-1">Kênh tuyển dụng hiệu quả nhất</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-6 rounded-2xl border-2 border-emerald-400 hover:border-emerald-500 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 border-2 border-emerald-600 rounded-xl flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-fire text-emerald-700 text-lg"></i>
+                            </div>
+                            <span class="text-2xl font-black text-emerald-800" id="quickStat4">Frontend</span>
+                        </div>
+                        <p class="text-gray-800 text-sm font-bold">Vị trí hot nhất</p>
+                        <p class="text-gray-500 text-xs mt-1">Vị trí được tuyển nhiều nhất</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Quick Stats - 6 Cards -->
+            <div class="glass-card p-8 rounded-3xl">
+                <div class="grid grid-cols-2 lg:grid-cols-6 gap-6">
+                    <div class="quick-stat-card p-5 rounded-2xl border-2 border-blue-300 hover:border-blue-400 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-8 h-8 border-2 border-blue-500 rounded-lg flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-eye text-blue-600 text-sm"></i>
+                            </div>
+                            <span class="text-xl font-black text-blue-700" id="quickStat5">2,847</span>
+                        </div>
+                        <p class="text-gray-800 text-xs font-bold">Lượt xem</p>
+                        <p class="text-gray-500 text-xs mt-1">Tổng lượt xem tin</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-5 rounded-2xl border-2 border-emerald-300 hover:border-emerald-400 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-8 h-8 border-2 border-emerald-500 rounded-lg flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-file-alt text-emerald-600 text-sm"></i>
+                            </div>
+                            <span class="text-xl font-black text-emerald-700" id="quickStat6">1,234</span>
+                        </div>
+                        <p class="text-gray-800 text-xs font-bold">Hồ sơ mới</p>
+                        <p class="text-gray-500 text-xs mt-1">Ứng viên tuần này</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-5 rounded-2xl border-2 border-blue-400 hover:border-blue-500 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-8 h-8 border-2 border-blue-600 rounded-lg flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-handshake text-blue-700 text-sm"></i>
+                            </div>
+                            <span class="text-xl font-black text-blue-800" id="quickStat7">156</span>
+                        </div>
+                        <p class="text-gray-800 text-xs font-bold">Phỏng vấn</p>
+                        <p class="text-gray-500 text-xs mt-1">Lịch hẹn tuần này</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-5 rounded-2xl border-2 border-emerald-400 hover:border-emerald-500 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-8 h-8 border-2 border-emerald-600 rounded-lg flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-check-circle text-emerald-700 text-sm"></i>
+                            </div>
+                            <span class="text-xl font-black text-emerald-800" id="quickStat8">89</span>
+                        </div>
+                        <p class="text-gray-800 text-xs font-bold">Đã tuyển</p>
+                        <p class="text-gray-500 text-xs mt-1">Thành công tháng này</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-5 rounded-2xl border-2 border-blue-500 hover:border-blue-600 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-8 h-8 border-2 border-blue-700 rounded-lg flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-clock text-blue-800 text-sm"></i>
+                            </div>
+                            <span class="text-xl font-black text-blue-900" id="quickStat9">28</span>
+                        </div>
+                        <p class="text-gray-800 text-xs font-bold">Thời gian</p>
+                        <p class="text-gray-500 text-xs mt-1">Ngày trung bình</p>
+                    </div>
+                    
+                    <div class="quick-stat-card p-5 rounded-2xl border-2 border-emerald-500 hover:border-emerald-600 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-8 h-8 border-2 border-emerald-700 rounded-lg flex items-center justify-center icon-wrapper">
+                                <i class="fas fa-percentage text-emerald-800 text-sm"></i>
+                            </div>
+                            <span class="text-xl font-black text-emerald-900" id="quickStat10">92%</span>
+                        </div>
+                        <p class="text-gray-800 text-xs font-bold">Hài lòng</p>
+                        <p class="text-gray-500 text-xs mt-1">Tỷ lệ hài lòng</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <!-- Position Trends Line Chart (3/5 width) -->
+                <div class="glass-card p-8 rounded-3xl lg:col-span-3">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 class="text-xl font-black text-gray-900 mb-2">Xu Hướng Theo Vị Trí</h3>
+                            <p class="text-sm text-gray-600 font-medium">Phân tích xu hướng tuyển dụng theo từng vị trí</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="text-xs px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300">Tất cả</button>
+                            <button class="text-xs px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl font-semibold transition-all duration-300">IT</button>
+                            <button class="text-xs px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-xl font-semibold transition-all duration-300">Marketing</button>
+                        </div>
+                    </div>
+                    <div class="chart-container-large">
+                        <canvas id="positionTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Department Distribution Doughnut Chart (2/5 width) -->
+                <div class="glass-card p-8 rounded-3xl lg:col-span-2">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Phân Bố Theo Phòng Ban</h3>
+                        <p class="text-sm text-gray-600 font-medium">Tỷ lệ ứng viên theo từng phòng ban</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="departmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secondary Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Source Effectiveness -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Hiệu Quả Kênh Tuyển Dụng</h3>
+                        <p class="text-sm text-gray-600 font-medium">Số lượng ứng viên theo kênh</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="sourceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Monthly Comparison -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">So Sánh Theo Tháng</h3>
+                        <p class="text-sm text-gray-600 font-medium">Ứng viên vs Tuyển dụng</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Position Openings -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Vị Trí Tuyển Dụng</h3>
+                        <p class="text-sm text-gray-600 font-medium">Số lượng vị trí đang tuyển</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="positionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Analytics Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Recruitment Conversion Funnel -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Chuỗi Tỷ Lệ Chuyển Đổi</h3>
+                        <p class="text-sm text-gray-600 font-medium">Phân tích từng bước trong quy trình tuyển dụng</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="conversionFunnelChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Interview Success Rate Area Chart -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Tỷ Lệ Thành Công Phỏng Vấn</h3>
+                        <p class="text-sm text-gray-600 font-medium">Xu hướng tỷ lệ thành công theo thời gian</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="interviewSuccessChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Analytics Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Experience Area Chart -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Biểu Đồ Vùng Kinh Nghiệm</h3>
+                        <p class="text-sm text-gray-600 font-medium">Xu hướng kinh nghiệm theo thời gian</p>
+                    </div>
+                    <div class="chart-container-small">
+                        <canvas id="experienceAreaChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Position Openings -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Vị Trí Tuyển Dụng</h3>
+                        <p class="text-sm text-gray-600 font-medium">Số lượng vị trí đang tuyển</p>
+                    </div>
+                    <div class="chart-container-small">
+                        <canvas id="positionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Score Distribution -->
+                <div class="glass-card p-8 rounded-3xl">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Phân Bố Điểm Số</h3>
+                        <p class="text-sm text-gray-600 font-medium">Phân tích điểm đánh giá ứng viên</p>
+                    </div>
+                    <div class="chart-container-small">
+                        <canvas id="scoreDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Tables Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Top Positions Table -->
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="p-8 border-b border-gray-100">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Vị Trí Tuyển Nhiều Nhất</h3>
+                        <p class="text-sm text-gray-600 font-medium">Top 5 vị trí có nhiều ứng viên nhất</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="text-left py-4 px-8 text-gray-800 font-bold">Vị trí</th>
+                                    <th class="text-left py-4 px-8 text-gray-800 font-bold">Số lượng</th>
+                                    <th class="text-left py-4 px-8 text-gray-800 font-bold">Tỷ lệ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fas fa-code text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">Frontend Developer</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-blue-600 font-black text-lg">342</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-blue-500 to-blue-600" style="width: 85%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fas fa-chart-line text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">Business Analyst</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-emerald-600 font-black text-lg">287</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-emerald-500 to-emerald-600" style="width: 71%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fas fa-palette text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">UI/UX Designer</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-blue-500 font-black text-lg">198</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-blue-400 to-blue-500" style="width: 49%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fas fa-bullhorn text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">Marketing Specialist</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-emerald-500 font-black text-lg">156</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-emerald-400 to-emerald-500" style="width: 39%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Success Rate by Source Table -->
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="p-8 border-b border-gray-100">
+                        <h3 class="text-xl font-black text-gray-900 mb-2">Tỷ Lệ Thành Công Theo Kênh</h3>
+                        <p class="text-sm text-gray-600 font-medium">Hiệu quả chuyển đổi của từng kênh tuyển dụng</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="text-left py-4 px-8 text-gray-800 font-bold">Kênh</th>
+                                    <th class="text-left py-4 px-8 text-gray-800 font-bold">Tỷ lệ</th>
+                                    <th class="text-left py-4 px-8 text-gray-800 font-bold">Hiệu quả</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fas fa-users text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">Referral</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-blue-600 font-black text-lg">15.2%</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-24 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-blue-600 to-blue-700" style="width: 76%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fab fa-linkedin text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">LinkedIn</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-blue-500 font-black text-lg">12.5%</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-24 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-blue-500 to-blue-600" style="width: 62.5%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fas fa-globe text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">Website</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-emerald-500 font-black text-lg">9.8%</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-24 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-emerald-500 to-emerald-600" style="width: 49%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="py-4 px-8">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-xl flex items-center justify-center mr-4 icon-wrapper">
+                                                <i class="fas fa-briefcase text-white text-sm"></i>
+                                            </div>
+                                            <span class="text-gray-900 font-bold">Job Boards</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-8 text-emerald-400 font-black text-lg">6.3%</td>
+                                    <td class="py-4 px-8">
+                                        <div class="w-24 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-emerald-400 to-emerald-500" style="width: 31.5%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comprehensive Data Table -->
+            <div class="glass-card rounded-3xl overflow-hidden">
+                <div class="p-8 border-b border-gray-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+                        <div>
+                            <h3 class="text-xl font-black text-gray-900 mb-2">Danh Sách Ứng Viên Chi Tiết</h3>
+                            <p class="text-gray-600 text-sm font-medium">Theo dõi chi tiết từng ứng viên và trạng thái tuyển dụng</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="glass-card px-5 py-3 rounded-xl text-sm text-gray-700 hover:text-blue-700 font-semibold transition-all duration-300">
+                                <i class="fas fa-filter mr-2"></i>Lọc
+                            </button>
+                            <button class="glass-card px-5 py-3 rounded-xl text-sm text-gray-700 hover:text-emerald-700 font-semibold transition-all duration-300">
+                                <i class="fas fa-download mr-2"></i>Xuất Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="text-left py-5 px-8 text-gray-800 font-bold">Ứng viên</th>
+                                <th class="text-left py-5 px-8 text-gray-800 font-bold">Vị trí</th>
+                                <th class="text-left py-5 px-8 text-gray-800 font-bold">Kênh</th>
+                                <th class="text-left py-5 px-8 text-gray-800 font-bold">Điểm</th>
+                                <th class="text-left py-5 px-8 text-gray-800 font-bold">Trạng thái</th>
+                                <th class="text-left py-5 px-8 text-gray-800 font-bold">Ngày nộp</th>
+                                <th class="text-left py-5 px-8 text-gray-800 font-bold">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-row">
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center text-white font-black mr-4 icon-wrapper">
+                                            NT
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-900 font-bold">Nguyễn Văn Thành</p>
+                                            <p class="text-gray-500 text-sm font-medium">thanh.nv@email.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8 text-gray-800 font-semibold">Senior Frontend Developer</td>
+                                <td class="py-5 px-8">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border border-blue-300">
+                                        LinkedIn
+                                    </span>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <span class="text-emerald-600 font-black mr-3 text-lg">95</span>
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-emerald-500 to-emerald-600" style="width: 95%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <span class="status-badge status-hired">Đã tuyển</span>
+                                </td>
+                                <td class="py-5 px-8 text-gray-600 font-medium">15/11/2024</td>
+                                <td class="py-5 px-8">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3 icon-wrapper">
+                                        <i class="fas fa-eye text-lg"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-600 icon-wrapper">
+                                        <i class="fas fa-edit text-lg"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <tr class="table-row">
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center text-white font-black mr-4 icon-wrapper">
+                                            LH
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-900 font-bold">Lê Thị Hương</p>
+                                            <p class="text-gray-500 text-sm font-medium">huong.lt@email.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8 text-gray-800 font-semibold">Product Designer</td>
+                                <td class="py-5 px-8">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 border border-emerald-300">
+                                        Website
+                                    </span>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <span class="text-blue-600 font-black mr-3 text-lg">88</span>
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-blue-500 to-blue-600" style="width: 88%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <span class="status-badge status-pending">Phỏng vấn</span>
+                                </td>
+                                <td class="py-5 px-8 text-gray-600 font-medium">14/11/2024</td>
+                                <td class="py-5 px-8">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3 icon-wrapper">
+                                        <i class="fas fa-eye text-lg"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-600 icon-wrapper">
+                                        <i class="fas fa-edit text-lg"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <tr class="table-row">
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center text-white font-black mr-4 icon-wrapper">
+                                            DK
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-900 font-bold">Đặng Minh Khoa</p>
+                                            <p class="text-gray-500 text-sm font-medium">khoa.dm@email.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8 text-gray-800 font-semibold">Business Analyst</td>
+                                <td class="py-5 px-8">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-blue-200 to-blue-300 text-blue-900 border border-blue-400">
+                                        Referral
+                                    </span>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <span class="text-blue-500 font-black mr-3 text-lg">92</span>
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-blue-400 to-blue-500" style="width: 92%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <span class="status-badge status-pending">Đánh giá</span>
+                                </td>
+                                <td class="py-5 px-8 text-gray-600 font-medium">13/11/2024</td>
+                                <td class="py-5 px-8">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3 icon-wrapper">
+                                        <i class="fas fa-eye text-lg"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-600 icon-wrapper">
+                                        <i class="fas fa-edit text-lg"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <tr class="table-row">
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl flex items-center justify-center text-white font-black mr-4 icon-wrapper">
+                                            PT
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-900 font-bold">Phạm Văn Tuấn</p>
+                                            <p class="text-gray-500 text-sm font-medium">tuan.pv@email.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8 text-gray-800 font-semibold">Marketing Specialist</td>
+                                <td class="py-5 px-8">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-emerald-200 to-emerald-300 text-emerald-900 border border-emerald-400">
+                                        Job Board
+                                    </span>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <div class="flex items-center">
+                                        <span class="text-red-600 font-black mr-3 text-lg">65</span>
+                                        <div class="w-20 progress-bar">
+                                            <div class="progress-fill bg-gradient-to-r from-red-400 to-red-500" style="width: 65%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-5 px-8">
+                                    <span class="status-badge status-rejected">Từ chối</span>
+                                </td>
+                                <td class="py-5 px-8 text-gray-600 font-medium">12/11/2024</td>
+                                <td class="py-5 px-8">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3 icon-wrapper">
+                                        <i class="fas fa-eye text-lg"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-600 icon-wrapper">
+                                        <i class="fas fa-edit text-lg"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="px-8 py-6 border-t border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-gray-100">
+                    <div class="text-sm text-gray-600 font-medium">
+                        Hiển thị 1-4 trong tổng số <span class="font-bold text-gray-900">2,847</span> ứng viên
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-4 py-2 border-2 border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50 font-semibold transition-all duration-300">
+                            Trước
+                        </button>
+                        <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl text-sm font-bold shadow-lg">1</button>
+                        <button class="px-4 py-2 border-2 border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50 font-semibold transition-all duration-300">2</button>
+                        <button class="px-4 py-2 border-2 border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50 font-semibold transition-all duration-300">3</button>
+                        <button class="px-4 py-2 border-2 border-gray-300 rounded-xl text-sm text-gray-600 hover:bg-gray-50 font-semibold transition-all duration-300">
+                            Sau
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Chart.js configuration with professional styling
+        Chart.defaults.color = '#374151';
+        Chart.defaults.borderColor = 'rgba(229, 231, 235, 0.8)';
+        Chart.defaults.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+        Chart.defaults.font.family = 'Inter';
+        Chart.defaults.font.weight = '500';
+
+        // Professional color palette - Blue and Green variations
+        const colorPalette = {
+            blue: {
+                primary: '#1e40af',
+                secondary: '#3b82f6',
+                light: '#60a5fa',
+                lighter: '#93c5fd',
+                lightest: '#dbeafe'
+            },
+            green: {
+                primary: '#059669',
+                secondary: '#10b981',
+                light: '#34d399',
+                lighter: '#6ee7b7',
+                lightest: '#d1fae5'
+            },
+            emerald: {
+                primary: '#047857',
+                secondary: '#059669',
+                light: '#10b981',
+                lighter: '#34d399',
+                lightest: '#d1fae5'
+            }
+        };
+
+        // Data storage for different periods
+        const analyticsData = {
+            month: {
+                quickStats: ['8.2%', '7.8', 'LinkedIn', 'Frontend', '2,847', '1,234', '156', '89', '28', '92%'],
+                positionTrend: {
+                    frontend: [15, 18, 16, 22, 25, 28, 26, 31, 34, 38, 42, 39],
+                    ba: [12, 14, 13, 17, 19, 21, 20, 24, 26, 29, 32, 28],
+                    designer: [8, 10, 9, 12, 14, 16, 15, 18, 20, 22, 25, 21],
+                    marketing: [6, 8, 7, 10, 11, 13, 12, 15, 17, 19, 21, 18],
+                    data: [4, 6, 5, 8, 9, 11, 10, 13, 15, 17, 19, 16]
+                },
+                department: [35, 25, 20, 12, 8],
+                source: [856, 642, 534, 423, 287],
+                monthly: [245, 289, 312, 267],
+                monthlyHired: [23, 28, 31, 26],
+                conversionFunnel: [1000, 750, 450, 280, 156, 89],
+                experienceArea: {
+                    junior: [25, 28, 32, 35, 38, 42, 45, 48, 52, 55, 58, 60],
+                    mid: [18, 20, 22, 25, 28, 30, 32, 35, 38, 40, 42, 45],
+                    senior: [8, 10, 12, 15, 18, 20, 22, 25, 28, 30, 32, 35]
+                },
+                interviewSuccess: [65, 68, 72, 70, 75, 78, 82, 79, 85, 88, 91, 87],
+                positions: [45, 38, 25, 20, 15],
+                scoreDistribution: [12, 28, 45, 78, 125, 156, 142, 98, 67, 34]
+            },
+            quarter: {
+                quickStats: ['8.8%', '8.1', 'LinkedIn', 'Frontend', '8,541', '3,702', '468', '267', '26', '94%'],
+                positionTrend: {
+                    frontend: [45, 54, 48, 66, 75, 84, 78, 93, 102, 114, 126, 117],
+                    ba: [36, 42, 39, 51, 57, 63, 60, 72, 78, 87, 96, 84],
+                    designer: [24, 30, 27, 36, 42, 48, 45, 54, 60, 66, 75, 63],
+                    marketing: [18, 24, 21, 30, 33, 39, 36, 45, 51, 57, 63, 54],
+                    data: [12, 18, 15, 24, 27, 33, 30, 39, 45, 51, 57, 48]
+                },
+                department: [38, 28, 18, 10, 6],
+                source: [2568, 1926, 1602, 1269, 861],
+                monthly: [735, 867, 936, 801],
+                monthlyHired: [69, 84, 93, 78],
+                conversionFunnel: [3000, 2250, 1350, 840, 468, 267],
+                experienceArea: {
+                    junior: [75, 84, 96, 105, 114, 126, 135, 144, 156, 165, 174, 180],
+                    mid: [54, 60, 66, 75, 84, 90, 96, 105, 114, 120, 126, 135],
+                    senior: [24, 30, 36, 45, 54, 60, 66, 75, 84, 90, 96, 105]
+                },
+                interviewSuccess: [68, 71, 75, 73, 78, 81, 85, 82, 88, 91, 94, 90],
+                positions: [135, 114, 75, 60, 45],
+                scoreDistribution: [36, 84, 135, 234, 375, 468, 426, 294, 201, 102]
+            },
+            year: {
+                quickStats: ['9.1%', '8.3', 'LinkedIn', 'Frontend', '34,164', '14,808', '1,872', '1,068', '24', '96%'],
+                positionTrend: {
+                    frontend: [180, 216, 192, 264, 300, 336, 312, 372, 408, 456, 504, 468],
+                    ba: [144, 168, 156, 204, 228, 252, 240, 288, 312, 348, 384, 336],
+                    designer: [96, 120, 108, 144, 168, 192, 180, 216, 240, 264, 300, 252],
+                    marketing: [72, 96, 84, 120, 132, 156, 144, 180, 204, 228, 252, 216],
+                    data: [48, 72, 60, 96, 108, 132, 120, 156, 180, 204, 228, 192]
+                },
+                department: [40, 30, 15, 8, 7],
+                source: [10272, 7704, 6408, 5076, 3444],
+                monthly: [2940, 3468, 3744, 3204],
+                monthlyHired: [276, 336, 372, 312],
+                conversionFunnel: [12000, 9000, 5400, 3360, 1872, 1068],
+                experienceArea: {
+                    junior: [300, 336, 384, 420, 456, 504, 540, 576, 624, 660, 696, 720],
+                    mid: [216, 240, 264, 300, 336, 360, 384, 420, 456, 480, 504, 540],
+                    senior: [96, 120, 144, 180, 216, 240, 264, 300, 336, 360, 384, 420]
+                },
+                interviewSuccess: [72, 75, 79, 77, 82, 85, 89, 86, 92, 95, 98, 94],
+                positions: [540, 456, 300, 240, 180],
+                scoreDistribution: [144, 336, 540, 936, 1500, 1872, 1704, 1176, 804, 408]
+            }
+        };
+
+        let currentPeriod = 'month';
+
+        // Initialize all charts
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePositionTrendChart();
+            initializeDepartmentChart();
+            initializeSourceChart();
+            initializeMonthlyChart();
+            initializeConversionFunnelChart();
+            initializeExperienceAreaChart();
+            initializeInterviewSuccessChart();
+            initializePositionChart();
+            initializeScoreDistributionChart();
+        });
+
+        function initializePositionTrendChart() {
+            const ctx = document.getElementById('positionTrendChart').getContext('2d');
+            
+            window.positionTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Frontend Developer',
+                        data: [15, 18, 16, 22, 25, 28, 26, 31, 34, 38, 42, 39],
+                        borderColor: colorPalette.blue.primary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.blue.primary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Business Analyst',
+                        data: [12, 14, 13, 17, 19, 21, 20, 24, 26, 29, 32, 28],
+                        borderColor: colorPalette.blue.secondary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.blue.secondary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'UI/UX Designer',
+                        data: [8, 10, 9, 12, 14, 16, 15, 18, 20, 22, 25, 21],
+                        borderColor: colorPalette.green.primary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.primary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Marketing Specialist',
+                        data: [6, 8, 7, 10, 11, 13, 12, 15, 17, 19, 21, 18],
+                        borderColor: colorPalette.green.secondary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.secondary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Data Analyst',
+                        data: [4, 6, 5, 8, 9, 11, 10, 13, 15, 17, 19, 16],
+                        borderColor: colorPalette.green.light,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.light,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: '#374151',
+                                padding: 25,
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            displayColors: true,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13,
+                                weight: '500'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializeDepartmentChart() {
+            const ctx = document.getElementById('departmentChart').getContext('2d');
+            
+            window.departmentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['IT', 'Marketing', 'Sales', 'HR', 'Finance'],
+                    datasets: [{
+                        data: [35, 25, 20, 12, 8],
+                        backgroundColor: [
+                            colorPalette.blue.primary,
+                            colorPalette.blue.secondary,
+                            colorPalette.green.primary,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light
+                        ],
+                        borderWidth: 0,
+                        cutout: '65%',
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                color: '#374151',
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializeSourceChart() {
+            const ctx = document.getElementById('sourceChart').getContext('2d');
+            
+            window.sourceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['LinkedIn', 'Website', 'Referral', 'Job Boards', 'Social Media'],
+                    datasets: [{
+                        label: 'Số lượng ứng viên',
+                        data: [856, 642, 534, 423, 287],
+                        backgroundColor: [
+                            colorPalette.blue.primary,
+                            colorPalette.blue.secondary,
+                            colorPalette.green.primary,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: [
+                            colorPalette.blue.secondary,
+                            colorPalette.blue.light,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light,
+                            colorPalette.green.lighter
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializeMonthlyChart() {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            
+            window.monthlyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Ứng viên',
+                        data: [245, 289, 312, 267],
+                        backgroundColor: colorPalette.blue.secondary,
+                        borderRadius: 8,
+                        hoverBackgroundColor: colorPalette.blue.light
+                    }, {
+                        label: 'Tuyển dụng',
+                        data: [23, 28, 31, 26],
+                        backgroundColor: colorPalette.green.secondary,
+                        borderRadius: 8,
+                        hoverBackgroundColor: colorPalette.green.light
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: '#374151',
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializePositionChart() {
+            const ctx = document.getElementById('positionChart').getContext('2d');
+            
+            window.positionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Frontend', 'Backend', 'UX/UI', 'QA', 'PM'],
+                    datasets: [{
+                        label: 'Vị trí tuyển dụng',
+                        data: [45, 38, 25, 20, 15],
+                        backgroundColor: [
+                            colorPalette.blue.primary,
+                            colorPalette.blue.secondary,
+                            colorPalette.green.primary,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: [
+                            colorPalette.blue.secondary,
+                            colorPalette.blue.light,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light,
+                            colorPalette.green.lighter
+                        ]
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.x + ' vị trí';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializeConversionFunnelChart() {
+            const ctx = document.getElementById('conversionFunnelChart').getContext('2d');
+            
+            window.conversionFunnelChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Lượt xem', 'Ứng tuyển', 'Sàng lọc', 'Phỏng vấn', 'Offer', 'Nhận việc'],
+                    datasets: [{
+                        label: 'Số lượng',
+                        data: [1000, 750, 450, 280, 156, 89],
+                        backgroundColor: [
+                            colorPalette.blue.lighter,
+                            colorPalette.blue.light,
+                            colorPalette.blue.secondary,
+                            colorPalette.green.light,
+                            colorPalette.green.secondary,
+                            colorPalette.green.primary
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: [
+                            colorPalette.blue.light,
+                            colorPalette.blue.secondary,
+                            colorPalette.blue.primary,
+                            colorPalette.green.secondary,
+                            colorPalette.green.primary,
+                            colorPalette.emerald.primary
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    if (context.dataIndex > 0) {
+                                        const current = context.parsed.y;
+                                        const previous = context.dataset.data[context.dataIndex - 1];
+                                        const rate = ((current / previous) * 100).toFixed(1);
+                                        return `Tỷ lệ chuyển đổi: ${rate}%`;
+                                    }
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializeExperienceAreaChart() {
+            const ctx = document.getElementById('experienceAreaChart').getContext('2d');
+            
+            window.experienceAreaChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Junior (0-2 năm)',
+                        data: [25, 28, 32, 35, 38, 42, 45, 48, 52, 55, 58, 60],
+                        borderColor: colorPalette.green.light,
+                        backgroundColor: `${colorPalette.green.light}30`,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.light,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Mid (2-5 năm)',
+                        data: [18, 20, 22, 25, 28, 30, 32, 35, 38, 40, 42, 45],
+                        borderColor: colorPalette.blue.secondary,
+                        backgroundColor: `${colorPalette.blue.secondary}30`,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.blue.secondary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Senior (5+ năm)',
+                        data: [8, 10, 12, 15, 18, 20, 22, 25, 28, 30, 32, 35],
+                        borderColor: colorPalette.blue.primary,
+                        backgroundColor: `${colorPalette.blue.primary}30`,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.blue.primary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: '#374151',
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializeScoreDistributionChart() {
+            const ctx = document.getElementById('scoreDistributionChart').getContext('2d');
+            
+            window.scoreDistributionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
+                    datasets: [{
+                        label: 'Số lượng ứng viên',
+                        data: [12, 28, 45, 78, 125, 156, 142, 98, 67, 34],
+                        backgroundColor: colorPalette.green.secondary,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: colorPalette.green.light
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.y} ứng viên`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+        function initializeInterviewSuccessChart() {
+            const ctx = document.getElementById('interviewSuccessChart').getContext('2d');
+            
+            window.interviewSuccessChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Tỷ lệ thành công (%)',
+                        data: [65, 68, 72, 70, 75, 78, 82, 79, 85, 88, 91, 87],
+                        borderColor: colorPalette.green.secondary,
+                        backgroundColor: `${colorPalette.green.secondary}20`,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.primary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
+
+
+
+        function updatePeriod(period) {
+            currentPeriod = period;
+            
+            // Update active button with smooth transition
+            document.querySelectorAll('.filter-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(period + 'Btn').classList.add('active');
+            
+            // Update all quick stats
+            const data = analyticsData[period];
+            
+            // Update all 10 quick stats
+            for (let i = 1; i <= 10; i++) {
+                const element = document.getElementById('quickStat' + i);
+                if (element && data.quickStats[i-1]) {
+                    element.textContent = data.quickStats[i-1];
+                }
+            }
+            
+            // Update charts with smooth transitions
+            updateChartsForPeriod(period);
+        }
+        
+        function animateValue(elementId, start, end, duration, suffix = '') {
+            const element = document.getElementById(elementId);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                
+                if (suffix === '%') {
+                    element.textContent = current.toFixed(1) + suffix;
+                } else if (suffix === 'M') {
+                    element.textContent = current.toFixed(1) + suffix;
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+        
+        function updateChartsForPeriod(period) {
+            const data = analyticsData[period];
+            
+            // Update all charts with smooth animations
+            const charts = [
+                { chart: window.positionTrendChart, updateData: () => {
+                    window.positionTrendChart.data.datasets[0].data = data.positionTrend.frontend;
+                    window.positionTrendChart.data.datasets[1].data = data.positionTrend.ba;
+                    window.positionTrendChart.data.datasets[2].data = data.positionTrend.designer;
+                    window.positionTrendChart.data.datasets[3].data = data.positionTrend.marketing;
+                    window.positionTrendChart.data.datasets[4].data = data.positionTrend.data;
+                }},
+                { chart: window.departmentChart, updateData: () => {
+                    window.departmentChart.data.datasets[0].data = data.department;
+                }},
+                { chart: window.sourceChart, updateData: () => {
+                    window.sourceChart.data.datasets[0].data = data.source;
+                }},
+                { chart: window.monthlyChart, updateData: () => {
+                    window.monthlyChart.data.datasets[0].data = data.monthly;
+                    window.monthlyChart.data.datasets[1].data = data.monthlyHired;
+                }},
+                { chart: window.conversionFunnelChart, updateData: () => {
+                    window.conversionFunnelChart.data.datasets[0].data = data.conversionFunnel;
+                }},
+                { chart: window.experienceAreaChart, updateData: () => {
+                    window.experienceAreaChart.data.datasets[0].data = data.experienceArea.junior;
+                    window.experienceAreaChart.data.datasets[1].data = data.experienceArea.mid;
+                    window.experienceAreaChart.data.datasets[2].data = data.experienceArea.senior;
+                }},
+                { chart: window.interviewSuccessChart, updateData: () => {
+                    window.interviewSuccessChart.data.datasets[0].data = data.interviewSuccess;
+                }},
+                { chart: window.positionChart, updateData: () => {
+                    window.positionChart.data.datasets[0].data = data.positions;
+                }},
+                { chart: window.scoreDistributionChart, updateData: () => {
+                    window.scoreDistributionChart.data.datasets[0].data = data.scoreDistribution;
+                }}
+            ];
+            
+            charts.forEach(({ chart, updateData }) => {
+                if (chart) {
+                    updateData();
+                    chart.update('active');
+                }
+            });
+        }
+
+        // Enhanced window resize handler
+        window.addEventListener('resize', function() {
+            const charts = [
+                window.positionTrendChart,
+                window.departmentChart,
+                window.sourceChart,
+                window.monthlyChart,
+                window.conversionFunnelChart,
+                window.experienceAreaChart,
+                window.interviewSuccessChart,
+                window.positionChart,
+                window.scoreDistributionChart
+            ];
+            
+            charts.forEach(chart => {
+                if (chart && typeof chart.resize === 'function') {
+                    chart.resize();
+                }
+            });
+        });
+
+        // Add smooth scroll behavior for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97337d359775dda3',t:'MTc1NTg3NzQ0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberFortis - Cài đặt hệ thống</title>
+    
+  <!-- Tailwind, Icons, Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="assets/css/sidebar.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/setting-admin.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar & Header placeholders (nạp động) -->
+<aside id="sidebar" class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+  <header id="header" class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+
+  <!-- Main -->
+  <main id="mainContent" class="main-content content-transition min-h-screen">
+    <!-- Search + Filters -->
+    <section class="px-6 pt-6">
+      <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-header-content">
+                <div>
+                    <h1 class="page-title">Cài đặt hệ thống</h1>
+                    <p class="page-subtitle">Quản lý và tùy chỉnh các cấu hình hệ thống CyberFortis</p>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="saveAllSettings()">
+                        <i class="fas fa-save"></i>
+                        Lưu tất cả
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Layout -->
+        <div class="settings-layout">
+            <!-- Settings Navigation -->
+            <div class="settings-nav">
+                <div class="settings-nav-container">
+                    <a href="#general" class="settings-nav-item active" onclick="showSection('general', this)">
+                        <div class="settings-nav-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <span class="settings-nav-text">Cài đặt chung</span>
+                    </a>
+                    
+                    <a href="#company" class="settings-nav-item" onclick="showSection('company', this)">
+                        <div class="settings-nav-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span class="settings-nav-text">Thông tin công ty</span>
+                    </a>
+                    
+                    <a href="#recruitment" class="settings-nav-item" onclick="showSection('recruitment', this)">
+                        <div class="settings-nav-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <span class="settings-nav-text">Quy trình tuyển dụng</span>
+                    </a>
+                    
+                    <a href="#notifications" class="settings-nav-item" onclick="showSection('notifications', this)">
+                        <div class="settings-nav-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <span class="settings-nav-text">Thông báo</span>
+                    </a>
+                    
+                    <a href="#security" class="settings-nav-item" onclick="showSection('security', this)">
+                        <div class="settings-nav-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <span class="settings-nav-text">Bảo mật</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="settings-content">
+                <!-- General Settings -->
+                <div id="general" class="settings-section active">
+                    <div class="section-header">
+                        <h2 class="section-title">Cài đặt chung</h2>
+                        <p class="section-description">Cấu hình các thiết lập cơ bản của hệ thống</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông tin hệ thống</h3>
+                        </div>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Tên hệ thống</label>
+                                <input type="text" class="form-input" value="CyberFortis Recruitment System">
+                                <div class="form-help">Tên hiển thị của hệ thống</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Phiên bản</label>
+                                <input type="text" class="form-input" value="2.1.0" readonly>
+                                <div class="form-help">Phiên bản hiện tại của hệ thống</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Múi giờ</label>
+                                <select class="form-select">
+                                    <option value="Asia/Ho_Chi_Minh" selected>GMT+7 (Việt Nam)</option>
+                                    <option value="Asia/Bangkok">GMT+7 (Bangkok)</option>
+                                    <option value="Asia/Singapore">GMT+8 (Singapore)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Ngôn ngữ mặc định</label>
+                                <select class="form-select">
+                                    <option value="vi" selected>Tiếng Việt</option>
+                                    <option value="en">English</option>
+                                    <option value="zh">中文</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Cài đặt giao diện</h3>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Chế độ tối</h4>
+                                <p>Bật chế độ giao diện tối cho hệ thống</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Sidebar thu gọn</h4>
+                                <p>Tự động thu gọn sidebar khi màn hình nhỏ</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Hiệu ứng động</h4>
+                                <p>Bật các hiệu ứng chuyển động trong giao diện</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-secondary">Hủy bỏ</button>
+                        <button class="btn btn-primary" onclick="saveSettings('general')">
+                            <i class="fas fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Company Settings -->
+                <div id="company" class="settings-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Thông tin công ty</h2>
+                        <p class="section-description">Cập nhật thông tin chi tiết về công ty của bạn</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông tin cơ bản</h3>
+                        </div>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Tên công ty</label>
+                                <input type="text" class="form-input" value="CyberFortis Technology">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Mã số thuế</label>
+                                <input type="text" class="form-input" value="0123456789">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Website</label>
+                                <input type="url" class="form-input" value="https://cyberfortis.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-input" value="+84 28 1234 5678">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Địa chỉ</label>
+                            <textarea class="form-textarea">123 Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Mô tả công ty</label>
+                            <textarea class="form-textarea">CyberFortis là công ty công nghệ hàng đầu chuyên về giải pháp bảo mật và phát triển phần mềm.</textarea>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Logo và hình ảnh</h3>
+                        </div>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Logo công ty</label>
+                                <div style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 32px; text-align: center; background: #f9fafb;">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 32px; color: #9ca3af; margin-bottom: 12px;"></i>
+                                    <p style="color: #6b7280; margin-bottom: 8px;">Kéo thả file hoặc click để chọn</p>
+                                    <p style="font-size: 12px; color: #9ca3af;">PNG, JPG tối đa 2MB</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Favicon</label>
+                                <div style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 32px; text-align: center; background: #f9fafb;">
+                                    <i class="fas fa-image" style="font-size: 32px; color: #9ca3af; margin-bottom: 12px;"></i>
+                                    <p style="color: #6b7280; margin-bottom: 8px;">Kéo thả file hoặc click để chọn</p>
+                                    <p style="font-size: 12px; color: #9ca3af;">ICO, PNG 32x32px</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-secondary">Hủy bỏ</button>
+                        <button class="btn btn-primary" onclick="saveSettings('company')">
+                            <i class="fas fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recruitment Settings -->
+                <div id="recruitment" class="settings-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Quy trình tuyển dụng</h2>
+                        <p class="section-description">Cấu hình các bước và quy trình tuyển dụng</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Trạng thái ứng viên</h3>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Ứng viên mới</h4>
+                                <p>Ứng viên vừa nộp hồ sơ</p>
+                            </div>
+                            <span class="status-badge status-active">Hoạt động</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Sàng lọc hồ sơ</h4>
+                                <p>Đang xem xét và đánh giá hồ sơ</p>
+                            </div>
+                            <span class="status-badge status-active">Hoạt động</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Phỏng vấn</h4>
+                                <p>Phỏng vấn với HR và chuyên môn</p>
+                            </div>
+                            <span class="status-badge status-active">Hoạt động</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Chờ quyết định</h4>
+                                <p>Đang chờ quyết định cuối cùng</p>
+                            </div>
+                            <span class="status-badge status-pending">Chờ xử lý</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Cài đặt tự động</h3>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Tự động gửi email xác nhận</h4>
+                                <p>Gửi email xác nhận khi ứng viên nộp hồ sơ</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Tự động sàng lọc CV</h4>
+                                <p>Sử dụng AI để sàng lọc CV tự động</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Nhắc nhở phỏng vấn</h4>
+                                <p>Gửi email nhắc nhở trước buổi phỏng vấn 24h</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-secondary">Hủy bỏ</button>
+                        <button class="btn btn-primary" onclick="saveSettings('recruitment')">
+                            <i class="fas fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notifications Settings -->
+                <div id="notifications" class="settings-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Cài đặt thông báo</h2>
+                        <p class="section-description">Quản lý các loại thông báo và cách thức gửi</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông báo email</h3>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Ứng viên mới</h4>
+                                <p>Thông báo khi có ứng viên mới nộp hồ sơ</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Lịch phỏng vấn</h4>
+                                <p>Thông báo khi có lịch phỏng vấn mới</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Báo cáo hàng tuần</h4>
+                                <p>Gửi báo cáo tổng hợp hàng tuần</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông báo trong hệ thống</h3>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Thông báo popup</h4>
+                                <p>Hiển thị thông báo popup trong trình duyệt</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Âm thanh thông báo</h4>
+                                <p>Phát âm thanh khi có thông báo mới</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Thời gian hiển thị thông báo (giây)</label>
+                            <input type="number" class="form-input" value="5" min="1" max="30">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-secondary">Hủy bỏ</button>
+                        <button class="btn btn-primary" onclick="saveSettings('notifications')">
+                            <i class="fas fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <!-- Security Settings -->
+                <div id="security" class="settings-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Cài đặt bảo mật</h2>
+                        <p class="section-description">Quản lý các chính sách bảo mật và quyền truy cập</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Chính sách mật khẩu</h3>
+                        </div>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Độ dài tối thiểu</label>
+                                <input type="number" class="form-input" value="8" min="6" max="20">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Thời gian hết hạn (ngày)</label>
+                                <input type="number" class="form-input" value="90" min="30" max="365">
+                            </div>
+                        </div>
+                        
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="uppercase" checked>
+                            <label for="uppercase">Yêu cầu chữ hoa và số</label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Bảo mật đăng nhập</h3>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Tự động đăng xuất</h4>
+                                <p>Đăng xuất tự động khi không hoạt động</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Thời gian tự động đăng xuất (phút)</label>
+                            <input type="number" class="form-input" value="30" min="5" max="480">
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Ghi log hoạt động</h4>
+                                <p>Lưu trữ thông tin đăng nhập và thao tác</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-secondary">Hủy bỏ</button>
+                        <button class="btn btn-primary" onclick="saveSettings('security')">
+                            <i class="fas fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-blue-600 rounded-lg grid place-items-center text-white font-bold">CF</div>
+              <div><h3 class="text-lg font-semibold text-gray-900">CyberFortis</h3><p class="text-gray-600 text-sm">Bảo vệ thế giới số</p></div>
+            </div>
+            <p class="text-gray-700 mb-4 max-w-md">Công ty hàng đầu về an ninh mạng tại Việt Nam với hơn 15 năm kinh nghiệm bảo vệ doanh nghiệp khỏi các mối đe dọa cyber.</p>
+            <div class="flex gap-4">
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="footer-title">Liên kết nhanh</h4>
+            <ul class="footer-list">
+              <li><a href="#" class="footer-link">Về chúng tôi</a></li>
+              <li><a href="#" class="footer-link">Dịch vụ</a></li>
+              <li><a href="#" class="footer-link">Tuyển dụng</a></li>
+              <li><a href="#" class="footer-link">Tin tức</a></li>
+              <li><a href="#" class="footer-link">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-title">Hỗ trợ</h4>
+            <ul class="footer-list">
+              <li class="text-gray-600 text-sm">📧 hr@cyberfortis.vn</li>
+              <li class="text-gray-600 text-sm">📞 (024) 3999 8888</li>
+              <li class="text-gray-600 text-sm">📍 Hà Nội, Việt Nam</li>
+              <li class="text-gray-600 text-sm">🕒 T2-T6: 8:00-17:30</li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-500 text-sm">© 2024 CyberFortis. Tất cả quyền được bảo lưu.</p>
+          <div class="flex gap-6 mt-4 md:mt-0">
+            <a href="#" class="footer-link">Chính sách bảo mật</a>
+            <a href="#" class="footer-link">Điều khoản sử dụng</a>
+            <a href="#" class="footer-link">Cookie</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Floating Chat Button -->
+    <button class="chat-float" onclick="toggleChat()" id="chatFloat">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="chat-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-user-info">
+                    <h4>CyberBot</h4>
+                    <div class="chat-status">
+                        <div class="status-dot"></div>
+                        Đang hoạt động
+                    </div>
+                </div>
+            </div>
+            <button class="chat-close" onclick="closeChat()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="message-avatar">CB</div>
+                <div>
+                    <div class="message-content">
+                        Xin chào! Tôi là CyberBot, trợ lý ảo của CyberFortis. Tôi có thể giúp bạn:
+                        <br><br>
+                        • Trả lời câu hỏi về hệ thống<br>
+                        • Hướng dẫn sử dụng tính năng<br>
+                        • Kết nối với nhân viên hỗ trợ<br>
+                        <br>
+                        Bạn cần hỗ trợ gì hôm nay?
+                    </div>
+                    <div class="message-time">Vừa xong</div>
+                </div>
+            </div>
+            
+            <div class="chat-actions">
+                <button class="chat-action" onclick="sendQuickMessage('Hướng dẫn thêm ứng viên')">
+                    Hướng dẫn thêm ứng viên
+                </button>
+                <button class="chat-action" onclick="sendQuickMessage('Cách xếp lịch phỏng vấn')">
+                    Cách xếp lịch phỏng vấn
+                </button>
+                <button class="chat-action" onclick="sendQuickMessage('Xuất báo cáo')">
+                    Xuất báo cáo
+                </button>
+                <button class="chat-action" onclick="sendQuickMessage('Liên hệ nhân viên')">
+                    Liên hệ nhân viên
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <div class="chat-input-container">
+                <textarea 
+                    class="chat-input-field" 
+                    placeholder="Nhập tin nhắn..." 
+                    id="chatInput"
+                    onkeypress="handleChatKeyPress(event)"
+                    rows="1"
+                ></textarea>
+                <button class="chat-send" onclick="sendMessage()" id="chatSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+  </main>
+  <!-- NẠP SIDEBAR & HEADER -->
+<script>
+  fetch('Sidebar.html').then(r=>r.text()).then(h=>{ document.getElementById('sidebar').innerHTML=h; });
+  fetch('Header.html').then(r=>r.text()).then(h=>{ document.getElementById('header').innerHTML=h; });
+</script>
+
+
+  <!-- App JS -->
+  <script src="assets/js/sidebar.js" defer></script>
+  <script src="assets/js/header.js" defer></script>
+<script src="assets/js/setting-admin.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!-- Sidebar.html -->
+<div class="sidebar-wrapper">
+  <!-- phần cuộn menu -->
+  <div class="sidebar-scroll">
+    <div class="px-3 pt-[calc(var(--header-h)+12px)] pb-2">
+      <div class="section-title">Tuyển dụng</div>
+
+      <a href="DashboardAdmin.html" class="nav-item" data-route="dashboard,dashboardadmin,home">
+        <i class="nav-icon fas fa-gauge-high"></i>
+        <span class="nav-text">Tổng quan</span>
+      </a>
+
+      <a href="UngVien.html" class="nav-item" data-route="ungvien,candidate,candidates">
+        <i class="nav-icon fas fa-users"></i>
+        <span class="nav-text">Ứng viên</span>
+      </a>
+
+      <a href="VTriTuyendung.html" class="nav-item" data-route="vitri,vtrituyendung,position,positions">
+        <i class="nav-icon fas fa-briefcase"></i>
+        <span class="nav-text">Vị trí tuyển dụng</span>
+      </a>
+
+      <a href="PhongVan.html" class="nav-item" data-route="phongvan,interview,lichphongvan">
+        <i class="nav-icon fas fa-comments"></i>
+        <span class="nav-text">Phỏng vấn</span>
+      </a>
+
+      <a href="TrangThaiCho.html" class="nav-item" data-route="trangthaicho,waiting,queue">
+        <i class="nav-icon fas fa-clock"></i>
+        <span class="nav-text">Trạng thái chờ</span>
+      </a>
+
+      <div class="section-divider"></div>
+
+      <div class="section-title">Hệ thống</div>
+
+      <a href="ThongKeBaoCao.html" class="nav-item" data-route="thongke,baocao,report,stats">
+        <i class="nav-icon fas fa-chart-line"></i>
+        <span class="nav-text">Thống kê</span>
+      </a>
+
+      <a href="ChatAdmin.html" class="nav-item" data-route="chat,nhantin,messages">
+        <i class="nav-icon fas fa-message"></i>
+        <span class="nav-text">Nhắn tin</span>
+      </a>
+
+      <a href="NhanVien-Admin.html" class="nav-item" data-route="nhanvien,employee,staff">
+        <i class="nav-icon fas fa-id-badge"></i>
+        <span class="nav-text">Nhân viên</span>
+      </a>
+
+      <div class="section-divider"></div>
+
+      <div class="section-title">Hỗ trợ</div>
+
+      <a href="CaiDat.html" class="nav-item" data-route="caidat,settings,profile">
+        <i class="nav-icon fas fa-sliders"></i>
+        <span class="nav-text">Cài đặt</span>
+      </a>
+
+      <a href="Help.html" class="nav-item" data-route="help,docs,faq,trogiup">
+        <i class="nav-icon fas fa-circle-question"></i>
+        <span class="nav-text">Trợ giúp</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- cố định dưới cùng -->
+  <div class="sidebar-bottom">
+    <div id="sbUserWrap" class="user-card-wrapper">
+      <button id="sbUserBtn" type="button" class="user-card" aria-haspopup="true" aria-expanded="false">
+        <div class="avatar"><i class="fas fa-user"></i></div>
+        <div class="user-meta">
+          <div class="name">Nguyễn Văn Admin</div>
+          <div class="role">Quản trị viên</div>
+        </div>
+      </button>
+
+      <!-- Popup tài khoản -->
+      <div id="sbUserDropdown" class="sidebar-user-dropdown" role="menu" aria-hidden="true">
+        <div class="p-3 border-b border-gray-100 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-emerald-600 grid place-items-center text-white">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold text-gray-800 truncate">Nguyễn Văn Admin</p>
+            <p class="text-xs text-gray-500 truncate">admin@cyberfortis.com</p>
+          </div>
+        </div>
+
+        <a class="dropdown-item" href=""><i class="fas fa-user-cog w-5"></i>Hồ sơ cá nhân</a>
+        <a class="dropdown-item" href="#"><i class="fas fa-cog w-5"></i>Cài đặt tài khoản</a>
+        <a class="dropdown-item" href="#"><i class="fas fa-bell w-5"></i>Thông báo</a>
+        <hr class="my-1">
+        <a class="dropdown-item text-red-600 hover:bg-red-50" href="IntroEmployee.html"><i class="fas fa-sign-out-alt w-5"></i>Đăng xuất</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberFortis - Hỗ trợ & Trợ giúp</title>
+ 
+  <!-- Tailwind, Icons, Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="assets/css/sidebar.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/help-admin.css">
+</head>
+<body class="bg-gray-50">
+      <!-- Sidebar & Header placeholders (nạp động) -->
+<aside id="sidebar" class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+  <header id="header" class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+
+    <!-- Main Content -->
+  <main id="mainContent" class="main-content content-transition min-h-screen">
+    <section class="px-6 pt-6">
+        <div class="page-header">
+            <div class="page-header-content">
+                <h1 class="page-title">Trung tâm hỗ trợ</h1>
+                <p class="page-subtitle">Tìm câu trả lời cho mọi thắc mắc về hệ thống CyberFortis</p>
+                
+                <div class="header-search">
+                    <input type="text" placeholder="Tìm kiếm câu hỏi, hướng dẫn..." onkeyup="searchFAQ(this.value)">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="action-card" onclick="scrollToSection('faq')">
+                <div class="action-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3 class="action-title">Câu hỏi thường gặp</h3>
+                <p class="action-description">Tìm câu trả lời nhanh chóng cho các vấn đề phổ biến nhất</p>
+            </div>
+            
+            <div class="action-card" onclick="openChat()">
+                <div class="action-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 class="action-title">Chat trực tiếp</h3>
+                <p class="action-description">Trò chuyện với đội ngũ hỗ trợ để được giải đáp ngay lập tức</p>
+            </div>
+            
+            <div class="action-card" onclick="scrollToSection('contact')">
+                <div class="action-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="action-title">Liên hệ hỗ trợ</h3>
+                <p class="action-description">Gửi yêu cầu hỗ trợ qua email hoặc gọi điện trực tiếp</p>
+            </div>
+            
+            <div class="action-card" onclick="downloadGuide()">
+                <div class="action-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3 class="action-title">Hướng dẫn sử dụng</h3>
+                <p class="action-description">Tải xuống tài liệu hướng dẫn chi tiết về các tính năng</p>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div id="faq" class="faq-section">
+            <div class="faq-header">
+                <h2 class="faq-title">Câu hỏi thường gặp</h2>
+                <p class="faq-subtitle">Tìm câu trả lời cho những thắc mắc phổ biến nhất</p>
+            </div>
+            
+            <div class="faq-categories">
+                <button class="faq-category active" onclick="filterFAQ('all')">Tất cả</button>
+                <button class="faq-category" onclick="filterFAQ('account')">Tài khoản</button>
+                <button class="faq-category" onclick="filterFAQ('candidates')">Quản lý ứng viên</button>
+                <button class="faq-category" onclick="filterFAQ('interviews')">Phỏng vấn</button>
+                <button class="faq-category" onclick="filterFAQ('reports')">Báo cáo</button>
+                <button class="faq-category" onclick="filterFAQ('technical')">Kỹ thuật</button>
+            </div>
+            
+            <div class="faq-list">
+                <div class="faq-item" data-category="account">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Làm thế nào để đổi mật khẩu tài khoản?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Để đổi mật khẩu tài khoản, bạn có thể làm theo các bước sau:</p>
+                            <ol>
+                                <li>Vào menu "Hồ sơ Admin" ở sidebar bên trái</li>
+                                <li>Click vào tab "Bảo mật"</li>
+                                <li>Nhập mật khẩu hiện tại và mật khẩu mới</li>
+                                <li>Click "Cập nhật mật khẩu"</li>
+                            </ol>
+                            <p><strong>Lưu ý:</strong> Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="candidates">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Cách thêm ứng viên mới vào hệ thống?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Có 2 cách để thêm ứng viên mới:</p>
+                            <h4>Cách 1: Thêm thủ công</h4>
+                            <ol>
+                                <li>Vào trang "Ứng viên"</li>
+                                <li>Click nút "Thêm ứng viên mới"</li>
+                                <li>Điền đầy đủ thông tin cá nhân</li>
+                                <li>Upload CV và các tài liệu liên quan</li>
+                                <li>Chọn vị trí ứng tuyển</li>
+                                <li>Click "Lưu thông tin"</li>
+                            </ol>
+                            <h4>Cách 2: Import từ file Excel</h4>
+                            <ol>
+                                <li>Tải template Excel từ hệ thống</li>
+                                <li>Điền thông tin ứng viên vào file</li>
+                                <li>Upload file lên hệ thống</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="interviews">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Làm thế nào để xếp lịch phỏng vấn cho ứng viên?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Để xếp lịch phỏng vấn, bạn có thể:</p>
+                            <ol>
+                                <li>Vào trang "Phỏng vấn" hoặc "Trạng thái chờ"</li>
+                                <li>Tìm ứng viên cần xếp lịch</li>
+                                <li>Click vào icon lịch (📅) trong cột "Thao tác"</li>
+                                <li>Chọn ngày, giờ phỏng vấn</li>
+                                <li>Chọn người phỏng vấn</li>
+                                <li>Nhập địa điểm hoặc link meeting</li>
+                                <li>Thêm ghi chú nếu cần</li>
+                                <li>Click "Xác nhận xếp lịch"</li>
+                            </ol>
+                            <p>Hệ thống sẽ tự động gửi email thông báo cho ứng viên và người phỏng vấn.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="reports">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Cách xuất báo cáo thống kê tuyển dụng?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Để xuất báo cáo thống kê:</p>
+                            <ol>
+                                <li>Vào trang "Thống kê & Báo cáo"</li>
+                                <li>Chọn loại báo cáo cần xuất</li>
+                                <li>Thiết lập khoảng thời gian</li>
+                                <li>Chọn các bộ lọc (vị trí, trạng thái...)</li>
+                                <li>Click "Xuất báo cáo"</li>
+                                <li>Chọn định dạng file (Excel, PDF)</li>
+                            </ol>
+                            <p>Báo cáo sẽ được tải xuống tự động hoặc gửi qua email tùy theo cài đặt.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="technical">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Tại sao tôi không thể upload file CV?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Có một số nguyên nhân có thể gây ra lỗi upload file:</p>
+                            <h4>Kiểm tra định dạng file:</h4>
+                            <ul>
+                                <li>Chỉ hỗ trợ: PDF, DOC, DOCX</li>
+                                <li>Kích thước tối đa: 10MB</li>
+                            </ul>
+                            <h4>Kiểm tra kết nối mạng:</h4>
+                            <ul>
+                                <li>Đảm bảo kết nối internet ổn định</li>
+                                <li>Thử tải lại trang và upload lại</li>
+                            </ul>
+                            <h4>Xóa cache trình duyệt:</h4>
+                            <ul>
+                                <li>Nhấn Ctrl+F5 để tải lại trang</li>
+                                <li>Xóa cache và cookies</li>
+                            </ul>
+                            <p>Nếu vẫn gặp lỗi, vui lòng liên hệ bộ phận kỹ thuật.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="candidates">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Cách tìm kiếm và lọc ứng viên hiệu quả?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Hệ thống cung cấp nhiều cách để tìm kiếm ứng viên:</p>
+                            <h4>Tìm kiếm cơ bản:</h4>
+                            <ul>
+                                <li>Nhập tên, email hoặc số điện thoại vào ô tìm kiếm</li>
+                                <li>Tìm theo kỹ năng hoặc kinh nghiệm</li>
+                            </ul>
+                            <h4>Bộ lọc nâng cao:</h4>
+                            <ul>
+                                <li>Lọc theo vị trí ứng tuyển</li>
+                                <li>Lọc theo trạng thái (chờ phỏng vấn, đã phỏng vấn...)</li>
+                                <li>Lọc theo điểm đánh giá</li>
+                                <li>Lọc theo thời gian ứng tuyển</li>
+                                <li>Lọc theo nguồn ứng viên</li>
+                            </ul>
+                            <h4>Lưu bộ lọc:</h4>
+                            <p>Bạn có thể lưu các bộ lọc thường dùng để sử dụng lại sau này.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="account">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Cách phân quyền cho nhân viên khác?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Để phân quyền cho nhân viên:</p>
+                            <ol>
+                                <li>Vào trang "Nhân viên"</li>
+                                <li>Click "Thêm nhân viên mới" hoặc chỉnh sửa nhân viên hiện có</li>
+                                <li>Chọn vai trò phù hợp:</li>
+                                <ul>
+                                    <li><strong>Admin:</strong> Toàn quyền hệ thống</li>
+                                    <li><strong>HR Manager:</strong> Quản lý tuyển dụng</li>
+                                    <li><strong>Interviewer:</strong> Chỉ phỏng vấn và đánh giá</li>
+                                    <li><strong>Viewer:</strong> Chỉ xem thông tin</li>
+                                </ul>
+                                <li>Thiết lập quyền truy cập cụ thể cho từng module</li>
+                                <li>Gửi thông tin đăng nhập cho nhân viên</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="technical">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Hệ thống có hỗ trợ trên mobile không?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Có, CyberFortis được thiết kế responsive và hỗ trợ đầy đủ trên mobile:</p>
+                            <h4>Tính năng trên mobile:</h4>
+                            <ul>
+                                <li>Xem danh sách ứng viên</li>
+                                <li>Đánh giá và ghi chú phỏng vấn</li>
+                                <li>Xem lịch phỏng vấn</li>
+                                <li>Nhận thông báo push</li>
+                                <li>Chat hỗ trợ</li>
+                            </ul>
+                            <h4>Trình duyệt được hỗ trợ:</h4>
+                            <ul>
+                                <li>Chrome (Android)</li>
+                                <li>Safari (iOS)</li>
+                                <li>Firefox Mobile</li>
+                                <li>Edge Mobile</li>
+                            </ul>
+                            <p><strong>Khuyến nghị:</strong> Sử dụng Chrome hoặc Safari phiên bản mới nhất để có trải nghiệm tốt nhất.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="contact-section">
+            <div class="contact-card">
+                <div class="contact-icon email">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3 class="contact-title">Email hỗ trợ</h3>
+                <p class="contact-info">Gửi email cho chúng tôi<br>Phản hồi trong 24h</p>
+                <a href="mailto:support@cyberfortis.com" class="contact-btn primary">
+                    Gửi email
+                </a>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-icon phone">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3 class="contact-title">Hotline</h3>
+                <p class="contact-info">1900-xxxx<br>Hỗ trợ 24/7</p>
+                <a href="tel:1900xxxx" class="contact-btn primary">
+                    Gọi ngay
+                </a>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-icon chat">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 class="contact-title">Live Chat</h3>
+                <p class="contact-info">Trò chuyện trực tiếp<br>Phản hồi ngay lập tức</p>
+                <button class="contact-btn primary" onclick="openChat()">
+                    Bắt đầu chat
+                </button>
+            </div>
+        </div> 
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-blue-600 rounded-lg grid place-items-center text-white font-bold">CF</div>
+              <div><h3 class="text-lg font-semibold text-gray-900">CyberFortis</h3><p class="text-gray-600 text-sm">Bảo vệ thế giới số</p></div>
+            </div>
+            <p class="text-gray-700 mb-4 max-w-md">Công ty hàng đầu về an ninh mạng tại Việt Nam với hơn 15 năm kinh nghiệm bảo vệ doanh nghiệp khỏi các mối đe dọa cyber.</p>
+            <div class="flex gap-4">
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="footer-title">Liên kết nhanh</h4>
+            <ul class="footer-list">
+              <li><a href="#" class="footer-link">Về chúng tôi</a></li>
+              <li><a href="#" class="footer-link">Dịch vụ</a></li>
+              <li><a href="#" class="footer-link">Tuyển dụng</a></li>
+              <li><a href="#" class="footer-link">Tin tức</a></li>
+              <li><a href="#" class="footer-link">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-title">Hỗ trợ</h4>
+            <ul class="footer-list">
+              <li class="text-gray-600 text-sm">📧 hr@cyberfortis.vn</li>
+              <li class="text-gray-600 text-sm">📞 (024) 3999 8888</li>
+              <li class="text-gray-600 text-sm">📍 Hà Nội, Việt Nam</li>
+              <li class="text-gray-600 text-sm">🕒 T2-T6: 8:00-17:30</li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-500 text-sm">© 2024 CyberFortis. Tất cả quyền được bảo lưu.</p>
+          <div class="flex gap-6 mt-4 md:mt-0">
+            <a href="#" class="footer-link">Chính sách bảo mật</a>
+            <a href="#" class="footer-link">Điều khoản sử dụng</a>
+            <a href="#" class="footer-link">Cookie</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Floating Chat Button -->
+    <button class="chat-float" onclick="toggleChat()" id="chatFloat">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="chat-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-user-info">
+                    <h4>CyberBot</h4>
+                    <div class="chat-status">
+                        <div class="status-dot"></div>
+                        Đang hoạt động
+                    </div>
+                </div>
+            </div>
+            <button class="chat-close" onclick="closeChat()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="message-avatar">CB</div>
+                <div>
+                    <div class="message-content">
+                        Xin chào! Tôi là CyberBot, trợ lý ảo của CyberFortis. Tôi có thể giúp bạn:
+                        <br><br>
+                        • Trả lời câu hỏi về hệ thống<br>
+                        • Hướng dẫn sử dụng tính năng<br>
+                        • Kết nối với nhân viên hỗ trợ<br>
+                        <br>
+                        Bạn cần hỗ trợ gì hôm nay?
+                    </div>
+                    <div class="message-time">Vừa xong</div>
+                </div>
+            </div>
+            
+            <div class="chat-actions">
+                <button class="chat-action" onclick="sendQuickMessage('Hướng dẫn thêm ứng viên')">
+                    Hướng dẫn thêm ứng viên
+                </button>
+                <button class="chat-action" onclick="sendQuickMessage('Cách xếp lịch phỏng vấn')">
+                    Cách xếp lịch phỏng vấn
+                </button>
+                <button class="chat-action" onclick="sendQuickMessage('Xuất báo cáo')">
+                    Xuất báo cáo
+                </button>
+                <button class="chat-action" onclick="sendQuickMessage('Liên hệ nhân viên')">
+                    Liên hệ nhân viên
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <div class="chat-input-container">
+                <textarea 
+                    class="chat-input-field" 
+                    placeholder="Nhập tin nhắn..." 
+                    id="chatInput"
+                    onkeypress="handleChatKeyPress(event)"
+                    rows="1"
+                ></textarea>
+                <button class="chat-send" onclick="sendMessage()" id="chatSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+  </main>
+  <!-- NẠP SIDEBAR & HEADER -->
+<script>
+  fetch('Sidebar.html').then(r=>r.text()).then(h=>{ document.getElementById('sidebar').innerHTML=h; });
+  fetch('Header.html').then(r=>r.text()).then(h=>{ document.getElementById('header').innerHTML=h; });
+</script>
+
+
+  <!-- App JS -->
+  <script src="assets/js/sidebar.js" defer></script>
+  <script src="assets/js/header.js" defer></script>
+<script src="assets/js/help-admin.js" defer></script>
+</body>
+</html>

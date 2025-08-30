@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tổng quan tuyển dụng (Quản trị viên) - CyberFortis</title>
+
+        <!-- Tailwind, Icons, Chart.js -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+            rel="stylesheet">
+
+        <!-- App CSS -->
+        <link rel="stylesheet" href="/assets/css/loading.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/header.css">
+        <link rel="stylesheet" href="assets/css/position-admin.css">
+    </head>
+    <body class="bg-gradient-to-br from-green-50 to-indigo-100 min-h-screen">
+
+        <!-- Sidebar & Header placeholders (nạp động) -->
+        <aside id="sidebar"
+            class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+        <header id="header"
+            class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+
+        <!-- Main -->
+        <main id="mainContent"
+            class="main-content content-transition min-h-screen">
+            <!-- Search + Filters -->
+            <!-- Toolbar -->
+            <section class="px-6 pt-6">
+                <!-- Toolbar -->
+                <div
+                    class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 mb-8">
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex-1 min-w-64">
+                            <div class="relative">
+                                <i
+                                    class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                <input type="text"
+                                    placeholder="Tìm kiếm ứng viên hoặc vị trí…"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm">
+                            </div>
+                        </div>
+                        <!-- Action Buttons -->
+
+                        <select
+                            class="filter-select px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option>Tất cả phòng ban</option>
+                            <option>Công nghệ</option>
+                            <option>Thiết kế</option>
+                            <option>Marketing</option>
+                            <option>Kinh doanh</option>
+                            <option>Nhân sự</option>
+                        </select>
+
+                        <select
+                            class="filter-select px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option>Tất cả cấp độ</option>
+                            <option>Intern</option>
+                            <option>Junior</option>
+                            <option>Mid</option>
+                            <option>Senior</option>
+                            <option>Lead</option>
+                        </select>
+
+                        <select
+                            class="filter-select px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option>Tất cả trạng thái</option>
+                            <option>Đang tuyển</option>
+                            <option>Tạm dừng</option>
+                            <option>Bản nháp</option>
+                            <option>Đã đóng</option>
+                        </select>
+
+                        <select
+                            class="filter-select px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option>Mới nhất</option>
+                            <option>Cũ nhất</option>
+                            <option>Nhiều UV</option>
+                            <option>Ít UV</option>
+                        </select>
+
+                        <div class="ml-auto flex items-center space-x-3">
+                            <span
+                                class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium">Hiển
+                                thị: 47 vị trí</span>
+                            <span
+                                class="px-3 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium">Mới
+                                nhất</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+
+                            <button onclick="openAddCandidate()"
+                                class="px-6 py-3 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl">
+                                <i class="fas fa-user-plus mr-2"></i>Thêm vị
+                                trí</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-9 gap-6 mb-8">
+                    <!-- Status Distribution Chart -->
+                    <div
+                        class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 lg:col-span-2">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Phân
+                                bố trạng thái</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                        <div class="chart-container h-[360px]">
+                            <canvas id="statusChart"
+                                class="w-full h-full"></canvas>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mt-4">
+                            <div class="text-center">
+                                <div
+                                    class="flex items-center justify-center space-x-1 mb-1">
+                                    <div
+                                        class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span
+                                        class="text-xs text-gray-600">Đang</span>
+                                </div>
+                                <p
+                                    class="text-sm font-semibold text-gray-800">70%</p>
+                            </div>
+                            <div class="text-center">
+                                <div
+                                    class="flex items-center justify-center space-x-1 mb-1">
+                                    <div
+                                        class="w-2 h-2 bg-cyan-300 rounded-full"></div>
+                                    <span
+                                        class="text-xs text-gray-600">Tạm</span>
+                                </div>
+                                <p
+                                    class="text-sm font-semibold text-gray-800">15%</p>
+                            </div>
+                            <div class="text-center">
+                                <div
+                                    class="flex items-center justify-center space-x-1 mb-1">
+                                    <div
+                                        class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                    <span
+                                        class="text-xs text-gray-600">Đóng</span>
+                                </div>
+                                <p
+                                    class="text-sm font-semibold text-gray-800">15%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Biểu đồ theo Vị trí -->
+                    <div
+                        class="lg:col-span-1 grid grid-rows-4 gap-4 kpi-stack h-full">
+                        <div
+                            class="kpi-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50 h-full">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p
+                                        class="text-sm text-gray-600 font-medium">Tổng
+                                        vị trí</p>
+                                    <p
+                                        class="text-3xl font-bold text-sky-600 mt-1">47</p>
+                                </div>
+                                <div
+                                    class="w-14 h-14 bg-gradient-to-br from-blue-600 to-sky-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <i
+                                        class="fas fa-briefcase text-white text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="kpi-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50 h-full">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p
+                                        class="text-sm text-gray-600 font-medium">Đang
+                                        tuyển</p>
+                                    <p
+                                        class="text-3xl font-bold text-cyan-600 mt-1">23</p>
+                                </div>
+                                <div
+                                    class="w-14 h-14 bg-gradient-to-br from-sky-600 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <i
+                                        class="fas fa-play-circle text-white text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="kpi-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50 h-full">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p
+                                        class="text-sm text-gray-600 font-medium">Ứng
+                                        viên</p>
+                                    <p
+                                        class="text-3xl font-bold text-teal-600 mt-1">1,247</p>
+                                </div>
+                                <div
+                                    class="w-14 h-14 bg-gradient-to-br from-cyan-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <i
+                                        class="fas fa-users text-white text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="kpi-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/50 h-full">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p
+                                        class="text-sm text-gray-600 font-medium">Tỷ
+                                        lệ tuyển</p>
+                                    <p
+                                        class="text-3xl font-bold text-emerald-600 mt-1">12.5%</p>
+                                </div>
+                                <div
+                                    class="w-14 h-14 bg-gradient-to-br from-teal-600 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                    <i
+                                        class="fas fa-chart-line text-white text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Department Distribution -->
+                    <div
+                        class="rounded-2xl bg-white/80 border border-white/50 shadow-lg p-6 h-full flex flex-col lg:col-span-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Theo
+                                phòng ban</h3>
+                            <div
+                                class="inline-flex bg-slate-100 rounded-xl p-1 text-sm">
+                                <button id="btnRangeMonth"
+                                    class="range-tab px-3 py-1 rounded-lg bg-white shadow"
+                                    onclick="setDeptRange('month')">Tháng</button>
+                                <button id="btnRangeQuarter"
+                                    class="range-tab px-3 py-1 rounded-lg"
+                                    onclick="setDeptRange('quarter')">Quý</button>
+                                <button id="btnRangeYear"
+                                    class="range-tab px-3 py-1 rounded-lg"
+                                    onclick="setDeptRange('year')">Năm</button>
+                            </div>
+                        </div>
+                        <div
+                            class="chart-container grow h-[360px] lg:h-[420px] xl:h-[460px]">
+                            <canvas id="deptTrendChart"
+                                class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top Performing Jobs -->
+                    <div
+                        class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 p-6 lg:col-span-2">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">Vị
+                                    trí hot nhất</h3>
+                                <p class="text-gray-600 text-sm">Theo số lượng
+                                    ứng viên</p>
+                            </div>
+                            <button
+                                class="text-blue-600 hover:text-blue-700 text-sm font-medium">Xem
+                                tất cả</button>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-8 h-8 bg-gradient-to-r from-blue-600 to-sky-600 rounded-lg flex items-center justify-center">
+                                        <i
+                                            class="fas fa-code text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-gray-800">Senior
+                                            Frontend Dev</p>
+                                        <p class="text-xs text-gray-500">Công
+                                            nghệ</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-blue-600">127</p>
+                                    <p class="text-xs text-gray-500">ứng
+                                        viên</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-8 h-8 bg-gradient-to-r from-sky-600 to-cyan-600 rounded-lg flex items-center justify-center">
+                                        <i
+                                            class="fas fa-palette text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-gray-800">UI/UX
+                                            Designer</p>
+                                        <p class="text-xs text-gray-500">Thiết
+                                            kế</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-sky-600">89</p>
+                                    <p class="text-xs text-gray-500">ứng
+                                        viên</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-8 h-8 bg-gradient-to-r from-cyan-600 to-teal-600 rounded-lg flex items-center justify-center">
+                                        <i
+                                            class="fas fa-database text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-gray-800">Backend
+                                            Developer</p>
+                                        <p class="text-xs text-gray-500">Công
+                                            nghệ</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-cyan-600">67</p>
+                                    <p class="text-xs text-gray-500">ứng
+                                        viên</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-8 h-8 bg-gradient-to-r from-teal-600 to-emerald-600 rounded-lg flex items-center justify-center">
+                                        <i
+                                            class="fas fa-chart-bar text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p
+                                            class="font-medium text-gray-800">Sales
+                                            Manager</p>
+                                        <p class="text-xs text-gray-500">Kinh
+                                            doanh</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-teal-600">45</p>
+                                    <p class="text-xs text-gray-500">ứng
+                                        viên</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-yellow-50 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-lightbulb text-yellow-600"></i>
+                                <span class="text-sm text-yellow-800">
+                                    <strong>Gợi ý:</strong> Vị trí Frontend Dev
+                                    có tỷ lệ ứng tuyển cao nhất
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jobs Grid -->
+                <section
+                    class="job-rail full-bleed -mx-6 px-6 cards-wide is-compact">
+                    <div class="job-rail__track">
+                        <article
+                            class="group relative bg-gradient-to-br from-white to-blue-50/30 p-8 rounded-3xl border border-orange-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+
+                            <!-- Position Card 1 - Backend Developer -->
+                            <div
+                                class="group relative bg-gradient-to-br from-white to-blue-50/30 p-8 rounded-3xl border border-blue-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                <!-- Background Pattern -->
+                                <div
+                                    class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                                <div            
+                                    class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/5 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+
+                                <!-- Header -->
+                                <div
+                                    class="relative flex items-start justify-between mb-6">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="relative">
+                                            <div
+                                                class="w-16 h-16 bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300">
+                                                <i
+                                                    class="fas fa-code text-white text-2xl"></i>
+                                            </div>
+                                            <div
+                                                class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                                <i
+                                                    class="fas fa-check text-white text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="flex items-center space-x-2 mb-1">
+                                                <span
+                                                    class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full border border-green-200">ĐANG
+                                                    TUYỂN</span>
+                                                <span
+                                                    class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-md">HOT</span>
+                                            </div>
+                                            <p
+                                                class="text-xs text-gray-500 font-medium">ID:
+                                                #DEV001</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200">
+                                        <i class="fas fa-bookmark text-lg"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Title & Department -->
+                                <div class="mb-6">
+                                    <h3
+                                        class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">Senior
+                                        Backend Developer</h3>
+                                    <div class="flex items-center space-x-2">
+                                        <div
+                                            class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        <p
+                                            class="text-blue-600 font-semibold text-sm">Phòng
+                                            Công nghệ thông tin</p>
+                                    </div>
+                                </div>
+
+                                <!-- Info Grid -->
+                                <div class="grid grid-cols-2 gap-4 mb-6">
+                                    <div
+                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                        <div
+                                            class="flex items-center space-x-2 mb-2">
+                                            <i
+                                                class="fas fa-map-marker-alt text-red-500 text-sm"></i>
+                                            <span
+                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Địa
+                                                điểm</span>
+                                        </div>
+                                        <p
+                                            class="text-sm font-bold text-gray-900">Hà
+                                            Nội</p>
+                                    </div>
+                                    <div
+                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                        <div
+                                            class="flex items-center space-x-2 mb-2">
+                                            <i
+                                                class="fas fa-dollar-sign text-green-500 text-sm"></i>
+                                            <span
+                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Lương</span>
+                                        </div>
+                                        <p
+                                            class="text-sm font-bold text-gray-900">25-35M</p>
+                                    </div>
+                                    <div
+                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                        <div
+                                            class="flex items-center space-x-2 mb-2">
+                                            <i
+                                                class="fas fa-clock text-orange-500 text-sm"></i>
+                                            <span
+                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Kinh
+                                                nghiệm</span>
+                                        </div>
+                                        <p
+                                            class="text-sm font-bold text-gray-900">2+
+                                            năm</p>
+                                    </div>
+                                    <div
+                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                        <div
+                                            class="flex items-center space-x-2 mb-2">
+                                            <i
+                                                class="fas fa-briefcase text-purple-500 text-sm"></i>
+                                            <span
+                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Loại
+                                                hình</span>
+                                        </div>
+                                        <p
+                                            class="text-sm font-bold text-gray-900">Full-time</p>
+                                    </div>
+                                </div>
+
+                                <!-- Stats -->
+                                <div
+                                    class="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                                    <div class="text-center">
+                                        <div
+                                            class="flex items-center justify-center space-x-1 mb-1">
+                                            <i
+                                                class="fas fa-users text-blue-600 text-sm"></i>
+                                            <span
+                                                class="text-2xl font-bold text-blue-600">12</span>
+                                        </div>
+                                        <p
+                                            class="text-xs text-gray-600 font-medium">Ứng
+                                            viên</p>
+                                    </div>
+                                    <div class="w-px h-8 bg-blue-200"></div>
+                                    <div class="text-center">
+                                        <div
+                                            class="flex items-center justify-center space-x-1 mb-1">
+                                            <i
+                                                class="fas fa-layer-group text-cyan-600 text-sm"></i>
+                                            <span
+                                                class="text-2xl font-bold text-cyan-600">3</span>
+                                        </div>
+                                        <p
+                                            class="text-xs text-gray-600 font-medium">Vòng
+                                            PV</p>
+                                    </div>
+                                    <div class="w-px h-8 bg-blue-200"></div>
+                                    <div class="text-center">
+                                        <div
+                                            class="flex items-center justify-center space-x-1 mb-1">
+                                            <i
+                                                class="fas fa-percentage text-green-600 text-sm"></i>
+                                            <span
+                                                class="text-2xl font-bold text-green-600">85</span>
+                                        </div>
+                                        <p
+                                            class="text-xs text-gray-600 font-medium">Tỷ
+                                            lệ</p>
+                                    </div>
+                                </div>
+
+                                <!-- Skills -->
+                                <div class="mb-6">
+                                    <p
+                                        class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Kỹ
+                                        năng yêu cầu</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span
+                                            class="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold rounded-lg shadow-sm">Java</span>
+                                        <span
+                                            class="px-3 py-1.5 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold rounded-lg shadow-sm">Spring
+                                            Boot</span>
+                                        <span
+                                            class="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs font-bold rounded-lg shadow-sm">MySQL</span>
+                                        <span
+                                            class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-md">+3
+                                            more</span>
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="flex items-center space-x-3">
+                                    <button onclick="openModal('backend-dev')"
+                                        class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-sky-600 text-white rounded-xl hover:from-blue-700 hover:to-cyan-500 transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-blue-500/25 transform hover:scale-105">
+                                        <i class="fas fa-eye mr-2"></i>Xem chi
+                                        tiết
+                                    </button>
+                                    <button
+                                        onclick="editPosition('backend-dev')"
+                                        class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button
+                                        class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+                            </article>
+
+                            <!-- Card 2 - Sales Manager -->
+                            <article
+                                class="group relative bg-gradient-to-br from-white to-cyan-50/30 p-8 rounded-3xl border border-orange-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+
+                                <!-- Position Card 2 - Sales Manager -->
+                                <div
+                                    class="group relative bg-gradient-to-br from-white to-cyan-50/30 p-8 rounded-3xl border border-orange-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                    <!-- Background Pattern -->
+                                    <div
+                                        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                                    <div
+                                        class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-red-400/5 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+
+                                    <!-- Header -->
+                                    <div
+                                        class="relative flex items-start justify-between mb-6">
+                                        <div
+                                            class="flex items-center space-x-4">
+                                            <div class="relative">
+                                                <div
+                                                    class="w-16 h-16 bg-gradient-to-br from-sky-600 via-cyan-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-cyan-500/25 transition-all duration-300">
+                                                    <i
+                                                        class="fas fa-chart-line text-white text-2xl"></i>
+                                                </div>
+                                                <div
+                                                    class="absolute -top-1 -right-1 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center">
+                                                    <i
+                                                        class="fas fa-pause text-white text-xs"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    class="flex items-center space-x-2 mb-1">
+                                                    <span
+                                                        class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-full border border-yellow-200">TẠM
+                                                        DỪNG</span>
+                                                    <span
+                                                        class="px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-md">URGENT</span>
+                                                </div>
+                                                <p
+                                                    class="text-xs text-gray-500 font-medium">ID:
+                                                    #SAL002</p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="p-2 text-gray-400 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-all duration-200">
+                                            <i
+                                                class="fas fa-bookmark text-lg"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Title & Department -->
+                                    <div class="mb-6">
+                                        <h3
+                                            class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors duration-300">Trưởng
+                                            phòng Kinh doanh</h3>
+                                        <div
+                                            class="flex items-center space-x-2">
+                                            <div
+                                                class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                            <p
+                                                class="text-cyan-600 font-semibold text-sm">Phòng
+                                                Kinh doanh & Marketing</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Info Grid -->
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div
+                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                            <div
+                                                class="flex items-center space-x-2 mb-2">
+                                                <i
+                                                    class="fas fa-map-marker-alt text-red-500 text-sm"></i>
+                                                <span
+                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Địa
+                                                    điểm</span>
+                                            </div>
+                                            <p
+                                                class="text-sm font-bold text-gray-900">TP.HCM</p>
+                                        </div>
+                                        <div
+                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                            <div
+                                                class="flex items-center space-x-2 mb-2">
+                                                <i
+                                                    class="fas fa-dollar-sign text-green-500 text-sm"></i>
+                                                <span
+                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Lương</span>
+                                            </div>
+                                            <p
+                                                class="text-sm font-bold text-gray-900">40-60M</p>
+                                        </div>
+                                        <div
+                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                            <div
+                                                class="flex items-center space-x-2 mb-2">
+                                                <i
+                                                    class="fas fa-clock text-orange-500 text-sm"></i>
+                                                <span
+                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Kinh
+                                                    nghiệm</span>
+                                            </div>
+                                            <p
+                                                class="text-sm font-bold text-gray-900">5+
+                                                năm</p>
+                                        </div>
+                                        <div
+                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                            <div
+                                                class="flex items-center space-x-2 mb-2">
+                                                <i
+                                                    class="fas fa-briefcase text-purple-500 text-sm"></i>
+                                                <span
+                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Loại
+                                                    hình</span>
+                                            </div>
+                                            <p
+                                                class="text-sm font-bold text-gray-900">Full-time</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Stats -->
+                                    <div
+                                        class="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-sky-100 to-teal100 rounded-xl border border-cyan-100">
+                                        <div class="text-center">
+                                            <div
+                                                class="flex items-center justify-center space-x-1 mb-1">
+                                                <i
+                                                    class="fas fa-users text-cyan-600 text-sm"></i>
+                                                <span
+                                                    class="text-2xl font-bold text-cyan-600">8</span>
+                                            </div>
+                                            <p
+                                                class="text-xs text-gray-600 font-medium">Ứng
+                                                viên</p>
+                                        </div>
+                                        <div
+                                            class="w-px h-8 bg-orange-200"></div>
+                                        <div class="text-center">
+                                            <div
+                                                class="flex items-center justify-center space-x-1 mb-1">
+                                                <i
+                                                    class="fas fa-layer-group text-green-600 text-sm"></i>
+                                                <span
+                                                    class="text-2xl font-bold text-green-600">2</span>
+                                            </div>
+                                            <p
+                                                class="text-xs text-gray-600 font-medium">Vòng
+                                                PV</p>
+                                        </div>
+                                        <div
+                                            class="w-px h-8 bg-orange-200"></div>
+                                        <div class="text-center">
+                                            <div
+                                                class="flex items-center justify-center space-x-1 mb-1">
+                                                <i
+                                                    class="fas fa-percentage text-yellow-600 text-sm"></i>
+                                                <span
+                                                    class="text-2xl font-bold text-yellow-600">62</span>
+                                            </div>
+                                            <p
+                                                class="text-xs text-gray-600 font-medium">Tỷ
+                                                lệ</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Skills -->
+                                    <div class="mb-6">
+                                        <p
+                                            class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Kỹ
+                                            năng yêu cầu</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span
+                                                class="px-3 py-1.5 bg-gradient-to-r from-sky-600 to-sky-500 text-white text-xs font-bold rounded-lg shadow-sm">Quản
+                                                lý</span>
+                                            <span
+                                                class="px-3 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white text-xs font-bold rounded-lg shadow-sm">Bán
+                                                hàng</span>
+                                            <span
+                                                class="px-3 py-1.5 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold rounded-lg shadow-sm">Marketing</span>
+                                            <span
+                                                class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-md">+2
+                                                more</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="flex items-center space-x-3">
+                                        <button
+                                            onclick="openModal('sales-manager')"
+                                            class="flex-1 px-6 py-3 bg-gradient-to-r from-sky-600 to-teal-600 text-white rounded-xl hover:from-cyan-700 hover:to-green-500 transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-cyan-500/25 transform hover:scale-105">
+                                            <i class="fas fa-eye mr-2"></i>Xem
+                                            chi tiết
+                                        </button>
+                                        <button
+                                            onclick="editPosition('sales-manager')"
+                                            class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button
+                                            class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                            <i class="fas fa-share-alt"></i>
+                                        </button>
+                                    </div>
+                                </article>
+
+                                <!-- Card 3 - UI/UX Designer -->
+                                <article
+                                    class="group relative bg-gradient-to-br from-white to-purple-50/30 p-8 rounded-3xl border border-purple-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                    <!-- Position Card 3 - UI/UX Designer -->
+                                    <div
+                                        class="group relative bg-gradient-to-br from-white to-purple-50/30 p-8 rounded-3xl border border-purple-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                        <!-- Background Pattern -->
+                                        <div
+                                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                                        <div
+                                            class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-400/5 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+
+                                        <!-- Header -->
+                                        <div
+                                            class="relative flex items-start justify-between mb-6">
+                                            <div
+                                                class="flex items-center space-x-4">
+                                                <div class="relative">
+                                                    <div
+                                                        class="w-16 h-16 bg-gradient-to-br from-teal-600 via-emerald-600 to-green-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/25 transition-all duration-300">
+                                                        <i
+                                                            class="fas fa-palette text-white text-2xl"></i>
+                                                    </div>
+                                                    <div
+                                                        class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                                        <i
+                                                            class="fas fa-check text-white text-xs"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div
+                                                        class="flex items-center space-x-2 mb-1">
+                                                        <span
+                                                            class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full border border-green-200">ĐANG
+                                                            TUYỂN</span>
+                                                        <span
+                                                            class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-md">CREATIVE</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-xs text-gray-500 font-medium">ID:
+                                                        #DES003</p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                class="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200">
+                                                <i
+                                                    class="fas fa-bookmark text-lg"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Title & Department -->
+                                        <div class="mb-6">
+                                            <h3
+                                                class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors duration-300">Senior
+                                                UI/UX Designer</h3>
+                                            <div
+                                                class="flex items-center space-x-2">
+                                                <div
+                                                    class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                                <p
+                                                    class="text-emerald-600 font-semibold text-sm">Phòng
+                                                    Thiết kế & Sáng tạo</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Info Grid -->
+                                        <div
+                                            class="grid grid-cols-2 gap-4 mb-6">
+                                            <div
+                                                class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                <div
+                                                    class="flex items-center space-x-2 mb-2">
+                                                    <i
+                                                        class="fas fa-map-marker-alt text-red-500 text-sm"></i>
+                                                    <span
+                                                        class="text-xs font-medium text-gray-500 uppercase tracking-wide">Địa
+                                                        điểm</span>
+                                                </div>
+                                                <p
+                                                    class="text-sm font-bold text-gray-900">Hà
+                                                    Nội</p>
+                                            </div>
+                                            <div
+                                                class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                <div
+                                                    class="flex items-center space-x-2 mb-2">
+                                                    <i
+                                                        class="fas fa-dollar-sign text-green-500 text-sm"></i>
+                                                    <span
+                                                        class="text-xs font-medium text-gray-500 uppercase tracking-wide">Lương</span>
+                                                </div>
+                                                <p
+                                                    class="text-sm font-bold text-gray-900">20-30M</p>
+                                            </div>
+                                            <div
+                                                class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                <div
+                                                    class="flex items-center space-x-2 mb-2">
+                                                    <i
+                                                        class="fas fa-clock text-orange-500 text-sm"></i>
+                                                    <span
+                                                        class="text-xs font-medium text-gray-500 uppercase tracking-wide">Kinh
+                                                        nghiệm</span>
+                                                </div>
+                                                <p
+                                                    class="text-sm font-bold text-gray-900">3+
+                                                    năm</p>
+                                            </div>
+                                            <div
+                                                class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                <div
+                                                    class="flex items-center space-x-2 mb-2">
+                                                    <i
+                                                        class="fas fa-briefcase text-purple-500 text-sm"></i>
+                                                    <span
+                                                        class="text-xs font-medium text-gray-500 uppercase tracking-wide">Loại
+                                                        hình</span>
+                                                </div>
+                                                <p
+                                                    class="text-sm font-bold text-gray-900">Full-time</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Stats -->
+                                        <div
+                                            class="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
+                                            <div class="text-center">
+                                                <div
+                                                    class="flex items-center justify-center space-x-1 mb-1">
+                                                    <i
+                                                        class="fas fa-users text-emerald-600 text-sm"></i>
+                                                    <span
+                                                        class="text-2xl font-bold text-emerald-600">15</span>
+                                                </div>
+                                                <p
+                                                    class="text-xs text-gray-600 font-medium">Ứng
+                                                    viên</p>
+                                            </div>
+                                            <div
+                                                class="w-px h-8 bg-purple-200"></div>
+                                            <div class="text-center">
+                                                <div
+                                                    class="flex items-center justify-center space-x-1 mb-1">
+                                                    <i
+                                                        class="fas fa-layer-group text-pink-600 text-sm"></i>
+                                                    <span
+                                                        class="text-2xl font-bold text-pink-600">2</span>
+                                                </div>
+                                                <p
+                                                    class="text-xs text-gray-600 font-medium">Vòng
+                                                    PV</p>
+                                            </div>
+                                            <div
+                                                class="w-px h-8 bg-purple-200"></div>
+                                            <div class="text-center">
+                                                <div
+                                                    class="flex items-center justify-center space-x-1 mb-1">
+                                                    <i
+                                                        class="fas fa-percentage text-green-600 text-sm"></i>
+                                                    <span
+                                                        class="text-2xl font-bold text-green-600">73</span>
+                                                </div>
+                                                <p
+                                                    class="text-xs text-gray-600 font-medium">Tỷ
+                                                    lệ</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Skills -->
+                                        <div class="mb-6">
+                                            <p
+                                                class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Kỹ
+                                                năng yêu cầu</p>
+                                            <div class="flex flex-wrap gap-2">
+                                                <span
+                                                    class="px-3 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-500 text-white text-xs font-bold rounded-lg shadow-sm">Figma</span>
+                                                <span
+                                                    class="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs font-bold rounded-lg shadow-sm">Adobe
+                                                    XD</span>
+                                                <span
+                                                    class="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold rounded-lg shadow-sm">Sketch</span>
+                                                <span
+                                                    class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-md">+4
+                                                    more</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Actions -->
+                                        <div
+                                            class="flex items-center space-x-3">
+                                            <button
+                                                onclick="openModal('ui-designer')"
+                                                class="flex-1 px-6 py-3 bg-gradient-to-r from-teal-600 to-green-600 text-white rounded-xl hover:from-emerald-700 hover:to-yellow-500 transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-emerald-500/25 transform hover:scale-105">
+                                                <i
+                                                    class="fas fa-eye mr-2"></i>Xem
+                                                chi tiết
+                                            </button>
+                                            <button
+                                                onclick="editPosition('ui-designer')"
+                                                class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button
+                                                class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                <i class="fas fa-share-alt"></i>
+                                            </button>
+                                        </div>
+                                    </article> <article
+                                        class="group relative bg-gradient-to-br from-white to-cyan-50/30 p-8 rounded-3xl border border-orange-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+
+                                        <!-- Position Card 1 - Backend Developer -->
+                                        <div
+                                            class="group relative bg-gradient-to-br from-white to-blue-50/30 p-8 rounded-3xl border border-blue-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                            <!-- Background Pattern -->
+                                            <div
+                                                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                                            <div
+                                                class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/5 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+
+                                            <!-- Header -->
+                                            <div
+                                                class="relative flex items-start justify-between mb-6">
+                                                <div
+                                                    class="flex items-center space-x-4">
+                                                    <div class="relative">
+                                                        <div
+                                                            class="w-16 h-16 bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300">
+                                                            <i
+                                                                class="fas fa-code text-white text-2xl"></i>
+                                                        </div>
+                                                        <div
+                                                            class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                                            <i
+                                                                class="fas fa-check text-white text-xs"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div
+                                                            class="flex items-center space-x-2 mb-1">
+                                                            <span
+                                                                class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full border border-green-200">ĐANG
+                                                                TUYỂN</span>
+                                                            <span
+                                                                class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-md">HOT</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-xs text-gray-500 font-medium">ID:
+                                                            #DEV001</p>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200">
+                                                    <i
+                                                        class="fas fa-bookmark text-lg"></i>
+                                                </button>
+                                            </div>
+
+                                            <!-- Title & Department -->
+                                            <div class="mb-6">
+                                                <h3
+                                                    class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">Senior
+                                                    Backend Developer</h3>
+                                                <div
+                                                    class="flex items-center space-x-2">
+                                                    <div
+                                                        class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                                    <p
+                                                        class="text-blue-600 font-semibold text-sm">Phòng
+                                                        Công nghệ thông tin</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Info Grid -->
+                                            <div
+                                                class="grid grid-cols-2 gap-4 mb-6">
+                                                <div
+                                                    class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                    <div
+                                                        class="flex items-center space-x-2 mb-2">
+                                                        <i
+                                                            class="fas fa-map-marker-alt text-red-500 text-sm"></i>
+                                                        <span
+                                                            class="text-xs font-medium text-gray-500 uppercase tracking-wide">Địa
+                                                            điểm</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-sm font-bold text-gray-900">Hà
+                                                        Nội</p>
+                                                </div>
+                                                <div
+                                                    class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                    <div
+                                                        class="flex items-center space-x-2 mb-2">
+                                                        <i
+                                                            class="fas fa-dollar-sign text-green-500 text-sm"></i>
+                                                        <span
+                                                            class="text-xs font-medium text-gray-500 uppercase tracking-wide">Lương</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-sm font-bold text-gray-900">25-35M</p>
+                                                </div>
+                                                <div
+                                                    class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                    <div
+                                                        class="flex items-center space-x-2 mb-2">
+                                                        <i
+                                                            class="fas fa-clock text-orange-500 text-sm"></i>
+                                                        <span
+                                                            class="text-xs font-medium text-gray-500 uppercase tracking-wide">Kinh
+                                                            nghiệm</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-sm font-bold text-gray-900">2+
+                                                        năm</p>
+                                                </div>
+                                                <div
+                                                    class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                    <div
+                                                        class="flex items-center space-x-2 mb-2">
+                                                        <i
+                                                            class="fas fa-briefcase text-purple-500 text-sm"></i>
+                                                        <span
+                                                            class="text-xs font-medium text-gray-500 uppercase tracking-wide">Loại
+                                                            hình</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-sm font-bold text-gray-900">Full-time</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Stats -->
+                                            <div
+                                                class="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                                                <div class="text-center">
+                                                    <div
+                                                        class="flex items-center justify-center space-x-1 mb-1">
+                                                        <i
+                                                            class="fas fa-users text-blue-600 text-sm"></i>
+                                                        <span
+                                                            class="text-2xl font-bold text-blue-600">12</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-xs text-gray-600 font-medium">Ứng
+                                                        viên</p>
+                                                </div>
+                                                <div
+                                                    class="w-px h-8 bg-blue-200"></div>
+                                                <div class="text-center">
+                                                    <div
+                                                        class="flex items-center justify-center space-x-1 mb-1">
+                                                        <i
+                                                            class="fas fa-layer-group text-cyan-600 text-sm"></i>
+                                                        <span
+                                                            class="text-2xl font-bold text-cyan-600">3</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-xs text-gray-600 font-medium">Vòng
+                                                        PV</p>
+                                                </div>
+                                                <div
+                                                    class="w-px h-8 bg-blue-200"></div>
+                                                <div class="text-center">
+                                                    <div
+                                                        class="flex items-center justify-center space-x-1 mb-1">
+                                                        <i
+                                                            class="fas fa-percentage text-green-600 text-sm"></i>
+                                                        <span
+                                                            class="text-2xl font-bold text-green-600">85</span>
+                                                    </div>
+                                                    <p
+                                                        class="text-xs text-gray-600 font-medium">Tỷ
+                                                        lệ</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Skills -->
+                                            <div class="mb-6">
+                                                <p
+                                                    class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Kỹ
+                                                    năng yêu cầu</p>
+                                                <div
+                                                    class="flex flex-wrap gap-2">
+                                                    <span
+                                                        class="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold rounded-lg shadow-sm">Java</span>
+                                                    <span
+                                                        class="px-3 py-1.5 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-bold rounded-lg shadow-sm">Spring
+                                                        Boot</span>
+                                                    <span
+                                                        class="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs font-bold rounded-lg shadow-sm">MySQL</span>
+                                                    <span
+                                                        class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-md">+3
+                                                        more</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Actions -->
+                                            <div
+                                                class="flex items-center space-x-3">
+                                                <button
+                                                    onclick="openModal('backend-dev')"
+                                                    class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-sky-600 text-white rounded-xl hover:from-blue-700 hover:to-cyan-500 transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-blue-500/25 transform hover:scale-105">
+                                                    <i
+                                                        class="fas fa-eye mr-2"></i>Xem
+                                                    chi tiết
+                                                </button>
+                                                <button
+                                                    onclick="editPosition('backend-dev')"
+                                                    class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button
+                                                    class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                    <i
+                                                        class="fas fa-share-alt"></i>
+                                                </button>
+                                            </div>
+                                        </article>
+
+                                        <!-- Card 2 - Sales Manager -->
+                                        <article
+                                            class="group relative bg-gradient-to-br from-white to-cyan-50/30 p-8 rounded-3xl border border-orange-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+
+                                            <!-- Position Card 2 - Sales Manager -->
+                                            <div
+                                                class="group relative bg-gradient-to-br from-white to-cyan-50/30 p-8 rounded-3xl border border-orange-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                                <!-- Background Pattern -->
+                                                <div
+                                                    class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                                                <div
+                                                    class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-red-400/5 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+
+                                                <!-- Header -->
+                                                <div
+                                                    class="relative flex items-start justify-between mb-6">
+                                                    <div
+                                                        class="flex items-center space-x-4">
+                                                        <div class="relative">
+                                                            <div
+                                                                class="w-16 h-16 bg-gradient-to-br from-sky-600 via-cyan-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-cyan-500/25 transition-all duration-300">
+                                                                <i
+                                                                    class="fas fa-chart-line text-white text-2xl"></i>
+                                                            </div>
+                                                            <div
+                                                                class="absolute -top-1 -right-1 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center">
+                                                                <i
+                                                                    class="fas fa-pause text-white text-xs"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div
+                                                                class="flex items-center space-x-2 mb-1">
+                                                                <span
+                                                                    class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-full border border-yellow-200">TẠM
+                                                                    DỪNG</span>
+                                                                <span
+                                                                    class="px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-md">URGENT</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-xs text-gray-500 font-medium">ID:
+                                                                #SAL002</p>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        class="p-2 text-gray-400 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-all duration-200">
+                                                        <i
+                                                            class="fas fa-bookmark text-lg"></i>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Title & Department -->
+                                                <div class="mb-6">
+                                                    <h3
+                                                        class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors duration-300">Trưởng
+                                                        phòng Kinh doanh</h3>
+                                                    <div
+                                                        class="flex items-center space-x-2">
+                                                        <div
+                                                            class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                                        <p
+                                                            class="text-cyan-600 font-semibold text-sm">Phòng
+                                                            Kinh doanh &
+                                                            Marketing</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Info Grid -->
+                                                <div
+                                                    class="grid grid-cols-2 gap-4 mb-6">
+                                                    <div
+                                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                        <div
+                                                            class="flex items-center space-x-2 mb-2">
+                                                            <i
+                                                                class="fas fa-map-marker-alt text-red-500 text-sm"></i>
+                                                            <span
+                                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Địa
+                                                                điểm</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-sm font-bold text-gray-900">TP.HCM</p>
+                                                    </div>
+                                                    <div
+                                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                        <div
+                                                            class="flex items-center space-x-2 mb-2">
+                                                            <i
+                                                                class="fas fa-dollar-sign text-green-500 text-sm"></i>
+                                                            <span
+                                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Lương</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-sm font-bold text-gray-900">40-60M</p>
+                                                    </div>
+                                                    <div
+                                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                        <div
+                                                            class="flex items-center space-x-2 mb-2">
+                                                            <i
+                                                                class="fas fa-clock text-orange-500 text-sm"></i>
+                                                            <span
+                                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Kinh
+                                                                nghiệm</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-sm font-bold text-gray-900">5+
+                                                            năm</p>
+                                                    </div>
+                                                    <div
+                                                        class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                        <div
+                                                            class="flex items-center space-x-2 mb-2">
+                                                            <i
+                                                                class="fas fa-briefcase text-purple-500 text-sm"></i>
+                                                            <span
+                                                                class="text-xs font-medium text-gray-500 uppercase tracking-wide">Loại
+                                                                hình</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-sm font-bold text-gray-900">Full-time</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Stats -->
+                                                <div
+                                                    class="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-sky-100 to-teal100 rounded-xl border border-cyan-100">
+                                                    <div class="text-center">
+                                                        <div
+                                                            class="flex items-center justify-center space-x-1 mb-1">
+                                                            <i
+                                                                class="fas fa-users text-cyan-600 text-sm"></i>
+                                                            <span
+                                                                class="text-2xl font-bold text-cyan-600">8</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-xs text-gray-600 font-medium">Ứng
+                                                            viên</p>
+                                                    </div>
+                                                    <div
+                                                        class="w-px h-8 bg-orange-200"></div>
+                                                    <div class="text-center">
+                                                        <div
+                                                            class="flex items-center justify-center space-x-1 mb-1">
+                                                            <i
+                                                                class="fas fa-layer-group text-green-600 text-sm"></i>
+                                                            <span
+                                                                class="text-2xl font-bold text-green-600">2</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-xs text-gray-600 font-medium">Vòng
+                                                            PV</p>
+                                                    </div>
+                                                    <div
+                                                        class="w-px h-8 bg-orange-200"></div>
+                                                    <div class="text-center">
+                                                        <div
+                                                            class="flex items-center justify-center space-x-1 mb-1">
+                                                            <i
+                                                                class="fas fa-percentage text-yellow-600 text-sm"></i>
+                                                            <span
+                                                                class="text-2xl font-bold text-yellow-600">62</span>
+                                                        </div>
+                                                        <p
+                                                            class="text-xs text-gray-600 font-medium">Tỷ
+                                                            lệ</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Skills -->
+                                                <div class="mb-6">
+                                                    <p
+                                                        class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Kỹ
+                                                        năng yêu cầu</p>
+                                                    <div
+                                                        class="flex flex-wrap gap-2">
+                                                        <span
+                                                            class="px-3 py-1.5 bg-gradient-to-r from-sky-600 to-sky-500 text-white text-xs font-bold rounded-lg shadow-sm">Quản
+                                                            lý</span>
+                                                        <span
+                                                            class="px-3 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white text-xs font-bold rounded-lg shadow-sm">Bán
+                                                            hàng</span>
+                                                        <span
+                                                            class="px-3 py-1.5 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold rounded-lg shadow-sm">Marketing</span>
+                                                        <span
+                                                            class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-md">+2
+                                                            more</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Actions -->
+                                                <div
+                                                    class="flex items-center space-x-3">
+                                                    <button
+                                                        onclick="openModal('sales-manager')"
+                                                        class="flex-1 px-6 py-3 bg-gradient-to-r from-sky-600 to-teal-600 text-white rounded-xl hover:from-cyan-700 hover:to-green-500 transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-cyan-500/25 transform hover:scale-105">
+                                                        <i
+                                                            class="fas fa-eye mr-2"></i>Xem
+                                                        chi tiết
+                                                    </button>
+                                                    <button
+                                                        onclick="editPosition('sales-manager')"
+                                                        class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                        <i
+                                                            class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button
+                                                        class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                        <i
+                                                            class="fas fa-share-alt"></i>
+                                                    </button>
+                                                </div>
+                                            </article>
+
+                                            <!-- Card 3 - UI/UX Designer -->
+                                            <article
+                                                class="group relative bg-gradient-to-br from-white to-purple-50/30 p-8 rounded-3xl border border-purple-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                                <!-- Position Card 3 - UI/UX Designer -->
+                                                <div
+                                                    class="group relative bg-gradient-to-br from-white to-purple-50/30 p-8 rounded-3xl border border-purple-100/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                                                    <!-- Background Pattern -->
+                                                    <div
+                                                        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                                                    <div
+                                                        class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-400/5 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+
+                                                    <!-- Header -->
+                                                    <div
+                                                        class="relative flex items-start justify-between mb-6">
+                                                        <div
+                                                            class="flex items-center space-x-4">
+                                                            <div
+                                                                class="relative">
+                                                                <div
+                                                                    class="w-16 h-16 bg-gradient-to-br from-teal-600 via-emerald-600 to-green-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/25 transition-all duration-300">
+                                                                    <i
+                                                                        class="fas fa-palette text-white text-2xl"></i>
+                                                                </div>
+                                                                <div
+                                                                    class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                                                    <i
+                                                                        class="fas fa-check text-white text-xs"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div
+                                                                    class="flex items-center space-x-2 mb-1">
+                                                                    <span
+                                                                        class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full border border-green-200">ĐANG
+                                                                        TUYỂN</span>
+                                                                    <span
+                                                                        class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-md">CREATIVE</span>
+                                                                </div>
+                                                                <p
+                                                                    class="text-xs text-gray-500 font-medium">ID:
+                                                                    #DES003</p>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            class="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200">
+                                                            <i
+                                                                class="fas fa-bookmark text-lg"></i>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Title & Department -->
+                                                    <div class="mb-6">
+                                                        <h3
+                                                            class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors duration-300">Senior
+                                                            UI/UX Designer</h3>
+                                                        <div
+                                                            class="flex items-center space-x-2">
+                                                            <div
+                                                                class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                                            <p
+                                                                class="text-emerald-600 font-semibold text-sm">Phòng
+                                                                Thiết kế & Sáng
+                                                                tạo</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Info Grid -->
+                                                    <div
+                                                        class="grid grid-cols-2 gap-4 mb-6">
+                                                        <div
+                                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                            <div
+                                                                class="flex items-center space-x-2 mb-2">
+                                                                <i
+                                                                    class="fas fa-map-marker-alt text-red-500 text-sm"></i>
+                                                                <span
+                                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Địa
+                                                                    điểm</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-sm font-bold text-gray-900">Hà
+                                                                Nội</p>
+                                                        </div>
+                                                        <div
+                                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                            <div
+                                                                class="flex items-center space-x-2 mb-2">
+                                                                <i
+                                                                    class="fas fa-dollar-sign text-green-500 text-sm"></i>
+                                                                <span
+                                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Lương</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-sm font-bold text-gray-900">20-30M</p>
+                                                        </div>
+                                                        <div
+                                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                            <div
+                                                                class="flex items-center space-x-2 mb-2">
+                                                                <i
+                                                                    class="fas fa-clock text-orange-500 text-sm"></i>
+                                                                <span
+                                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Kinh
+                                                                    nghiệm</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-sm font-bold text-gray-900">3+
+                                                                năm</p>
+                                                        </div>
+                                                        <div
+                                                            class="bg-white/60 backdrop-blur-sm p-4 rounded-xl border border-gray-100">
+                                                            <div
+                                                                class="flex items-center space-x-2 mb-2">
+                                                                <i
+                                                                    class="fas fa-briefcase text-purple-500 text-sm"></i>
+                                                                <span
+                                                                    class="text-xs font-medium text-gray-500 uppercase tracking-wide">Loại
+                                                                    hình</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-sm font-bold text-gray-900">Full-time</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Stats -->
+                                                    <div
+                                                        class="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
+                                                        <div
+                                                            class="text-center">
+                                                            <div
+                                                                class="flex items-center justify-center space-x-1 mb-1">
+                                                                <i
+                                                                    class="fas fa-users text-emerald-600 text-sm"></i>
+                                                                <span
+                                                                    class="text-2xl font-bold text-emerald-600">15</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-xs text-gray-600 font-medium">Ứng
+                                                                viên</p>
+                                                        </div>
+                                                        <div
+                                                            class="w-px h-8 bg-purple-200"></div>
+                                                        <div
+                                                            class="text-center">
+                                                            <div
+                                                                class="flex items-center justify-center space-x-1 mb-1">
+                                                                <i
+                                                                    class="fas fa-layer-group text-pink-600 text-sm"></i>
+                                                                <span
+                                                                    class="text-2xl font-bold text-pink-600">2</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-xs text-gray-600 font-medium">Vòng
+                                                                PV</p>
+                                                        </div>
+                                                        <div
+                                                            class="w-px h-8 bg-purple-200"></div>
+                                                        <div
+                                                            class="text-center">
+                                                            <div
+                                                                class="flex items-center justify-center space-x-1 mb-1">
+                                                                <i
+                                                                    class="fas fa-percentage text-green-600 text-sm"></i>
+                                                                <span
+                                                                    class="text-2xl font-bold text-green-600">73</span>
+                                                            </div>
+                                                            <p
+                                                                class="text-xs text-gray-600 font-medium">Tỷ
+                                                                lệ</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Skills -->
+                                                    <div class="mb-6">
+                                                        <p
+                                                            class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Kỹ
+                                                            năng yêu cầu</p>
+                                                        <div
+                                                            class="flex flex-wrap gap-2">
+                                                            <span
+                                                                class="px-3 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-500 text-white text-xs font-bold rounded-lg shadow-sm">Figma</span>
+                                                            <span
+                                                                class="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs font-bold rounded-lg shadow-sm">Adobe
+                                                                XD</span>
+                                                            <span
+                                                                class="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold rounded-lg shadow-sm">Sketch</span>
+                                                            <span
+                                                                class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-md">+4
+                                                                more</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Actions -->
+                                                    <div
+                                                        class="flex items-center space-x-3">
+                                                        <button
+                                                            onclick="openModal('ui-designer')"
+                                                            class="flex-1 px-6 py-3 bg-gradient-to-r from-teal-600 to-green-600 text-white rounded-xl hover:from-emerald-700 hover:to-yellow-500 transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-emerald-500/25 transform hover:scale-105">
+                                                            <i
+                                                                class="fas fa-eye mr-2"></i>Xem
+                                                            chi tiết
+                                                        </button>
+                                                        <button
+                                                            onclick="editPosition('ui-designer')"
+                                                            class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                            <i
+                                                                class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button
+                                                            class="px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 text-sm border border-gray-200 shadow-sm hover:shadow-md">
+                                                            <i
+                                                                class="fas fa-share-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </article>
+                                            </section>
+                                            <!-- Position Detail Modal -->
+                                            <div id="positionDetail"
+                                                class="modal">
+                                                <div class="modal-content">
+                                                    <div
+                                                        class="p-6 border-b border-gray-200">
+                                                        <div
+                                                            class="flex items-center justify-between">
+                                                            <h2
+                                                                class="text-xl font-semibold text-gray-800">Chi
+                                                                tiết Vị trí</h2>
+                                                            <button
+                                                                onclick="closeModal('positionDetail')"
+                                                                class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                                                                <i
+                                                                    class="fas fa-times text-lg"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="p-6 space-y-6">
+                                                        <div
+                                                            class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                            <div>
+                                                                <label
+                                                                    class="block text-sm font-medium text-gray-700 mb-2">Tên
+                                                                    vị
+                                                                    trí</label>
+                                                                <input
+                                                                    type="text"
+                                                                    id="positionName"
+                                                                    value="Senior Backend Developer"
+                                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                            </div>
+
+                                                            <div>
+                                                                <label
+                                                                    class="block text-sm font-medium text-gray-700 mb-2">Phòng
+                                                                    ban</label>
+                                                                <select
+                                                                    id="positionDepartment"
+                                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                                    <option
+                                                                        selected>IT</option>
+                                                                    <option>HR</option>
+                                                                    <option>Kinh
+                                                                        doanh</option>
+                                                                    <option>Marketing</option>
+                                                                    <option>Thiết
+                                                                        kế</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                                            <div>
+                                                                <label
+                                                                    class="block text-sm font-medium text-gray-700 mb-2">Trạng
+                                                                    thái</label>
+                                                                <select
+                                                                    id="positionStatus"
+                                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                                    <option
+                                                                        selected>Đang
+                                                                        tuyển</option>
+                                                                    <option>Tạm
+                                                                        dừng</option>
+                                                                    <option>Đã
+                                                                        đóng</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div>
+                                                                <label
+                                                                    class="block text-sm font-medium text-gray-700 mb-2">Số
+                                                                    vòng phỏng
+                                                                    vấn</label>
+                                                                <input
+                                                                    type="number"
+                                                                    id="interviewRounds"
+                                                                    value="3"
+                                                                    min="1"
+                                                                    max="5"
+                                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                            </div>
+
+                                                            <div>
+                                                                <label
+                                                                    class="block text-sm font-medium text-gray-700 mb-2">Loại
+                                                                    hình</label>
+                                                                <select
+                                                                    id="positionType"
+                                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                                    <option
+                                                                        selected>Full-time</option>
+                                                                    <option>Part-time</option>
+                                                                    <option>Contract</option>
+                                                                    <option>Internship</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                            <div>
+                                                                <label
+                                                                    class="block text-sm font-medium text-gray-700 mb-2">Địa
+                                                                    điểm</label>
+                                                                <input
+                                                                    type="text"
+                                                                    id="positionLocation"
+                                                                    value="Hà Nội, Việt Nam"
+                                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                            </div>
+
+                                                            <div>
+                                                                <label
+                                                                    class="block text-sm font-medium text-gray-700 mb-2">Mức
+                                                                    lương</label>
+                                                                <input
+                                                                    type="text"
+                                                                    id="positionSalary"
+                                                                    value="25-35 triệu VNĐ"
+                                                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                            <label
+                                                                class="block text-sm font-medium text-gray-700 mb-2">Kinh
+                                                                nghiệm yêu
+                                                                cầu</label>
+                                                            <input type="text"
+                                                                id="positionExperience"
+                                                                value="2+ năm kinh nghiệm"
+                                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                        </div>
+
+                                                        <div>
+                                                            <label
+                                                                class="block text-sm font-medium text-gray-700 mb-2">Kỹ
+                                                                năng yêu
+                                                                cầu</label>
+                                                            <input type="text"
+                                                                id="positionSkills"
+                                                                value="Java, Spring Boot, MySQL, Docker, Kubernetes, Redis"
+                                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                                placeholder="Nhập các kỹ năng, cách nhau bởi dấu phẩy">
+                                                        </div>
+
+                                                        <div>
+                                                            <label
+                                                                class="block text-sm font-medium text-gray-700 mb-2">Mô
+                                                                tả chi
+                                                                tiết</label>
+                                                            <textarea
+                                                                id="positionDescription"
+                                                                rows="6"
+                                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                                placeholder="Mô tả chi tiết về vị trí, yêu cầu, trách nhiệm...">Chúng tôi đang tìm kiếm một Senior Backend Developer có kinh nghiệm với Java, Spring Boot, và MySQL. Ứng viên cần có ít nhất 2 năm kinh nghiệm làm việc với các hệ thống backend quy mô lớn, hiểu biết về microservices và có khả năng làm việc nhóm tốt.</textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div
+                                                        class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                                                        <button
+                                                            onclick="closeModal('positionDetail')"
+                                                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
+                                                            Hủy
+                                                        </button>
+                                                        <button
+                                                            onclick="savePosition()"
+                                                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                                            <i
+                                                                class="fas fa-save mr-2"></i>Lưu
+                                                            thay đổi
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <footer id="footer"
+                                            data-src="Footer.html"></footer>
+                                        <link rel="prefetch"
+                                            href="Footer.html" as="fetch"
+                                            crossorigin="anonymous">
+
+                                    </main>
+
+                                    <!-- NẠP SIDEBAR & HEADER -->
+                                    <!-- NẠP SIDEBAR & HEADER -->
+                                    <script>
+  Promise.all([
+    fetch('Header.html').then(r=>r.text()).then(h=>document.getElementById('header').innerHTML=h),
+    fetch('Sidebar.html').then(r=>r.text()).then(h=>document.getElementById('sidebar').innerHTML=h),
+  ]).then(()=>{
+    if (window.SidebarInit) window.SidebarInit();
+    if (window.HeaderInit)  window.HeaderInit();   // <-- thêm dòng này
+  });
+</script>
+                                    <script src="assets/js/layout-loader.js"
+                                        data-layout-version="1.0.2"
+                                        defer></script>
+                                    <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    LayoutLoader.mount({
+      headerSel:'#header',  headerUrl:'Header.html',
+      sidebarSel:'#sidebar', sidebarUrl:'Sidebar.html'
+      // KHÔNG khai báo footer ở đây
+    });
+  });
+</script>
+                                    <link rel="stylesheet"
+                                        href="assets/widgets/cf-chat/cf-chat.css">
+                                    <script
+                                        src="assets/widgets/cf-chat/cf-chat.js"
+                                        data-cf-chat data-accent="#107eb9"
+                                        data-accent2="#10b981"
+                                        defer></script>
+
+                                    <link rel="stylesheet"
+                                        href="assets/css/footer.css">
+                                    <script src="assets/js/footer-loader.js"
+                                        data-footer-version="1.0.0"
+                                        defer></script>
+
+                                    <!-- App JS -->
+                                    <script defer
+                                        src="/assets/js/loading.js"></script>
+                                    <script src="assets/js/sidebar.js"
+                                        defer></script>
+                                    <script src="assets/js/header.js"
+                                        defer></script>
+                                    <script
+                                        src="assets/js/position-admin.js"
+                                        defer></script>
+                                </body>
+
+                            </html>

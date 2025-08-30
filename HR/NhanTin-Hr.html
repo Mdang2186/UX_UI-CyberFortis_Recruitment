@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger Clone</title>
+  <!-- Tailwind, Icons, Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="assets/css/sidebar.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/Chat-Hr.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar & Header placeholders (nạp động) -->
+<aside id="sidebar" class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+  <header id="header" class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+
+  <!-- Main -->
+  <main id="mainContent" class="main-content content-transition min-h-screen">
+    <!-- Search + Filters -->
+      <div class="flex h-screen">
+        <!-- Sidebar - Chat List -->
+        <div id="sidebar" class="sidebar w-80 bg-white border-r border-gray-200 flex flex-col">
+            <!-- Header -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h1 class="text-2xl font-bold text-gray-900">Đoạn chat</h1>
+                    <div class="flex items-center space-x-2">
+                        <button class="p-2 hover:bg-gray-100 rounded-full" title="Tùy chọn">
+                            <i class="fas fa-ellipsis-h text-gray-600"></i>
+                        </button>
+                        <button onclick="showNewChatModal()" class="p-2 hover:bg-gray-100 rounded-full" title="Tạo đoạn chat mới">
+                            <i class="fas fa-edit text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Search -->
+                <div class="relative">
+                    <input type="text" placeholder="Tìm kiếm trong Messenger" class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                </div>
+            </div>
+            
+            <!-- Stories -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex space-x-3 overflow-x-auto">
+                    <div class="flex-shrink-0 text-center">
+                        <div class="story-ring">
+                            <div class="story-inner">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%234f46e5'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EYou%3C/text%3E%3C/svg%3E" alt="Your Story" class="w-14 h-14 rounded-full">
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-1">Tin của bạn</p>
+                    </div>
+                    
+                    <div class="flex-shrink-0 text-center">
+                        <div class="story-ring">
+                            <div class="story-inner">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23ec4899'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='18' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-14 h-14 rounded-full">
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-1">Sarah</p>
+                    </div>
+                    
+                    <div class="flex-shrink-0 text-center">
+                        <div class="story-ring">
+                            <div class="story-inner">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%233b82f6'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='18' font-weight='bold'%3EMC%3C/text%3E%3C/svg%3E" alt="Michael" class="w-14 h-14 rounded-full">
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-1">Michael</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat List -->
+            <div class="flex-1 overflow-y-auto custom-scrollbar">
+                <!-- Chat Item 1 - Sarah Johnson -->
+                <div class="chat-item p-3 cursor-pointer active" data-user="sarah">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23ec4899'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-14 h-14 rounded-full">
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Sarah Johnson</h3>
+                                <span class="text-xs text-gray-500">2 phút</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Bạn: Cảm ơn bạn! 😊</p>
+                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 2 - Michael Chen -->
+                <div class="chat-item p-3 cursor-pointer" data-user="michael">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%233b82f6'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EMC%3C/text%3E%3C/svg%3E" alt="Michael" class="w-14 h-14 rounded-full">
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Michael Chen</h3>
+                                <span class="text-xs text-gray-500">15 phút</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Cuộc họp lúc 3 giờ chiều nhé!</p>
+                                <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                    <span class="text-xs text-white font-bold">2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 3 - Emma Wilson -->
+                <div class="chat-item p-3 cursor-pointer" data-user="emma">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%2310b981'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EEW%3C/text%3E%3C/svg%3E" alt="Emma" class="w-14 h-14 rounded-full">
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Emma Wilson</h3>
+                                <span class="text-xs text-gray-500">1 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">
+                                    <i class="fas fa-image text-gray-400 mr-1"></i>
+                                    Đã gửi một ảnh
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 4 - David Rodriguez -->
+                <div class="chat-item p-3 cursor-pointer" data-user="david">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23f59e0b'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EDR%3C/text%3E%3C/svg%3E" alt="David" class="w-14 h-14 rounded-full">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">David Rodriguez</h3>
+                                <span class="text-xs text-gray-500">2 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">
+                                    <i class="fas fa-phone text-green-500 mr-1"></i>
+                                    Cuộc gọi thoại • 5 phút
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 5 - Lisa Thompson -->
+                <div class="chat-item p-3 cursor-pointer" data-user="lisa">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%238b5cf6'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3ELT%3C/text%3E%3C/svg%3E" alt="Lisa" class="w-14 h-14 rounded-full">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Lisa Thompson</h3>
+                                <span class="text-xs text-gray-500">3 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Tuyệt vời! Cảm ơn bạn nhiều 🎉</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 6 - Team Alpha -->
+                <div class="chat-item p-3 cursor-pointer" data-user="team">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-users text-white text-lg"></i>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                                <span class="text-xs text-white font-bold">5</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Team Alpha</h3>
+                                <span class="text-xs text-gray-500">5 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Michael: Ai có thể review code không?</p>
+                                <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                    <span class="text-xs text-white font-bold">5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 7 - James Park -->
+                <div class="chat-item p-3 cursor-pointer" data-user="james">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23ef4444'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EJP%3C/text%3E%3C/svg%3E" alt="James" class="w-14 h-14 rounded-full">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">James Park</h3>
+                                <span class="text-xs text-gray-500">1 ngày</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">
+                                    <i class="fas fa-file-alt text-blue-500 mr-1"></i>
+                                    Project_Timeline.pdf
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 8 - Anna Martinez -->
+                <div class="chat-item p-3 cursor-pointer" data-user="anna">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23f97316'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EAM%3C/text%3E%3C/svg%3E" alt="Anna" class="w-14 h-14 rounded-full">
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Anna Martinez</h3>
+                                <span class="text-xs text-gray-500">30 phút</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Hẹn gặp lại bạn sớm nhé! 👋</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 9 - Kevin Lee -->
+                <div class="chat-item p-3 cursor-pointer" data-user="kevin">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%2306b6d4'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EKL%3C/text%3E%3C/svg%3E" alt="Kevin" class="w-14 h-14 rounded-full">
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Kevin Lee</h3>
+                                <span class="text-xs text-gray-500">45 phút</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">
+                                    <i class="fas fa-camera text-purple-500 mr-1"></i>
+                                    Đã gửi 3 ảnh
+                                </p>
+                                <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                    <span class="text-xs text-white font-bold">1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 10 - Sophie Chen -->
+                <div class="chat-item p-3 cursor-pointer" data-user="sophie">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23d946ef'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3ESC%3C/text%3E%3C/svg%3E" alt="Sophie" class="w-14 h-14 rounded-full">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Sophie Chen</h3>
+                                <span class="text-xs text-gray-500">1 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Bạn: Được rồi, cảm ơn bạn!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 11 - Marketing Team -->
+                <div class="chat-item p-3 cursor-pointer" data-user="marketing">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-bullhorn text-white text-lg"></i>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                                <span class="text-xs text-white font-bold">12</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Marketing Team</h3>
+                                <span class="text-xs text-gray-500">2 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Lisa: Campaign results are looking great! 📈</p>
+                                <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                    <span class="text-xs text-white font-bold">12</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 12 - Tom Wilson -->
+                <div class="chat-item p-3 cursor-pointer" data-user="tom">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%2365a30d'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3ETW%3C/text%3E%3C/svg%3E" alt="Tom" class="w-14 h-14 rounded-full">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Tom Wilson</h3>
+                                <span class="text-xs text-gray-500">3 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">
+                                    <i class="fas fa-phone-slash text-red-500 mr-1"></i>
+                                    Cuộc gọi nhỡ
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 13 - Rachel Green -->
+                <div class="chat-item p-3 cursor-pointer" data-user="rachel">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23059669'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3ERG%3C/text%3E%3C/svg%3E" alt="Rachel" class="w-14 h-14 rounded-full">
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Rachel Green</h3>
+                                <span class="text-xs text-gray-500">4 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Chúc mừng sinh nhật! 🎂🎉</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 14 - Design Squad -->
+                <div class="chat-item p-3 cursor-pointer" data-user="design">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-palette text-white text-lg"></i>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                                <span class="text-xs text-white font-bold">3</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Design Squad</h3>
+                                <span class="text-xs text-gray-500">5 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Emma: New mockups are ready for review</p>
+                                <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                    <span class="text-xs text-white font-bold">3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 15 - Alex Johnson -->
+                <div class="chat-item p-3 cursor-pointer" data-user="alexj">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23dc2626'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EAJ%3C/text%3E%3C/svg%3E" alt="Alex" class="w-14 h-14 rounded-full">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Alex Johnson</h3>
+                                <span class="text-xs text-gray-500">6 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">
+                                    <i class="fas fa-music text-green-500 mr-1"></i>
+                                    Đã gửi một bài hát
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 16 - Maya Patel -->
+                <div class="chat-item p-3 cursor-pointer" data-user="maya">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23be185d'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EMP%3C/text%3E%3C/svg%3E" alt="Maya" class="w-14 h-14 rounded-full">
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Maya Patel</h3>
+                                <span class="text-xs text-gray-500">8 giờ</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Thanks for the help with the presentation!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 17 - Family Group -->
+                <div class="chat-item p-3 cursor-pointer" data-user="family">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <div class="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-home text-white text-lg"></i>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                                <span class="text-xs text-white font-bold">7</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Gia đình</h3>
+                                <span class="text-xs text-gray-500">1 ngày</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Mẹ: Nhớ về ăn cơm tối nhé con!</p>
+                                <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                    <span class="text-xs text-white font-bold">7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Item 18 - Ben Taylor -->
+                <div class="chat-item p-3 cursor-pointer" data-user="ben">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='28' fill='%23374151'/%3E%3Ctext x='28' y='35' text-anchor='middle' fill='white' font-family='Arial' font-size='20' font-weight='bold'%3EBT%3C/text%3E%3C/svg%3E" alt="Ben" class="w-14 h-14 rounded-full">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Ben Taylor</h3>
+                                <span class="text-xs text-gray-500">2 ngày</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">See you at the conference next week!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="flex-1 flex flex-col bg-white">
+            <!-- Chat Header -->
+            <div id="chatHeader" class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+                <div class="flex items-center space-x-3">
+                    <button id="sidebarToggle" class="lg:hidden p-2 hover:bg-gray-100 rounded-full">
+                        <i class="fas fa-bars text-gray-600"></i>
+                    </button>
+                    <div class="relative">
+                        <img id="currentUserAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23ec4899'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="User" class="w-10 h-10 rounded-full">
+                        <div class="online-dot"></div>
+                    </div>
+                    <div>
+                        <h2 id="currentUserName" class="font-semibold text-gray-900">Sarah Johnson</h2>
+                        <p id="currentUserStatus" class="text-sm text-green-500">Đang hoạt động</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <button id="voiceCallBtn" class="p-2 hover:bg-gray-100 rounded-full" title="Gọi thoại">
+                        <i class="fas fa-phone text-blue-500"></i>
+                    </button>
+                    <button id="videoCallBtn" class="p-2 hover:bg-gray-100 rounded-full" title="Gọi video">
+                        <i class="fas fa-video text-blue-500"></i>
+                    </button>
+                    <button id="chatInfoBtn" class="p-2 hover:bg-gray-100 rounded-full" title="Thông tin đoạn chat">
+                        <i class="fas fa-info-circle text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Messages Container -->
+            <div id="messagesContainer" class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-2">
+                <!-- Date Separator -->
+                <div class="flex justify-center my-4">
+                    <span class="px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-600">Hôm nay</span>
+                </div>
+                
+                <!-- Message 1 - Received -->
+                <div class="flex items-start space-x-2">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23ec4899'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-7 h-7 rounded-full">
+                    <div class="flex flex-col space-y-1">
+                        <div class="message-bubble received">
+                            Chào bạn! Mình vừa hoàn thành thiết kế mới cho dashboard 🎨
+                        </div>
+                        <div class="message-status">9:15</div>
+                    </div>
+                </div>
+                
+                <!-- Message 2 - Received -->
+                <div class="flex items-start space-x-2">
+                    <div class="w-7"></div>
+                    <div class="flex flex-col space-y-1">
+                        <div class="message-bubble received">
+                            Bạn có thể xem qua và góp ý không?
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Message 3 - Sent -->
+                <div class="flex justify-end">
+                    <div class="flex flex-col space-y-1 items-end">
+                        <div class="message-bubble sent">
+                            Tuyệt vời! Mình sẽ xem ngay bây giờ
+                        </div>
+                        <div class="message-status sent">
+                            9:18 <i class="fas fa-check-double text-blue-400 ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Message 4 - Image -->
+                <div class="flex items-start space-x-2">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23ec4899'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-7 h-7 rounded-full">
+                    <div class="flex flex-col space-y-1">
+                        <div class="image-message">
+                            <div class="w-64 h-48 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <i class="fas fa-image text-4xl mb-2"></i>
+                                    <p class="text-sm">Dashboard_Design_v2.png</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-status">9:20</div>
+                    </div>
+                </div>
+                
+                <!-- Message 5 - Sent -->
+                <div class="flex justify-end">
+                    <div class="flex flex-col space-y-1 items-end">
+                        <div class="message-bubble sent">
+                            Thiết kế này nhìn rất chuyên nghiệp! Mình thích cách bạn sắp xếp layout
+                        </div>
+                        <div class="message-status sent">
+                            9:22 <i class="fas fa-check-double text-blue-400 ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Message 6 - Voice Message -->
+                <div class="flex items-start space-x-2">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23ec4899'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-7 h-7 rounded-full">
+                    <div class="flex flex-col space-y-1">
+                        <div class="voice-message">
+                            <button class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-play text-white text-xs"></i>
+                            </button>
+                            <div class="voice-waveform">
+                                <div class="wave-bar" style="height: 8px; animation-delay: 0s;"></div>
+                                <div class="wave-bar" style="height: 12px; animation-delay: 0.1s;"></div>
+                                <div class="wave-bar" style="height: 6px; animation-delay: 0.2s;"></div>
+                                <div class="wave-bar" style="height: 14px; animation-delay: 0.3s;"></div>
+                                <div class="wave-bar" style="height: 10px; animation-delay: 0.4s;"></div>
+                                <div class="wave-bar" style="height: 8px; animation-delay: 0.5s;"></div>
+                                <div class="wave-bar" style="height: 12px; animation-delay: 0.6s;"></div>
+                            </div>
+                            <span class="text-xs text-gray-600">0:15</span>
+                        </div>
+                        <div class="message-status">9:25</div>
+                    </div>
+                </div>
+                
+                <!-- Message 7 - File -->
+                <div class="flex items-start space-x-2">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23ec4899'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-7 h-7 rounded-full">
+                    <div class="flex flex-col space-y-1">
+                        <div class="file-message">
+                            <div class="file-icon bg-red-500 text-white">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">Design_Guidelines.pdf</p>
+                                <p class="text-xs text-gray-500">2.4 MB</p>
+                            </div>
+                            <button class="p-2 hover:bg-gray-200 rounded-full">
+                                <i class="fas fa-download text-gray-600"></i>
+                            </button>
+                        </div>
+                        <div class="message-status">9:28</div>
+                    </div>
+                </div>
+                
+                <!-- Message 8 - Emoji Only -->
+                <div class="flex justify-end">
+                    <div class="flex flex-col space-y-1 items-end">
+                        <div class="message-bubble emoji-only">
+                            👍
+                        </div>
+                        <div class="message-status sent">
+                            9:30 <i class="fas fa-check-double text-blue-400 ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Message 9 - With Reactions -->
+                <div class="flex items-start space-x-2">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23ec4899'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-7 h-7 rounded-full">
+                    <div class="flex flex-col space-y-1">
+                        <div class="relative">
+                            <div class="message-bubble received">
+                                Cảm ơn bạn rất nhiều! Mình sẽ cập nhật theo feedback của bạn 😊
+                            </div>
+                            <div class="message-reactions">
+                                ❤️ 👍 2
+                            </div>
+                        </div>
+                        <div class="message-status">9:32</div>
+                    </div>
+                </div>
+                
+                <!-- Message 10 - Sent -->
+                <div class="flex justify-end">
+                    <div class="flex flex-col space-y-1 items-end">
+                        <div class="message-bubble sent">
+                            Cảm ơn bạn! 😊
+                        </div>
+                        <div class="message-status sent">
+                            Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Typing Indicator -->
+                <div class="flex items-start space-x-2">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23ec4899'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'%3ESJ%3C/text%3E%3C/svg%3E" alt="Sarah" class="w-7 h-7 rounded-full">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Message Input -->
+            <div class="p-4 border-t border-gray-200 bg-white">
+                <div class="flex items-end space-x-3">
+                    <div class="relative">
+                        <button onclick="toggleAttachmentMenu()" class="p-2 hover:bg-gray-100 rounded-full" title="Thêm">
+                            <i class="fas fa-plus text-blue-500"></i>
+                        </button>
+                        
+                        <!-- Attachment Menu -->
+                        <div id="attachmentMenu" class="absolute bottom-12 left-0 bg-white rounded-lg shadow-lg py-2 min-w-48 hidden z-10">
+                            <button onclick="attachFile('image')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-image text-green-500"></i>
+                                <span>Ảnh & Video</span>
+                            </button>
+                            <button onclick="attachFile('document')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-file-alt text-blue-500"></i>
+                                <span>Tài liệu</span>
+                            </button>
+                            <button onclick="attachFile('audio')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-music text-purple-500"></i>
+                                <span>Âm thanh</span>
+                            </button>
+                            <button onclick="attachFile('location')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-map-marker-alt text-red-500"></i>
+                                <span>Vị trí</span>
+                            </button>
+                            <button onclick="attachFile('contact')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-user text-gray-500"></i>
+                                <span>Danh bạ</span>
+                            </button>
+                            <button onclick="attachFile('poll')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-poll text-orange-500"></i>
+                                <span>Bình chọn</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="takePhoto()" class="p-2 hover:bg-gray-100 rounded-full" title="Chụp ảnh">
+                        <i class="fas fa-camera text-blue-500"></i>
+                    </button>
+                    
+                    <input type="file" id="fileInput" multiple accept="*/*" style="display: none;" onchange="handleFileSelect(event)">
+                    <button onclick="document.getElementById('fileInput').click()" class="p-2 hover:bg-gray-100 rounded-full" title="Đính kèm file">
+                        <i class="fas fa-paperclip text-blue-500"></i>
+                    </button>
+                    
+                    <button class="p-2 hover:bg-gray-100 rounded-full" title="Sticker">
+                        <i class="fas fa-sticky-note text-blue-500"></i>
+                    </button>
+                    
+                    <button class="p-2 hover:bg-gray-100 rounded-full" title="GIF">
+                        <span class="text-blue-500 font-bold text-sm">GIF</span>
+                    </button>
+                    
+                    <div class="flex-1 relative">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
+                            <textarea id="messageInput" placeholder="Aa" class="message-input flex-1 bg-transparent" rows="1"></textarea>
+                            <button id="emojiBtn" class="p-1 hover:bg-gray-200 rounded-full ml-2" title="Emoji">
+                                <i class="fas fa-smile text-gray-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button id="sendBtn" class="p-2 hover:bg-gray-100 rounded-full" title="Gửi">
+                        <i class="fas fa-paper-plane text-blue-500"></i>
+                    </button>
+                    
+                    <button class="p-2 hover:bg-gray-100 rounded-full" title="Ghi âm">
+                        <i class="fas fa-microphone text-blue-500"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Info Panel (Hidden by default) -->
+        <div id="chatInfoPanel" class="w-80 bg-white border-l border-gray-200 hidden">
+            <!-- Will be populated when info button is clicked -->
+        </div>
+    </div>
+    
+    <!-- Emoji Picker (Hidden by default) -->
+    <div id="emojiPicker" class="emoji-picker hidden">
+        <div class="flex justify-between items-center mb-3">
+            <h4 class="font-semibold text-gray-900">Emoji</h4>
+            <button onclick="closeEmojiPicker()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="emoji-category">
+            <div class="emoji-item" onclick="insertEmoji('😀')">😀</div>
+            <div class="emoji-item" onclick="insertEmoji('😃')">😃</div>
+            <div class="emoji-item" onclick="insertEmoji('😄')">😄</div>
+            <div class="emoji-item" onclick="insertEmoji('😁')">😁</div>
+            <div class="emoji-item" onclick="insertEmoji('😆')">😆</div>
+            <div class="emoji-item" onclick="insertEmoji('😅')">😅</div>
+            <div class="emoji-item" onclick="insertEmoji('😂')">😂</div>
+            <div class="emoji-item" onclick="insertEmoji('🤣')">🤣</div>
+            <div class="emoji-item" onclick="insertEmoji('😊')">😊</div>
+            <div class="emoji-item" onclick="insertEmoji('😇')">😇</div>
+            <div class="emoji-item" onclick="insertEmoji('🙂')">🙂</div>
+            <div class="emoji-item" onclick="insertEmoji('🙃')">🙃</div>
+            <div class="emoji-item" onclick="insertEmoji('😉')">😉</div>
+            <div class="emoji-item" onclick="insertEmoji('😌')">😌</div>
+            <div class="emoji-item" onclick="insertEmoji('😍')">😍</div>
+            <div class="emoji-item" onclick="insertEmoji('🥰')">🥰</div>
+            <div class="emoji-item" onclick="insertEmoji('😘')">😘</div>
+            <div class="emoji-item" onclick="insertEmoji('😗')">😗</div>
+            <div class="emoji-item" onclick="insertEmoji('😙')">😙</div>
+            <div class="emoji-item" onclick="insertEmoji('😚')">😚</div>
+            <div class="emoji-item" onclick="insertEmoji('😋')">😋</div>
+            <div class="emoji-item" onclick="insertEmoji('😛')">😛</div>
+            <div class="emoji-item" onclick="insertEmoji('😝')">😝</div>
+            <div class="emoji-item" onclick="insertEmoji('😜')">😜</div>
+            <div class="emoji-item" onclick="insertEmoji('🤪')">🤪</div>
+            <div class="emoji-item" onclick="insertEmoji('🤨')">🤨</div>
+            <div class="emoji-item" onclick="insertEmoji('🧐')">🧐</div>
+            <div class="emoji-item" onclick="insertEmoji('🤓')">🤓</div>
+            <div class="emoji-item" onclick="insertEmoji('😎')">😎</div>
+            <div class="emoji-item" onclick="insertEmoji('🤩')">🤩</div>
+            <div class="emoji-item" onclick="insertEmoji('🥳')">🥳</div>
+            <div class="emoji-item" onclick="insertEmoji('😏')">😏</div>
+            <div class="emoji-item" onclick="insertEmoji('👍')">👍</div>
+            <div class="emoji-item" onclick="insertEmoji('👎')">👎</div>
+            <div class="emoji-item" onclick="insertEmoji('👌')">👌</div>
+            <div class="emoji-item" onclick="insertEmoji('✌️')">✌️</div>
+            <div class="emoji-item" onclick="insertEmoji('🤞')">🤞</div>
+            <div class="emoji-item" onclick="insertEmoji('🤟')">🤟</div>
+            <div class="emoji-item" onclick="insertEmoji('🤘')">🤘</div>
+            <div class="emoji-item" onclick="insertEmoji('🤙')">🤙</div>
+            <div class="emoji-item" onclick="insertEmoji('❤️')">❤️</div>
+            <div class="emoji-item" onclick="insertEmoji('🧡')">🧡</div>
+            <div class="emoji-item" onclick="insertEmoji('💛')">💛</div>
+            <div class="emoji-item" onclick="insertEmoji('💚')">💚</div>
+            <div class="emoji-item" onclick="insertEmoji('💙')">💙</div>
+            <div class="emoji-item" onclick="insertEmoji('💜')">💜</div>
+            <div class="emoji-item" onclick="insertEmoji('🖤')">🖤</div>
+            <div class="emoji-item" onclick="insertEmoji('🤍')">🤍</div>
+            <div class="emoji-item" onclick="insertEmoji('🤎')">🤎</div>
+            <div class="emoji-item" onclick="insertEmoji('💔')">💔</div>
+            <div class="emoji-item" onclick="insertEmoji('❣️')">❣️</div>
+            <div class="emoji-item" onclick="insertEmoji('💕')">💕</div>
+            <div class="emoji-item" onclick="insertEmoji('💞')">💞</div>
+            <div class="emoji-item" onclick="insertEmoji('💓')">💓</div>
+            <div class="emoji-item" onclick="insertEmoji('💗')">💗</div>
+            <div class="emoji-item" onclick="insertEmoji('💖')">💖</div>
+            <div class="emoji-item" onclick="insertEmoji('💘')">💘</div>
+            <div class="emoji-item" onclick="insertEmoji('💝')">💝</div>
+            <div class="emoji-item" onclick="insertEmoji('💟')">💟</div>
+            <div class="emoji-item" onclick="insertEmoji('🔥')">🔥</div>
+            <div class="emoji-item" onclick="insertEmoji('💯')">💯</div>
+            <div class="emoji-item" onclick="insertEmoji('⭐')">⭐</div>
+            <div class="emoji-item" onclick="insertEmoji('🌟')">🌟</div>
+            <div class="emoji-item" onclick="insertEmoji('✨')">✨</div>
+            <div class="emoji-item" onclick="insertEmoji('🎉')">🎉</div>
+            <div class="emoji-item" onclick="insertEmoji('🎊')">🎊</div>
+        </div>
+    </div>
+</div>
+  </main>
+
+  <!-- NẠP SIDEBAR & HEADER -->
+<script>
+  fetch('Sidebar.html').then(r=>r.text()).then(h=>{ document.getElementById('sidebar').innerHTML=h; });
+  fetch('Header.html').then(r=>r.text()).then(h=>{ document.getElementById('header').innerHTML=h; });
+</script>
+
+
+  <!-- App JS -->
+  <script src="assets/js/sidebar.js" defer></script>
+  <script src="assets/js/header.js" defer></script>
+<script src="assets/js/Chat-Hr.js" defer></script>
+</body>
+</html>

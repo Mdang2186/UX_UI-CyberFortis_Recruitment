@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quản lý nhân viên</title>
+
+  <!-- Libs -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="assets/css/sidebar.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/qlnhanvien.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar & Header (load động) -->
+  <aside id="sidebar" class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+  <header id="header" class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+
+  <!-- Main -->
+  <main id="mainContent" class="main-content content-transition min-h-screen">
+    <section class="px-6 pt-6">
+       <!-- Filters -->
+      <section class="nv-filters">
+        <div class="nv-fi">
+          <label>Tìm kiếm</label>
+          <input id="fltSearch" class="nv-ip" placeholder="Tìm kiếm liên quan… (tên, email…)" />
+        </div>
+        <div class="nv-fi">
+          <label>Phòng ban</label>
+          <select id="fltDept" class="nv-ip">
+            <option>Tất cả</option>
+            <option>Kỹ thuật</option>
+            <option>Kinh doanh</option>
+            <option>Phân tích DL</option>
+            <option>Nhân sự</option>
+            <option>Sản phẩm</option>
+            <option>Đảm bảo chất lượng</option>
+            <option>Thiết kế</option>
+            <option>Kế toán</option>
+          </select>
+        </div>
+        <div class="nv-fi">
+          <label>Chức vụ</label>
+          <select id="fltTitle" class="nv-ip">
+            <option>Tất cả</option>
+            <option>HR</option>
+            <option>Backend Dev</option>
+            <option>Frontend Dev</option>
+            <option>Fullstack Dev</option>
+            <option>Tester</option>
+            <option>Data Analyst</option>
+            <option>UX/UI</option>
+            <option>QA</option>
+            <option>PM</option>
+          </select>
+        </div>
+        <div class="nv-fi">
+          <label>Kinh nghiệm</label>
+          <select id="fltExp" class="nv-ip">
+            <option>Chọn khoảng</option>
+            <option>0-1 năm</option>
+            <option>1-3 năm</option>
+            <option>3-5 năm</option>
+            <option>5-8 năm</option>
+            <option>8+ năm</option>
+          </select>
+        </div>
+        <div class="nv-filter-actions">
+          <button id="btnReset" class="nv-btn base">Đặt lại</button>  <button id="btnAdd" class="nv-btn-primary"><i class="fa-solid fa-plus"></i> Thêm nhân viên</button>
+      
+        </div>
+      </section>
+
+      <!-- KPI -->
+      <section class="nv-kpis">
+        <div class="nv-kpi blue">
+          <div class="nv-kpi-t">Tổng nhân viên</div>
+          <div class="nv-kpi-n" id="kpiTotal">—</div>
+        </div>
+        <div class="nv-kpi green">
+          <div class="nv-kpi-t">Đang hoạt động</div>
+          <div class="nv-kpi-n" id="kpiActive">—</div>
+        </div>
+        <div class="nv-kpi amber">
+          <div class="nv-kpi-t">Quản lý</div>
+          <div class="nv-kpi-n" id="kpiManager">—</div>
+        </div>
+        <div class="nv-kpi purple">
+          <div class="nv-kpi-t">Phòng ban</div>
+          <div class="nv-kpi-n" id="kpiDept">—</div>
+        </div>
+      </section>
+
+      <!-- Charts row 1 -->
+      <section class="nv-grid nv-2">
+        <div class="nv-card">
+          <div class="nv-card-h">
+            <div class="nv-card-t"><i class="fa-regular fa-square-check"></i> Tăng trưởng nhân sự</div>
+            <select class="nv-ip sm" id="yearSelect">
+              <option>Năm</option><option>Quý</option><option>Tháng</option>
+            </select>
+          </div>
+          <div class="nv-chart h320"><canvas id="growthChart"></canvas></div>
+        </div>
+
+        <div class="nv-card">
+          <div class="nv-card-h"><div class="nv-card-t">Chức vụ</div></div>
+          <div class="nv-chart h340"><canvas id="roleChart"></canvas></div>
+        </div>
+      </section>
+
+      <!-- Charts row 2 -->
+      <section class="nv-grid nv-4">
+        <div class="nv-card mini">
+          <div class="nv-card-h"><div class="nv-card-t"><i class="fa-solid fa-chart-pie"></i> Phân bổ phòng ban</div></div>
+          <div class="nv-chart h220"><canvas id="deptChart"></canvas></div>
+        </div>
+        <div class="nv-card mini">
+          <div class="nv-card-h"><div class="nv-card-t"><i class="fa-solid fa-user"></i> Độ tuổi nhân viên</div></div>
+          <div class="nv-chart h220"><canvas id="ageChart"></canvas></div>
+        </div>
+        <div class="nv-card mini">
+          <div class="nv-card-h"><div class="nv-card-t"><i class="fa-solid fa-briefcase"></i> Kinh nghiệm</div></div>
+          <div class="nv-chart h220"><canvas id="expChart"></canvas></div>
+        </div>
+        <div class="nv-card mini">
+          <div class="nv-card-h"><div class="nv-card-t"><i class="fa-solid fa-user-shield"></i> Vai trò</div></div>
+          <div class="nv-chart h220"><canvas id="role2Chart"></canvas></div>
+        </div>
+      </section>
+
+      <!-- Bảng: Nhân viên -->
+      <section class="nv-card">
+        <div class="nv-card-h">
+          <div class="nv-card-t">Danh sách nhân viên</div>
+          <div class="nv-actions">
+            <div class="nv-search sm">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input id="empSearch" placeholder="Tìm theo tên, phòng ban, chức vụ…" />
+            </div>
+            <button id="btnAddEmp" class="nv-chip blue"><i class="fa-solid fa-user-plus"></i> Thêm nhân viên</button>
+          </div>
+        </div>
+        <div class="nv-table-wrap">
+          <table class="nv-tbl" id="empTable">
+            <thead>
+              <tr>
+                <th>Họ tên</th><th>Phòng ban</th><th>Chức vụ</th>
+                <th>Email</th><th>Trạng thái</th><th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bảng: Ứng viên trúng tuyển -->
+      <section class="nv-card">
+        <div class="nv-card-h">
+          <div class="nv-card-t">Ứng viên đã trúng tuyển</div>
+          <div class="nv-actions">
+            <div class="nv-search sm">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input id="hiredSearch" placeholder="Tìm theo tên, vị trí, mức lương…" />
+            </div>
+          </div>
+        </div>
+        <div class="nv-table-wrap">
+          <table class="nv-tbl" id="hiredTable">
+            <thead>
+              <tr>
+                <th>Họ tên</th><th>Vị trí</th><th>Ngày nhận việc</th>
+                <th>Mức lương</th><th>Người phụ trách</th><th>Trạng thái</th><th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bảng: Tài khoản -->
+      <section class="nv-card">
+        <div class="nv-card-h">
+          <div class="nv-card-t">Tài khoản người dùng</div>
+          <div class="nv-actions">
+            <div class="nv-search sm">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input id="accSearch" placeholder="Tìm theo tên đăng nhập, email, vai trò…" />
+            </div>
+            <button id="btnAddAcc" class="nv-chip green"><i class="fa-solid fa-user-shield"></i> Thêm tài khoản</button>
+          </div>
+        </div>
+        <div class="nv-table-wrap">
+          <table class="nv-tbl" id="accTable">
+            <thead>
+              <tr>
+                <th>Tên đăng nhập</th><th>Email</th><th>Vai trò</th>
+                <th>Trạng thái</th><th>Đăng nhập cuối</th><th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-blue-600 rounded-lg grid place-items-center text-white font-bold">CF</div>
+              <div><h3 class="text-lg font-semibold text-gray-900">CyberFortis</h3><p class="text-gray-600 text-sm">Bảo vệ thế giới số</p></div>
+            </div>
+            <p class="text-gray-700 mb-4 max-w-md">Công ty hàng đầu về an ninh mạng tại Việt Nam với hơn 15 năm kinh nghiệm bảo vệ doanh nghiệp khỏi các mối đe dọa cyber.</p>
+            <div class="flex gap-4">
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="footer-title">Liên kết nhanh</h4>
+            <ul class="footer-list">
+              <li><a href="#" class="footer-link">Về chúng tôi</a></li>
+              <li><a href="#" class="footer-link">Dịch vụ</a></li>
+              <li><a href="#" class="footer-link">Tuyển dụng</a></li>
+              <li><a href="#" class="footer-link">Tin tức</a></li>
+              <li><a href="#" class="footer-link">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-title">Hỗ trợ</h4>
+            <ul class="footer-list">
+              <li class="text-gray-600 text-sm">📧 hr@cyberfortis.vn</li>
+              <li class="text-gray-600 text-sm">📞 (024) 3999 8888</li>
+              <li class="text-gray-600 text-sm">📍 Hà Nội, Việt Nam</li>
+              <li class="text-gray-600 text-sm">🕒 T2-T6: 8:00-17:30</li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-500 text-sm">© 2024 CyberFortis. Tất cả quyền được bảo lưu.</p>
+          <div class="flex gap-6 mt-4 md:mt-0">
+            <a href="#" class="footer-link">Chính sách bảo mật</a>
+            <a href="#" class="footer-link">Điều khoản sử dụng</a>
+            <a href="#" class="footer-link">Cookie</a>
+          </div>
+        </div>
+      </div>
+    </footer> 
+  </main>
+
+  <!-- Sidebar/Header -->
+  <script>
+    fetch('Sidebar.html').then(r=>r.text()).then(h=>{ document.getElementById('sidebar').innerHTML=h; });
+    fetch('Header.html').then(r=>r.text()).then(h=>{ document.getElementById('header').innerHTML=h; });
+  </script>
+
+  <!-- ======= MODALS ======= -->
+  <!-- Modal: Thêm nhân viên -->
+  <div id="modalAddEmp" class="nv-modal-backdrop" aria-hidden="true">
+    <div class="nv-modal" role="dialog" aria-modal="true">
+      <div class="nv-modal-h">
+        <h3><i class="fa-solid fa-user-plus"></i> Thêm nhân viên</h3>
+        <button class="nv-x" data-close>&times;</button>
+      </div>
+      <div class="nv-modal-b">
+        <div class="nv-field">
+          <label>Họ tên</label>
+          <input id="ae_name" class="nv-ip" placeholder="Nguyễn Văn A" />
+        </div>
+        <div class="nv-grid nv-2">
+          <div class="nv-field">
+            <label>Phòng ban</label>
+            <select id="ae_dept" class="nv-ip">
+              <option>Kỹ thuật</option><option>Phân tích DL</option><option>Đảm bảo chất lượng</option>
+              <option>Thiết kế</option><option>Kinh doanh</option><option>Nhân sự</option>
+              <option>Kế toán</option><option>Sản phẩm</option>
+            </select>
+          </div>
+          <div class="nv-field">
+            <label>Chức vụ</label>
+            <select id="ae_title" class="nv-ip">
+              <option>Backend Dev</option><option>Frontend Dev</option><option>Fullstack Dev</option>
+              <option>Data Analyst</option><option>QA</option><option>UX/UI</option><option>Tester</option><option>PM</option><option>HR</option>
+            </select>
+          </div>
+        </div>
+        <div class="nv-grid nv-2">
+          <div class="nv-field">
+            <label>Email</label>
+            <input id="ae_email" class="nv-ip" placeholder="ten@corp.vn" />
+          </div>
+          <div class="nv-field">
+            <label>Kinh nghiệm (năm)</label>
+            <input id="ae_exp" type="number" min="0" class="nv-ip" value="2" />
+          </div>
+        </div>
+        <label class="nv-check"><input id="ae_active" type="checkbox" checked /> Đang hoạt động</label>
+      </div>
+      <div class="nv-modal-f">
+        <button class="nv-btn base" data-close>Hủy</button>
+        <button id="ae_save" class="nv-btn-primary">Lưu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Nhập ứng viên thành nhân viên -->
+  <div id="modalPromote" class="nv-modal-backdrop" aria-hidden="true">
+    <div class="nv-modal" role="dialog" aria-modal="true">
+      <div class="nv-modal-h">
+        <h3><i class="fa-solid fa-user-check"></i> Nhập ứng viên thành nhân viên</h3>
+        <button class="nv-x" data-close>&times;</button>
+      </div>
+      <div class="nv-modal-b">
+        <div class="nv-field">
+          <label>Họ tên</label>
+          <input id="pm_name" class="nv-ip" />
+        </div>
+        <div class="nv-grid nv-2">
+          <div class="nv-field">
+            <label>Phòng ban</label>
+            <select id="pm_dept" class="nv-ip">
+              <option>Kỹ thuật</option><option>Phân tích DL</option><option>Đảm bảo chất lượng</option>
+              <option>Thiết kế</option><option>Kinh doanh</option><option>Nhân sự</option>
+              <option>Kế toán</option><option>Sản phẩm</option>
+            </select>
+          </div>
+          <div class="nv-field">
+            <label>Chức vụ</label>
+            <select id="pm_title" class="nv-ip">
+              <option>Backend Dev</option><option>Frontend Dev</option><option>Fullstack Dev</option>
+              <option>Data Analyst</option><option>QA</option><option>UX/UI</option><option>Tester</option><option>PM</option><option>HR</option>
+            </select>
+          </div>
+        </div>
+        <div class="nv-grid nv-2">
+          <div class="nv-field">
+            <label>Email</label>
+            <input id="pm_email" class="nv-ip" />
+          </div>
+          <div class="nv-field">
+            <label>Kinh nghiệm (năm)</label>
+            <input id="pm_exp" type="number" min="0" class="nv-ip" value="1" />
+          </div>
+        </div>
+        <label class="nv-check"><input id="pm_active" type="checkbox" checked /> Đang hoạt động</label>
+        <input id="pm_idx" type="hidden" />
+      </div>
+      <div class="nv-modal-f">
+        <button class="nv-btn base" data-close>Hủy</button>
+        <button id="pm_save" class="nv-btn-primary">Nhập nhân viên</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Tạo tài khoản từ nhân viên -->
+  <div id="modalAccount" class="nv-modal-backdrop" aria-hidden="true">
+    <div class="nv-modal" role="dialog" aria-modal="true">
+      <div class="nv-modal-h">
+        <h3><i class="fa-solid fa-user-shield"></i> Tạo tài khoản</h3>
+        <button class="nv-x" data-close>&times;</button>
+      </div>
+      <div class="nv-modal-b">
+        <div class="nv-grid nv-2">
+          <div class="nv-field">
+            <label>Tên đăng nhập</label>
+            <input id="ac_user" class="nv-ip" placeholder="user01" />
+          </div>
+          <div class="nv-field">
+            <label>Email</label>
+            <input id="ac_email" class="nv-ip" placeholder="user@corp.vn" />
+          </div>
+        </div>
+        <div class="nv-grid nv-2">
+          <div class="nv-field">
+            <label>Vai trò</label>
+            <select id="ac_role" class="nv-ip">
+              <option>HR</option><option>Interviewer</option><option>Admin</option>
+            </select>
+          </div>
+          <div class="nv-field">
+            <label>Kích hoạt</label>
+            <select id="ac_active" class="nv-ip">
+              <option value="1">Active</option><option value="0">Locked</option>
+            </select>
+          </div>
+        </div>
+        <input id="ac_from_email" type="hidden" />
+      </div>
+      <div class="nv-modal-f">
+        <button class="nv-btn base" data-close>Hủy</button>
+        <button id="ac_save" class="nv-btn-primary">Tạo tài khoản</button>
+      </div>
+    </div>
+  </div>
+  <!-- ======= /MODALS ======= -->
+
+  <!-- App JS -->
+  <script src="assets/js/sidebar.js" defer></script>
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/qlnhanvien.js" defer></script>
+</body>
+</html>

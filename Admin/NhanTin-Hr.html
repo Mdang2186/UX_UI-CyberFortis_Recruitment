@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+.parent {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    gap: 8px;
+}
+    
+.div2 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 1;
+}
+
+.div3 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 2;
+}
+
+.div4 {
+    grid-column: span 2 / span 2;
+    grid-row: span 4 / span 4;
+    grid-column-start: 8;
+    grid-row-start: 1;
+}
+
+.div6 {
+    grid-column: span 7 / span 7;
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 5;
+}
+
+.div13 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 3;
+}
+
+.div26 {
+    grid-column: span 2 / span 2;
+    grid-row: span 4 / span 4;
+    grid-column-start: 6;
+    grid-row-start: 1;
+}
+
+.div30 {
+    grid-column: span 6 / span 6;
+    grid-row: span 4 / span 4;
+    grid-column-start: 4;
+    grid-row-start: 7;
+}
+
+.div34 {
+    grid-column: span 3 / span 3;
+    grid-row: span 4 / span 4;
+    grid-column-start: 1;
+    grid-row-start: 7;
+}
+
+.div37 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 4;
+}
+
+.div38 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 8;
+    grid-row-start: 6;
+}
+
+.div40 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 8;
+    grid-row-start: 5;
+}
+
+.div41 {
+    grid-column: span 3 / span 3;
+    grid-row: span 4 / span 4;
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+        
+    </style>
+</head>
+<body>
+    
+<div class="parent">
+        <div class="div2">2</div>
+    <div class="div3">3</div>
+    <div class="div4">4</div>
+    <div class="div6">6</div>
+    <div class="div13">13</div>
+    <div class="div26">26</div>
+    <div class="div30">30</div>
+    <div class="div34">34</div>
+    <div class="div37">37</div>
+    <div class="div38">38</div>
+    <div class="div40">40</div>
+    <div class="div41">41</div>
+</div>
+    
+</body>
+</html>

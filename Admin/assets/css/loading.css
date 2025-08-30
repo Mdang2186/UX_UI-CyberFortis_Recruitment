@@ -1,0 +1,86 @@
+:root{
+  /* Kích thước & màu (có thể chỉnh nhanh) */
+  --dots-size: 20px;                  /* kích thước mỗi chấm (to hơn để dễ nhìn) */
+  --dots-gap: 12px;                   /* khoảng cách giữa các chấm */
+  --blue-weak: #dbeafe;               /* xanh dương pastel nhạt */
+  --blue-strong: #60a5fa;             /* xanh dương pastel đậm */
+  --green-weak:#d1fae5;               /* xanh lục pastel nhạt */
+  --green-strong:#34d399;             /* xanh lục pastel đậm */
+}
+
+/* Icon nhỏ giữa trang; không phủ toàn trang, không chặn click */
+.cf-mini{
+  position: fixed;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%) scale(.98);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s ease, transform .15s ease;
+}
+.cf-mini.show{ opacity:1; transform: translate(-50%, -50%) scale(1); }
+
+/* Dots loader */
+.dots-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dots-gap);
+  /* đổ bóng nhẹ toàn nhóm để nổi trên nền mờ */
+  filter: drop-shadow(0 4px 14px rgba(15,23,42,.18));
+}
+
+.dot{
+  width: var(--dots-size);
+  height: var(--dots-size);
+  border-radius: 9999px;
+  animation: pulse 1.4s ease-in-out infinite;
+  /* glow vòng ngoài để nổi hơn */
+  box-shadow: 0 0 0 0 rgba(0,0,0,0);
+}
+
+/* Xanh dương cho chấm lẻ, xanh lục cho chấm chẵn */
+.dot:nth-child(odd){
+  --c1: var(--blue-weak);
+  --c2: var(--blue-strong);
+  --glow: rgba(96,165,250,.55);
+  background-color: var(--c1);
+}
+.dot:nth-child(even){
+  --c1: var(--green-weak);
+  --c2: var(--green-strong);
+  --glow: rgba(52,211,153,.5);
+  background-color: var(--c1);
+}
+
+/* Nhịp lệch pha để chạy “sóng” */
+.dot:nth-child(1){ animation-delay: -0.30s; }
+.dot:nth-child(2){ animation-delay: -0.15s; }
+.dot:nth-child(3){ animation-delay:  0.00s; }
+.dot:nth-child(4){ animation-delay:  0.15s; }
+.dot:nth-child(5){ animation-delay:  0.30s; }
+
+/* Pulse: phóng to + đổi màu + halo mờ ra, rồi thu lại */
+@keyframes pulse{
+  0%{
+    transform: scale(.85);
+    background-color: var(--c1);
+    box-shadow: 0 0 0 0 var(--glow);
+  }
+  50%{
+    transform: scale(1.25);
+    background-color: var(--c2);
+    box-shadow: 0 0 0 14px rgba(0,0,0,0);   /* quầng mờ nở rộng */
+  }
+  100%{
+    transform: scale(.85);
+    background-color: var(--c1);
+    box-shadow: 0 0 0 0 var(--glow);
+  }
+}
+
+/* Tôn trọng reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .cf-mini{ transition: none }
+  .dot{ animation: none }
+}

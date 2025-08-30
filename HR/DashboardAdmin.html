@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tổng quan tuyển dụng (Quản trị viên) - CyberFortis</title>
+
+  <!-- Tailwind, Icons, Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- App CSS -->
+<link rel="stylesheet" href="/assets/css/loading.css">
+  <link rel="stylesheet" href="assets/css/sidebar.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/dashboard-admin.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar & Header placeholders (nạp động) -->
+<aside id="sidebar" class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+  <header id="header" class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+
+  <!-- Main -->
+  <main id="mainContent" class="main-content content-transition min-h-screen">
+    <!-- Search + Filters -->
+    <section class="px-6 pt-6">
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex-1 min-w-64">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" placeholder="Tìm kiếm ứng viên hoặc vị trí…" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm">
+          </div>
+        </div>
+
+        <!-- Filter: Trạng thái -->
+        <div class="relative">
+          <button data-filter="statusFilter" class="js-filter-btn px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-500 hover:bg-gray-50 transition-colors flex items-center space-x-2">
+            <i class="fas fa-filter text-sm"></i><span>Trạng thái</span><i class="fas fa-chevron-down text-xs"></i>
+          </button>
+          <div id="statusFilter" class="filter-dropdown">
+            <div class="p-2">
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Ứng viên mới</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Sơ loại</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Đã phỏng vấn vòng 1</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Đã phỏng vấn vòng 2</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Đã trúng tuyển</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Không đạt</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter: Nguồn -->
+        <div class="relative">
+          <button data-filter="sourceFilter" class="js-filter-btn px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-500 hover:bg-gray-50 transition-colors flex items-center space-x-2">
+            <i class="fas fa-globe text-sm"></i><span>Nguồn</span><i class="fas fa-chevron-down text-xs"></i>
+          </button>
+          <div id="sourceFilter" class="filter-dropdown">
+            <div class="p-2">
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>LinkedIn</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Giới thiệu</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Trang web</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>TopCV</span></label>
+              <label class="filter-opt"><input type="checkbox" class="text-blue-600 rounded"><span>Khác</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter: Độ tuổi -->
+        <div class="relative">
+          <button data-filter="ageFilter" class="js-filter-btn px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-500 hover:bg-gray-50 transition-colors flex items-center space-x-2">
+            <i class="fas fa-birthday-cake text-sm"></i><span>Độ tuổi</span><i class="fas fa-chevron-down text-xs"></i>
+          </button>
+          <div id="ageFilter" class="filter-dropdown">
+            <div class="p-2">
+              <label class="filter-opt"><input type="checkbox"><span>Dưới 25 tuổi</span></label>
+              <label class="filter-opt"><input type="checkbox"><span>25-30 tuổi</span></label>
+              <label class="filter-opt"><input type="checkbox"><span>31-35 tuổi</span></label>
+              <label class="filter-opt"><input type="checkbox"><span>36-40 tuổi</span></label>
+              <label class="filter-opt"><input type="checkbox"><span>Trên 40 tuổi</span></label>
+            </div>
+          </div>
+        </div>
+
+        <select class="px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-500">
+          <option>Thời gian</option>
+          <option>7 ngày qua</option>
+          <option>30 ngày qua</option>
+          <option>Quý này</option>
+          <option>Năm nay</option>
+          <option>Tùy chọn</option>
+        </select>
+
+        <button class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+          <i class="fas fa-search mr-2"></i>Tìm kiếm
+        </button>
+      </div>
+    </section>
+
+    <!-- KPI Cards -->
+    <section class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
+        <!-- 6 cards (giữ nguyên nội dung) -->
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Tổng hồ sơ</p><p class="kpi-num">1,000</p></div><div class="kpi-ico bg-blue-600"><i class="fas fa-file-alt"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Ứng viên mới</p><p class="kpi-num">200</p></div><div class="kpi-ico bg-emerald-600"><i class="fas fa-user-plus"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Đã phỏng vấn</p><p class="kpi-num">650</p></div><div class="kpi-ico bg-purple-600"><i class="fas fa-comments"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Tỷ lệ thành công</p><p class="kpi-num">37%</p><div class="mt-2"><span class="tag-up"><i class="fas fa-arrow-up mr-1"></i>+5%</span></div></div><div class="kpi-ico bg-orange-600"><i class="fas fa-chart-line"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Thời gian tuyển dụng</p><p class="kpi-num">21</p><p class="kpi-sub">ngày</p></div><div class="kpi-ico bg-rose-600"><i class="fas fa-clock"></i></div></div></div>
+        <div class="kpi-card"><div class="kpi-head"><div><p class="kpi-cap">Thời gian lấp đầy</p><p class="kpi-num">28</p><p class="kpi-sub">ngày</p></div><div class="kpi-ico bg-indigo-600"><i class="fas fa-hourglass-half"></i></div></div></div>
+      </div>
+    </section>
+
+    <!-- Charts Row 1 -->
+    <section class="px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="card">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="card-title">Nộp hồ sơ theo tuần</h3>
+            <div class="flex items-center space-x-2">
+              <div class="legend-dot bg-blue-500"></div><span class="legend-txt">Nộp hồ sơ</span>
+              <div class="legend-dot ml-4 bg-emerald-500"></div><span class="legend-txt">Phỏng vấn</span>
+            </div>
+          </div>
+          <div class="chart-container"><canvas id="weeklyApplicationsChart"></canvas></div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title mb-6">Nguồn ứng viên</h3>
+          <div class="chart-container"><canvas id="sourceChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Row 2 -->
+    <section class="px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div class="card"><h3 class="card-title mb-4">Kinh nghiệm</h3><div class="chart-container"><canvas id="experienceChart"></canvas></div></div>
+        <div class="card"><h3 class="card-title mb-4">Trạng thái ứng viên</h3><div class="chart-container"><canvas id="candidateStatusChart"></canvas></div></div>
+        <div class="card"><h3 class="card-title mb-4">Độ tuổi</h3><div class="chart-container"><canvas id="ageChart"></canvas></div></div>
+      </div>
+    </section>
+
+    <!-- Conversion Funnel -->
+    <section class="px-6">
+      <div class="card mb-8">
+        <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">Tỷ lệ chuyển đổi giai đoạn tuyển dụng</h3>
+
+        <div class="flex items-center justify-center gap-4 overflow-x-auto py-4">
+          <div class="funnel-step"><div class="funnel-box from-blue-500 to-blue-600"><div class="funnel-top">1,000</div><div class="funnel-cap">Hồ sơ nộp</div><div class="funnel-sub">100%</div></div><div class="funnel-arrow b-blue"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-emerald-500 to-emerald-600"><div class="funnel-top">620</div><div class="funnel-cap">Qua sơ loại</div><div class="funnel-sub">62%</div></div><div class="funnel-arrow b-emerald"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-amber-500 to-amber-600"><div class="funnel-top">298</div><div class="funnel-cap">Phỏng vấn vòng 1</div><div class="funnel-sub">48%</div></div><div class="funnel-arrow b-amber"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-orange-500 to-orange-600"><div class="funnel-top">104</div><div class="funnel-cap">Phỏng vấn vòng 2</div><div class="funnel-sub">35%</div></div><div class="funnel-arrow b-orange"></div></div>
+          <div class="funnel-step"><div class="funnel-box from-rose-500 to-rose-600"><div class="funnel-top">37</div><div class="funnel-cap">Trúng tuyển</div><div class="funnel-sub">22%</div></div></div>
+        </div>
+
+        <p class="mt-6 text-center text-sm text-gray-600">Tỷ lệ chuyển đổi tổng thể: <span class="font-bold text-blue-600">3.7%</span> (37/1,000 ứng viên)</p>
+      </div>
+    </section>
+
+    <!-- Lịch phỏng vấn & Hoạt động gần đây -->
+    <section class="px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Lịch phỏng vấn -->
+        <div class="card">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="card-title">Lịch phỏng vấn sắp tới</h3>
+            <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">Xem tất cả</button>
+          </div>
+
+          <div class="space-y-4 max-h-80 overflow-y-auto">
+            <!-- 4 items (giữ nguyên) -->
+            <div class="interview-card from-blue-50 to-blue-100">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="badge bg-gradient-to-r from-blue-500 to-purple-500">TA</div>
+                  <div><h4 class="font-semibold text-gray-800">Trần Thanh An</h4><p class="text-sm text-gray-600">Lập trình viên Backend</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-medium text-blue-600">14/08 22:35</p>
+                  <span class="tag tag-blue">Trực tuyến</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="interview-card from-emerald-50 to-emerald-100">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="badge bg-gradient-to-r from-emerald-500 to-teal-500">HD</div>
+                  <div><h4 class="font-semibold text-gray-800">Hoàng Đức Dũng</h4><p class="text-sm text-gray-600">Chuyên viên phân tích dữ liệu</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-medium text-emerald-600">15/08 19:35</p>
+                  <span class="tag tag-emerald">Trực tiếp</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="interview-card from-purple-50 to-purple-100">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="badge bg-gradient-to-r from-purple-500 to-pink-500">NH</div>
+                  <div><h4 class="font-semibold text-gray-800">Nguyễn Minh Hải</h4><p class="text-sm text-gray-600">Lập trình viên Frontend</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-medium text-purple-600">16/08 14:00</p>
+                  <span class="tag tag-purple">Trực tuyến</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="interview-card from-orange-50 to-orange-100">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="badge bg-gradient-to-r from-orange-500 to-red-500">LT</div>
+                  <div><h4 class="font-semibold text-gray-800">Lê Thị Mai</h4><p class="text-sm text-gray-600">Thiết kế UI/UX</p></div>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm font-medium text-orange-600">17/08 10:30</p>
+                  <span class="tag tag-orange">Trực tiếp</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hoạt động gần đây -->
+        <div class="card">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="card-title">Hoạt động gần đây</h3>
+            <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">Xem tất cả</button>
+          </div>
+
+          <div class="space-y-4 max-h-80 overflow-y-auto">
+            <div class="activity"><div class="activity-ico from-blue-500 to-purple-500"><i class="fas fa-calendar-plus text-white text-sm"></i></div><div class="activity-txt"><p class="activity-line"><span class="text-blue-600">Nguyễn Văn An</span> đã lên lịch phỏng vấn cho ứng viên Trần Thanh An</p><p class="activity-time">2 phút trước</p></div></div>
+            <div class="activity"><div class="activity-ico from-emerald-500 to-teal-500"><i class="fas fa-handshake text-white text-sm"></i></div><div class="activity-txt"><p class="activity-line"><span class="text-emerald-600">Trần Thị Lan</span> đã gửi thư mời làm việc cho vị trí Chuyên viên phân tích dữ liệu</p><p class="activity-time">15 phút trước</p></div></div>
+            <div class="activity"><div class="activity-ico from-purple-500 to-pink-500"><i class="fas fa-check-circle text-white text-sm"></i></div><div class="activity-txt"><p class="activity-line"><span class="text-purple-600">Lê Minh Tuấn</span> đã hoàn thành phỏng vấn vòng 2 với Hoàng Đức Dũng</p><p class="activity-time">1 giờ trước</p></div></div>
+            <div class="activity"><div class="activity-ico from-orange-500 to-red-500"><i class="fas fa-user-plus text-white text-sm"></i></div><div class="activity-txt"><p class="activity-line">Có <span class="text-orange-600">5 ứng viên mới</span> nộp hồ sơ cho vị trí Lập trình viên Frontend</p><p class="activity-time">2 giờ trước</p></div></div>
+            <div class="activity"><div class="activity-ico from-indigo-500 to-blue-500"><i class="fas fa-edit text-white text-sm"></i></div><div class="activity-txt"><p class="activity-line"><span class="text-indigo-600">Phạm Văn Đức</span> đã cập nhật trạng thái ứng viên thành "Đạt vòng 1"</p><p class="activity-time">3 giờ trước</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bảng 1 -->
+    <section class="px-6 space-y-8 mb-8">
+      <div class="card">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="card-title">Ứng viên mới nộp hồ sơ</h3>
+          <span class="chip chip-blue">12 mới</span>
+        </div>
+
+        <div class="mb-4">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" placeholder="Tìm kiếm ứng viên mới..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 sticky top-0">
+              <tr>
+                <th class="th">Họ tên</th><th class="th">Ngày sinh</th><th class="th">Giới tính</th>
+                <th class="th">Email</th><th class="th">SĐT</th><th class="th">Vị trí</th>
+                <th class="th">Nguồn</th><th class="th">Kinh nghiệm</th><th class="th">Thành tích</th>
+                <th class="th">Ngày nộp</th><th class="th">Trạng thái</th><th class="th">CV</th><th class="th">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <!-- 3 rows demo -->
+              <tr class="tr hover:bg-blue-50">
+                <td class="td"><div class="td-user"><div class="td-badge from-blue-500 to-purple-500">VH</div><span class="name">Võ Minh Hưng</span></div></td>
+                <td class="td">15/03/1995</td><td class="td">Nam</td><td class="td">vominhhung@email.com</td>
+                <td class="td">0901234567</td><td class="td">Lập trình viên Java</td><td class="td">LinkedIn</td>
+                <td class="td">3 năm</td><td class="td">Dự án e-commerce</td><td class="td">14/08/2024</td>
+                <td class="td"><span class="status status-blue">Mới</span></td>
+                <td class="td"><button class="act blue"><i class="fas fa-file-pdf"></i></button></td>
+                <td class="td">
+                  <div class="flex gap-2"><button class="act green" title="Phê duyệt"><i class="fas fa-check"></i></button>
+                    <button class="act blue" title="Xem chi tiết"><i class="fas fa-eye"></i></button>
+                    <button class="act red" title="Từ chối"><i class="fas fa-times"></i></button></div>
+                </td>
+              </tr>
+
+              <tr class="tr hover:bg-blue-50">
+                <td class="td"><div class="td-user"><div class="td-badge from-emerald-500 to-teal-500">NT</div><span class="name">Nguyễn Thị Trang</span></div></td>
+                <td class="td">22/07/1998</td><td class="td">Nữ</td><td class="td">nguyentrang@email.com</td>
+                <td class="td">0912345678</td><td class="td">Thiết kế đồ họa</td><td class="td">Trang web</td>
+                <td class="td">2 năm</td><td class="td">Brand identity</td><td class="td">14/08/2024</td>
+                <td class="td"><span class="status status-blue">Mới</span></td>
+                <td class="td"><button class="act blue"><i class="fas fa-file-pdf"></i></button></td>
+                <td class="td">
+                  <div class="flex gap-2"><button class="act green"><i class="fas fa-check"></i></button>
+                    <button class="act blue"><i class="fas fa-eye"></i></button>
+                    <button class="act red"><i class="fas fa-times"></i></button></div>
+                </td>
+              </tr>
+
+              <tr class="tr hover:bg-blue-50">
+                <td class="td"><div class="td-user"><div class="td-badge from-purple-500 to-pink-500">LQ</div><span class="name">Lê Văn Quang</span></div></td>
+                <td class="td">10/11/1990</td><td class="td">Nam</td><td class="td">levanquang@email.com</td>
+                <td class="td">0923456789</td><td class="td">Kỹ sư DevOps</td><td class="td">Giới thiệu</td>
+                <td class="td">5 năm</td><td class="td">CI/CD Pipeline</td><td class="td">14/08/2024</td>
+                <td class="td"><span class="status status-blue">Mới</span></td>
+                <td class="td"><button class="act blue"><i class="fas fa-file-pdf"></i></button></td>
+                <td class="td">
+                  <div class="flex gap-2"><button class="act green"><i class="fas fa-check"></i></button>
+                    <button class="act blue"><i class="fas fa-eye"></i></button>
+                    <button class="act red"><i class="fas fa-times"></i></button></div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bảng 2 -->
+      <div class="card">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="card-title">Ứng viên đã trúng tuyển</h3>
+          <span class="chip chip-green">3 tuần này</span>
+        </div>
+
+        <div class="mb-4">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" placeholder="Tìm kiếm ứng viên đã trúng tuyển..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 sticky top-0">
+              <tr>
+                <th class="th">Họ tên</th><th class="th">Ngày sinh</th><th class="th">Giới tính</th>
+                <th class="th">Email</th><th class="th">SĐT</th><th class="th">Vị trí</th>
+                <th class="th">Nguồn</th><th class="th">Kinh nghiệm</th><th class="th">Thành tích</th>
+                <th class="th">Ngày nộp</th><th class="th">Trạng thái</th><th class="th">CV</th><th class="th">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr class="tr hover:bg-green-50">
+                <td class="td"><div class="td-user"><div class="td-badge from-blue-500 to-indigo-500">HN</div><span class="name">Hoàng Thị Nga</span></div></td>
+                <td class="td">18/12/1996</td><td class="td">Nữ</td><td class="td">hoangthinga@email.com</td>
+                <td class="td">0945678901</td><td class="td">Chuyên viên Marketing</td><td class="td">TopCV</td>
+                <td class="td">3 năm</td><td class="td">Campaign ROI 300%</td><td class="td">28/07/2024</td>
+                <td class="td"><span class="status status-yellow">Đang xem xét</span></td>
+                <td class="td"><button class="act blue"><i class="fas fa-file-pdf"></i></button></td>
+                <td class="td"><div class="flex gap-2"><button class="act blue"><i class="fas fa-eye"></i></button><button class="act green"><i class="fas fa-paper-plane"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bảng 3 -->
+      <div class="card">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="card-title">Cần phỏng vấn vòng 2</h3>
+          <span class="chip chip-orange">8 ứng viên</span>
+        </div>
+
+        <div class="mb-4">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" placeholder="Tìm kiếm ứng viên cần phỏng vấn vòng 2..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 sticky top-0">
+              <tr>
+                <th class="th">Họ tên</th><th class="th">Ngày sinh</th><th class="th">Giới tính</th>
+                <th class="th">Email</th><th class="th">SĐT</th><th class="th">Vị trí</th>
+                <th class="th">Nguồn</th><th class="th">Kinh nghiệm</th><th class="th">Thành tích</th>
+                <th class="th">Ngày nộp</th><th class="th">Trạng thái</th><th class="th">CV</th><th class="th">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr class="tr hover:bg-orange-50">
+                <td class="td"><div class="td-user"><div class="td-badge from-orange-500 to-amber-500">BH</div><span class="name">Bùi Văn Hùng</span></div></td>
+                <td class="td">25/04/1994</td><td class="td">Nam</td><td class="td">buivanhung@email.com</td>
+                <td class="td">0956789012</td><td class="td">Lập trình viên React</td><td class="td">Giới thiệu</td>
+                <td class="td">4 năm</td><td class="td">SPA performance</td><td class="td">10/08/2024</td>
+                <td class="td"><span class="status status-orange">Chờ PV vòng 2</span></td>
+                <td class="td"><button class="act blue"><i class="fas fa-file-pdf"></i></button></td>
+                <td class="td"><div class="flex gap-2"><button class="act blue"><i class="fas fa-eye"></i></button><button class="act green"><i class="fas fa-calendar-plus"></i></button><button class="act red"><i class="fas fa-times"></i></button></div></td>
+              </tr>
+
+              <tr class="tr hover:bg-orange-50">
+                <td class="td"><div class="td-user"><div class="td-badge from-red-500 to-pink-500">ML</div><span class="name">Mai Thị Lan</span></div></td>
+                <td class="td">12/09/1997</td><td class="td">Nữ</td><td class="td">maithilan@email.com</td>
+                <td class="td">0967890123</td><td class="td">Chuyên viên QA</td><td class="td">Trang web</td>
+                <td class="td">2 năm</td><td class="td">Automation testing</td><td class="td">08/08/2024</td>
+                <td class="td"><span class="status status-orange">Chờ PV vòng 2</span></td>
+                <td class="td"><button class="act blue"><i class="fas fa-file-pdf"></i></button></td>
+                <td class="td"><div class="flex gap-2"><button class="act blue"><i class="fas fa-eye"></i></button><button class="act green"><i class="fas fa-calendar-plus"></i></button><button class="act red"><i class="fas fa-times"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+<div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/50 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">Danh sách vị trí tuyển dụng</h3>
+                        <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">Thêm vị trí</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50 sticky top-0">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Vị trí</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Phòng ban</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Số lượng</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Ngày đăng</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Hạn nộp</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Trạng thái</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-blue-50 transition-colors">
+                                    <td class="px-4 py-3 whitespace-nowrap">Lập trình viên Backend</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">Công nghệ thông tin</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">5</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">01/08/2025</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">31/08/2025</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Đang tuyển</span>
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-800" title="Xem chi tiết">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-yellow-600 hover:text-yellow-800" title="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                 <tr class="hover:bg-blue-50 transition-colors">
+                                    <td class="px-4 py-3 whitespace-nowrap">Lập trình viên Frontend</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">Công nghệ thông tin</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">3</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">01/06/2025</td>
+                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">21/08/2025</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Đang tuyển</span>
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <button class="text-blue-600 hover:text-blue-800" title="Xem chi tiết">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-yellow-600 hover:text-yellow-800" title="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Thêm các dòng khác tương tự -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-blue-600 rounded-lg grid place-items-center text-white font-bold">CF</div>
+              <div><h3 class="text-lg font-semibold text-gray-900">CyberFortis</h3><p class="text-gray-600 text-sm">Bảo vệ thế giới số</p></div>
+            </div>
+            <p class="text-gray-700 mb-4 max-w-md">Công ty hàng đầu về an ninh mạng tại Việt Nam với hơn 15 năm kinh nghiệm bảo vệ doanh nghiệp khỏi các mối đe dọa cyber.</p>
+            <div class="flex gap-4">
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <div>
+            <h4 class="footer-title">Liên kết nhanh</h4>
+            <ul class="footer-list">
+              <li><a href="#" class="footer-link">Về chúng tôi</a></li>
+              <li><a href="#" class="footer-link">Dịch vụ</a></li>
+              <li><a href="#" class="footer-link">Tuyển dụng</a></li>
+              <li><a href="#" class="footer-link">Tin tức</a></li>
+              <li><a href="#" class="footer-link">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-title">Hỗ trợ</h4>
+            <ul class="footer-list">
+              <li class="text-gray-600 text-sm">📧 hr@cyberfortis.vn</li>
+              <li class="text-gray-600 text-sm">📞 (024) 3999 8888</li>
+              <li class="text-gray-600 text-sm">📍 Hà Nội, Việt Nam</li>
+              <li class="text-gray-600 text-sm">🕒 T2-T6: 8:00-17:30</li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-500 text-sm">© 2024 CyberFortis. Tất cả quyền được bảo lưu.</p>
+          <div class="flex gap-6 mt-4 md:mt-0">
+            <a href="#" class="footer-link">Chính sách bảo mật</a>
+            <a href="#" class="footer-link">Điều khoản sử dụng</a>
+            <a href="#" class="footer-link">Cookie</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- NẠP SIDEBAR & HEADER -->
+  <!-- NẠP SIDEBAR & HEADER -->
+<script>
+  Promise.all([
+    fetch('Header.html').then(r=>r.text()).then(h=>document.getElementById('header').innerHTML=h),
+    fetch('Sidebar.html').then(r=>r.text()).then(h=>document.getElementById('sidebar').innerHTML=h),
+  ]).then(()=> { if (window.SidebarInit) window.SidebarInit(); });
+</script>
+
+
+  <!-- App JS -->
+<script defer src="/assets/js/loading.js"></script>
+  <script src="assets/js/sidebar.js" defer></script>
+  <script src="assets/js/header.js" defer></script>
+<script src="assets/js/dashboard-admin.js" defer></script>
+
+</body>
+</html>
