@@ -1,0 +1,155 @@
+<header id="header" class="bg-white/80 backdrop-blur-sm shadow-sm border-b border-gray-100 sticky top-0 z-[60]">
+  <div class="flex items-center justify-between px-6 h-20">
+    <!-- Left: Title + sidebar toggle -->
+    <div class="flex items-center gap-4">
+      <!-- New Toggle Button with Arrow Effect -->
+      <!-- Toggle Sidebar (NEW SVG hamburger) -->
+<div class="sidebar-toggle-wrapper">
+  <label class="hamburger" for="menuToggle" aria-label="Mở/đóng sidebar">
+    <input type="checkbox" id="menuToggle" class="toggle-checkbox" />
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path class="line line-top-bottom"
+            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+      <path class="line" d="M7 16 27 16"></path>
+    </svg>
+  </label>
+</div>
+
+      
+      <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 bg-gradient-to-br from-blue-600 via-blue-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl icon-wrapper">
+            <i class="fas fa-chart-line text-white text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-3xl font-black text-gray-900 tracking-tight bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
+              CyberFortis Recruitment
+            </h1>
+            <p class="text-sm text-gray-600 font-semibold mt-1">Professional HR Recruitment Analytics & Intelligence</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: actions -->
+    <div class="flex items-center gap-4">
+      <!-- Settings -->
+      <button class="p-2 rounded-lg bg-white shadow-sm border border-gray-200 hover:bg-gray-50" title="Cài đặt">
+        <i class="fas fa-cog text-gray-600"></i>
+      </button>
+
+      <!-- Help -->
+      <button class="p-2 rounded-lg bg-white shadow-sm border border-gray-200 hover:bg-gray-50" title="Trợ giúp">
+        <i class="fas fa-question-circle text-gray-600"></i>
+      </button>
+
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notifBtn" class="p-2 rounded-lg bg-white shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors relative" title="Thông báo" aria-expanded="false">
+          <i class="fas fa-bell text-gray-600"></i>
+          <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full grid place-items-center">3</span>
+        </button>
+
+        <!-- Dropdown thông báo -->
+        <div id="notificationDropdown" class="header-dropdown absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 opacity-0 invisible transition-all duration-200">
+          <div class="p-4 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-gray-800">Thông báo</h3>
+              <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">3 mới</span>
+            </div>
+          </div>
+          <div class="max-h-80 overflow-y-auto">
+            <!-- item 1 -->
+            <div class="p-3 hover:bg-blue-50 border-b border-gray-50 cursor-pointer">
+              <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 bg-blue-500 rounded-full grid place-items-center flex-shrink-0">
+                  <i class="fas fa-user-plus text-white text-xs"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-gray-800">Ứng viên mới nộp hồ sơ</p>
+                  <p class="text-xs text-gray-600">Võ Minh Hưng đã nộp hồ sơ cho vị trí Lập trình viên Java</p>
+                  <p class="text-xs text-blue-600 mt-1">2 phút trước</p>
+                </div>
+                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+              </div>
+            </div>
+            <!-- item 2 -->
+            <div class="p-3 hover:bg-green-50 border-b border-gray-50 cursor-pointer">
+              <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 bg-green-500 rounded-full grid place-items-center flex-shrink-0">
+                  <i class="fas fa-check-circle text-white text-xs"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-gray-800">Phỏng vấn hoàn thành</p>
+                  <p class="text-xs text-gray-600">Trần Thanh An đã hoàn thành phỏng vấn vòng 1</p>
+                  <p class="text-xs text-green-600 mt-1">15 phút trước</p>
+                </div>
+                <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+              </div>
+            </div>
+            <!-- item 3 -->
+            <div class="p-3 hover:bg-orange-50 border-b border-gray-50 cursor-pointer">
+              <div class="flex items-start space-x-3">
+                <div class="w-8 h-8 bg-orange-500 rounded-full grid place-items-center flex-shrink-0">
+                  <i class="fas fa-calendar text-white text-xs"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-gray-800">Lịch phỏng vấn sắp tới</p>
+                  <p class="text-xs text-gray-600">Phỏng vấn với Hoàng Đức Dũng lúc 19:35 hôm nay</p>
+                  <p class="text-xs text-orange-600 mt-1">1 giờ trước</p>
+                </div>
+                <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 border-t border-gray-100">
+            <button class="w-full text-center text-sm text-blue-600 hover:text-blue-700 font-medium">
+              Xem tất cả thông báo
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- User -->
+      <div class="relative">
+        <!-- chip -->
+        <button id="userBtn"
+                class="flex items-center space-x-2 bg-white rounded-full px-3 py-2 shadow-sm border border-gray-100 cursor-pointer transition-all duration-300 hover:px-4 hover:shadow-md group"
+                aria-expanded="false">
+          <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full grid place-items-center">
+            <i class="fas fa-user text-white text-sm"></i>
+          </div>
+          <div class="overflow-hidden transition-all duration-300 max-w-0 group-hover:max-w-xs">
+            <div class="whitespace-nowrap text-left">
+              <span class="text-sm font-medium text-gray-700 block leading-5">Nguyễn Văn Admin</span>
+              <span class="text-xs text-gray-500 leading-3">Quản trị viên</span>
+            </div>
+          </div>
+          <i id="avatarChevron" class="fas fa-chevron-down text-gray-400 text-xs transition-transform duration-200"></i>
+        </button>
+
+        <!-- dropdown -->
+        <div id="userDropdown" class="header-dropdown absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible transition-all duration-200">
+          <div class="p-3 border-b border-gray-100">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full grid place-items-center">
+                <i class="fas fa-user text-white"></i>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-gray-800">Nguyễn Văn Admin</p>
+                <p class="text-xs text-gray-500">admin@cyberfortis.com</p>
+              </div>
+            </div>
+          </div>
+          <div class="py-2">
+            <a href="CaiDat.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-user-cog mr-2"></i>Hồ sơ cá nhân</a>
+            <a href="CaiDat.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-cog mr-2"></i>Cài đặt tài khoản</a>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fas fa-bell mr-2"></i>Thông báo</a>
+            <hr class="my-1">
+            <a href="IntroEmployee.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"><i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
