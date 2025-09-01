@@ -203,9 +203,13 @@
             transition: all 0.2s ease;
         }
 
-        .faq-category:hover,
+        .faq-category:hover{
+            background: linear-gradient(135deg, #c3c2fb 0%, #fcddc1 100%);
+            color: rgb(0, 0, 0);
+            border-color: transparent;
+        }
         .faq-category.active {
-            background: linear-gradient(135deg, #114992 0%, #0d9a4c 100%);
+            background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
             color: white;
             border-color: transparent;
         }

@@ -364,6 +364,11 @@
             color: var(--primary-blue);
         }
     </style>
+    <script src="assets/js/intro-boot.js"
+        data-intro="IntroOnePageEmployee.html"
+        data-home="DashboardAdmin.html"
+        defer></script>
+
 </head>
 <body class="mesh-gradient geometric-pattern">
     <!-- Scroll Progress Bar -->
@@ -401,7 +406,7 @@
                 </nav>
                 
                 <!-- Header -->
-                <button class="btn-premium text-white px-8 py-3 rounded-xl font-semibold" onclick="window.location.href='DashboardAdmin.html'">
+                <button class="btn-premium text-white px-8 py-3 rounded-xl font-semibold" onclick="IntroBoot.done('DashboardAdmin.html')">
     Đăng nhập
 </button>
 
@@ -435,7 +440,7 @@
                 
                 <!-- Hero Section -->
                 <button class="btn-premium text-white px-10 py-5 rounded-xl font-bold text-xl shadow-2xl hover:shadow-blue-500/30 transform hover:scale-110 transition-all duration-300 animate-pulse"
-        onclick="window.location.href='DashboardAdmin.html'">
+        onclick="IntroBoot.done('DashboardAdmin.html')">
     <span class="flex items-center space-x-3">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
@@ -1460,5 +1465,6 @@
             }, 500);
         });
     </script>
+    
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f92ca79385854e',t:'MTc1NTI2NTk2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
