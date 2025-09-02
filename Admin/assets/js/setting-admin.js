@@ -24,7 +24,33 @@
             const originalText = button.innerHTML;
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
             button.disabled = true;
-            
+              // gom dữ liệu hồ sơ (front-end demo)
+  if (section === 'profile') {
+    const get = id => (document.getElementById(id)?.value || '').trim();
+    const profile = {
+      fullname: get('pf_fullname'),
+      email:    get('pf_email'),
+      phone:    get('pf_phone'),
+      title:    get('pf_title'),
+      dept:     get('pf_dept'),
+      username: get('pf_username'),
+      dob:      get('pf_dob'),
+      gender:   get('pf_gender'),
+      address:  get('pf_address'),
+      bio:      get('pf_bio'),
+      website:  get('pf_website'),
+      linkedin: get('pf_linkedin'),
+      github:   get('pf_github'),
+      facebook: get('pf_facebook'),
+      twitter:  get('pf_twitter')
+    };
+    try { localStorage.setItem('cf_profile', JSON.stringify(profile)); } catch {}
+    // TODO: gọi API thật:
+    // const fd = new FormData(); Object.entries(profile).forEach(([k,v])=>fd.set(k,v));
+    // if (uploadState.avatar.file) fd.set('avatar', uploadState.avatar.file);
+    // if (uploadState.cover.file)  fd.set('cover',  uploadState.cover.file);
+    // await fetch('/api/profile', { method:'POST', body: fd });
+  }
             // Simulate API call
             setTimeout(() => {
                 button.innerHTML = '<i class="fas fa-check"></i> Đã lưu';
@@ -264,6 +290,63 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     onFileReady: (file, url) => { uploadState.favicon = { file, blobUrl:url }; }
   });
+// ---- state để append khi Lưu (mở rộng thêm avatar/cover) ----
+uploadState.avatar = { file:null, blobUrl:null };
+uploadState.cover  = { file:null, blobUrl:null };
+
+// Avatar 256x256 (PNG)
+initUploader({
+  root: document.getElementById('avatarDropzone'),
+  input: document.getElementById('avatarInput'),
+  maxMB: 2,
+  acceptTypes: ['image/png','image/jpeg'],
+  transform: async (file) => {
+    // ép về PNG vuông 256
+    const img = await readImage(file);
+    const size = 256;
+    const blob = await resizePng(img, size, size);
+    return new File([blob], 'avatar.png', { type:'image/png' });
+  },
+  onFileReady: (file, url) => { uploadState.avatar = { file, blobUrl:url }; }
+});
+
+// Cover 1200x300 (PNG)
+initUploader({
+  root: document.getElementById('coverDropzone'),
+  input: document.getElementById('coverInput'),
+  maxMB: 3,
+  acceptTypes: ['image/png','image/jpeg'],
+  transform: async (file) => {
+    const img = await readImage(file);
+    const blob = await resizePng(img, 1200, 300);
+    return new File([blob], 'cover.png', { type:'image/png' });
+  },
+  onFileReady: (file, url) => { uploadState.cover = { file, blobUrl:url }; }
+});
+
+// Khôi phục dữ liệu profile từ localStorage
+try {
+  const raw = localStorage.getItem('cf_profile');
+  if (raw) {
+    const pf = JSON.parse(raw);
+    const set = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.value = v; };
+    set('pf_fullname', pf.fullname);
+    set('pf_email', pf.email);
+    set('pf_phone', pf.phone);
+    set('pf_title', pf.title);
+    set('pf_dept', pf.dept);
+    set('pf_username', pf.username);
+    set('pf_dob', pf.dob);
+    set('pf_gender', pf.gender);
+    set('pf_address', pf.address);
+    set('pf_bio', pf.bio);
+    set('pf_website', pf.website);
+    set('pf_linkedin', pf.linkedin);
+    set('pf_github', pf.github);
+    set('pf_facebook', pf.facebook);
+    set('pf_twitter', pf.twitter);
+  }
+} catch {}
 
   // Hook nút Lưu (nếu bạn dùng AJAX)
   const btnSave = document.querySelector('#btnSave');
@@ -380,3 +463,73 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+                
+                // Remove active classes
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('border-blue-500', 'text-blue-600');
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                });
+                
+                // Add active class to clicked button
+                button.classList.remove('border-transparent', 'text-gray-500');
+                button.classList.add('border-blue-500', 'text-blue-600');
+                
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show selected tab content
+                document.getElementById(tabName + '-tab').classList.remove('hidden');
+            });
+        });
+
+        // Save button functionality
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const notification = document.getElementById('notification');
+            notification.classList.remove('hidden');
+            
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 3000);
+        });
+
+        // Upload button functionality
+        document.getElementById('uploadBtn').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                if (e.target.files[0]) {
+                    alert('Chức năng upload ảnh sẽ được triển khai trong phiên bản thực tế!');
+                }
+            };
+            input.click();
+        });
+
+        // Form validation
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                document.getElementById('saveBtn').click();
+            });
+        });
+
+        // Input validation
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    input.classList.add('border-red-300');
+                } else {
+                    input.classList.remove('border-red-300');
+                }
+            });
+        });

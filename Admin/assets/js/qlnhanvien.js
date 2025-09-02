@@ -234,7 +234,7 @@ function initCharts(){
     charts.push(makeDoughnut(role,{
       labels:['Trưởng phòng','HR','Backend','Data Analyst','Kinh doanh','Tester','HR Assistant','Frontend','Fullstack','Trưởng phòng NS'],
       datasets:[{ data:[10,8,12,10,8,5,6,7,6,4],
-        backgroundColor:['#3b82f6','#ef4444','#60a5fa','#22c55e','#f59e0b','#38bdf8','#a78bfa','#34d399','#93c5fd','#22d3ee'],
+        backgroundColor:['#2563eb','#4488efff','#60c9faff','#30aa8eff','#5cbc8cff','#7eeb9bff','#919af0ff','#34d399','#93c5fd','#22d3ee'],
         borderWidth:0, hoverOffset:6 }]
     }));
   }
@@ -243,7 +243,7 @@ function initCharts(){
   if(dept){
     charts.push(makeDoughnut(dept,{
       labels:['Phòng Dữ liệu','Phòng IT','Kế toán','Kinh doanh','Nhân sự'],
-      datasets:[{ data:[38,26,12,16,8], backgroundColor:['#8b5cf6','#f43f5e','#60a5fa','#f59e0b','#3b82f6'], borderWidth:0 }]
+      datasets:[{ data:[38,26,12,16,8], backgroundColor:['#4562cdff','#6399f0ff','#60ebfaff','#38bbb3ff','#2db489ff'], borderWidth:0 }]
     }, '62%'));
   }
 
@@ -254,7 +254,7 @@ function initCharts(){
       data:{
         labels:['<25','25-30','31-35','36-40','41+'],
         datasets:[{ data:[2,6,11,4,1],
-          backgroundColor:[rgba(PALETTE.blue,.9), rgba(PALETTE.blue2,.9), rgba(PALETTE.orange,.9), rgba(PALETTE.blue2,.6), rgba(PALETTE.blue2,.35)],
+          backgroundColor:['#6dafffff','#0ea5e9','#45bfdeff','#14aab8ff','#34c8d3ff'],
           borderRadius:8, borderSkipped:false }]
       },
       options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:scalesBase }
@@ -265,7 +265,7 @@ function initCharts(){
   if(exp){
     charts.push(makeDoughnut(exp,{
       labels:['1-2','3-5','6-8','>8'],
-      datasets:[{ data:[20,38,22,10], backgroundColor:['#3b82f6','#fb7185','#f59e0b','#10b981'], borderWidth:0 }]
+      datasets:[{ data:[20,38,22,10], backgroundColor:['#3b82f6','#3d8ed9ff','#26cac0ff','#2dd486ff'], borderWidth:0 }]
     }, '65%', 'bottom'));
   }
 
@@ -273,7 +273,7 @@ function initCharts(){
   if(role2){
     charts.push(makeDoughnut(role2,{
       labels:['Admin','HR','Interviewer'],
-      datasets:[{ data:[10,20,70], backgroundColor:['#3b82f6','#ef4444','#f59e0b'], borderWidth:0 }]
+      datasets:[{ data:[10,20,70], backgroundColor:['#3b82f6','#06b6d4','#10b981'], borderWidth:0 }]
     }, '65%', 'bottom'));
   }
 
