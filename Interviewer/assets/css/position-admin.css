@@ -1,4 +1,4 @@
-/* =============== Đồng bộ Navi → Green Pastel, bỏ khung chart =============== */
+/* =============== Màu & nền tone xanh dương → xanh lục pastel =============== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 :root{
   --navy-800:#1E3A8A; --navy-600:#2563EB; --blue-500:#3B82F6; --blue-300:#93C5FD;
@@ -14,10 +14,21 @@ body{
   font-family:'Inter',ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   color:var(--ink-900); background:#F8FAFC;
 }
-/* Full-fit cho mọi canvas trong card biểu đồ */
+
+/* =================== BIỂU ĐỒ FULL KHUNG =================== */
+/* Card bọc chart nên là flex-col để canvas “grow” hết chiều cao */
+.card{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:20px }
+.card-title{ font-size:1.05rem; font-weight:800; color:#0f172a }
+
+/* Phần tử bọc canvas: đặt chiều cao và ép canvas phủ 100% */
 .chart-container{
   position: relative;
-  height: 360px;         /* đã set ở HTML; giữ làm fallback */
+  height: 360px;                 /* có thể đổi bằng h-[420px]/h-[460px] trong HTML */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  overflow: visible;             /* tránh tooltips bị cắt */
 }
 .chart-container > canvas{
   position: absolute; inset: 0;
@@ -26,6 +37,7 @@ body{
   display: block !important;
 }
 
+/* Layout chính (đã có header + sidebar) */
 .main-content{ margin-left:var(--sidebar-w); margin-top:var(--header-h); min-height:calc(100vh - var(--header-h)); transition:margin-left .3s }
 .main-content.main-content-collapsed{ margin-left:var(--sidebar-wc) }
 
@@ -34,19 +46,7 @@ body{
 .kpi-card:hover{ transform:translateY(-1px); border-color:rgba(37,99,235,.25) }
 .kpi-num{ font-size:1.75rem; font-weight:800; color:#0f172a }
 
-/* Card chung */
-.card{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:20px }
-.card-title{ font-size:1.05rem; font-weight:800; color:#0f172a }
-
-/* Chart container: no frame */
-.chart-container{ position:relative; height:360px; background:transparent; border:none; box-shadow:none; padding:0 }
-.chart-container canvas{ display:block!important; width:100%!important; height:100%!important }
-
-/* Funnel boxes vẫn dùng gradient nội bộ (nếu bạn đang có) */
-.funnel-box{ color:#fff; padding:20px; border-radius:14px; min-width:192px; text-align:center;
-  background-image:linear-gradient(to bottom right, var(--navy-600), var(--green-300)); }
-
-/* Dropdown đẹp & rõ */
+/* Dropdown “lọc” */
 .filter-wrap{ position:relative }
 .filter-dropdown{
   position:absolute; top:100%; left:0; z-index:40; width:280px;
@@ -59,173 +59,58 @@ body{
 
 .btn{ display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:10px; border:1px solid var(--border); background:#fff; color:#374151; transition:.18s }
 .btn:hover{ border-color:var(--navy-600); color:var(--navy-600); background:#EEF2FF }
-/* ===== Position Detail Modal (scoped) ===== */
-#positionDetail.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: none;                 /* Ẩn mặc định */
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(15, 23, 42, 0.55); /* slate-900/55 */
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .2s ease, visibility .2s ease;
-}
 
-#positionDetail.modal.show {
-  display: flex;                 /* Chỉ hiện khi có .show */
-  opacity: 1;
-  visibility: visible;
+/* ===== Modal chi tiết (scoped) ===== */
+#positionDetail.modal{
+  position: fixed; inset: 0; z-index: 1000; display: none;
+  align-items:center; justify-content:center; padding:24px;
+  background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(2px);
+  opacity: 0; visibility: hidden; transition: opacity .2s, visibility .2s;
 }
-
-/* Hộp nội dung */
-#positionDetail .modal-content {
-  width: min(960px, 96vw);
-  max-height: 90vh;
-  overflow: auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 25px 60px rgba(2, 6, 23, .25), 0 8px 20px rgba(2, 6, 23, .15);
+#positionDetail.modal.show{ display:flex; opacity:1; visibility:visible }
+#positionDetail .modal-content{
+  width:min(960px,96vw); max-height:90vh; overflow:auto;
+  background:#fff; border-radius:16px;
+  box-shadow:0 25px 60px rgba(2,6,23,.25), 0 8px 20px rgba(2,6,23,.15);
   transform: translateY(10px) scale(.98);
-  transition: transform .2s ease, opacity .2s ease;
+  transition: transform .2s ease;
 }
+#positionDetail.modal.show .modal-content{ transform: translateY(0) scale(1) }
+#positionDetail .modal-close{ position:absolute; top:10px; right:12px; padding:8px; border-radius:10px }
+body.modal-open{ overflow:hidden }
 
-#positionDetail.modal.show .modal-content {
-  transform: translateY(0) scale(1);
-}
-
-/* Nút đóng (tùy chọn) */
-#positionDetail .modal-close {
-  position: absolute;
-  top: 10px; right: 12px;
-  padding: 8px;
-  border-radius: 10px;
-} 
-/* Khóa scroll nền khi mở modal */
-body.modal-open {
-  overflow: hidden;
-}
-
-/* (Tuỳ chọn) tinh chỉnh input trong modal cho đồng nhất */
-#positionDetail .form-input,
-#positionDetail input,
-#positionDetail select,
-#positionDetail textarea {
-  outline: none;
-}
-/* ==== Horizontal rail (không chạm thiết kế bên trong thẻ) ==== */
+/* Rail ngang (carousel card) */
 .job-rail__track{
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 2px 2px 10px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-gutter: stable;
+  display:flex; gap:16px; overflow-x:auto; padding:2px 2px 10px;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-gutter:stable;
 }
 .job-rail__track::-webkit-scrollbar{ height:10px }
 .job-rail__track::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:9999px }
 .job-rail__track:hover::-webkit-scrollbar-thumb{ background:#94a3b8 }
+.job-rail__track > *{ flex:0 0 320px; max-width:360px; scroll-snap-align:start; transition:transform .28s, box-shadow .28s, border-color .28s }
+@media (min-width:1024px){ .job-rail__track > *{ flex-basis:340px } }
+.cards-wide .job-rail__track > *{ flex-basis:420px; max-width:460px }
+@media (min-width:1280px){ .cards-wide .job-rail__track > *{ flex-basis:460px } }
+html,body{ overflow-x:clip } /* không tạo stacking context như overflow:hidden */
 
-/* Thu NHỎ thẻ: áp vào mọi phần tử con trực tiếp của track (không cần sửa class card) */
-.job-rail__track > *{
-  flex: 0 0 320px;            /* chiều rộng card ~320px */
-  max-width: 360px;
-  scroll-snap-align: start;
+.job-rail .job-rail__track > *:hover{ transform:translateY(-6px) scale(1.01); box-shadow:0 14px 40px rgba(2,6,23,.12); border-color:rgba(59,130,246,.35) }
+.job-rail .job-rail__track > *:focus-within{ outline:0; box-shadow:0 16px 44px rgba(2,6,23,.16), 0 0 0 3px rgba(59,130,246,.25); transform:translateY(-4px) }
+.job-rail .job-rail__track > *:active{ transform:translateY(-2px) }
+/* hiệu ứng glare nhẹ */
+.job-rail .job-rail__track > *::after{
+  content:""; pointer-events:none; position:absolute; inset:-2px;
+  background:radial-gradient(120px 60px at var(--mx,20%) -10%, rgba(255,255,255,.45), transparent 60%);
+  opacity:0; transition:opacity .25s ease;
 }
-.job-rail__track > *{
-  flex: 0 0 320px;            /* chiều rộng card ~320px */
-  max-width: 360px;
-  scroll-snap-align: start;
-}
-@media (min-width: 1024px){
-  .job-rail__track > *{ flex-basis: 340px; } /* desktop nhỉnh lên chút */
-}
- 
-/* Thu NHỎ thẻ: áp vào mọi phần tử con trực tiếp của track (không cần sửa class card) */
-/* ========== WIDER CARDS (rail gắn .cards-wide) ========== */
-.cards-wide .job-rail__track > *{
-  flex-basis: 420px;          /* rộng hơn */
-  max-width: 460px;
-  scroll-snap-align: start;
-}
-@media (min-width:1280px){
-  .cards-wide .job-rail__track > *{ flex-basis: 460px; }
-}
-/* Full-bleed bằng negative margin: không còn cần width calc */
-:root{
-  --rail-gutter: 32px;      /* khoảng thở bên phải để thẻ cuối không bị cắt */
-}
+.job-rail .job-rail__track > *:hover::after{ opacity:1 }
 
-/* Rail chỉ “tràn” theo chiều ngang, không ảnh hưởng sidebar */
+/* Full-bleed rail: không làm thay đổi width container chart */
+:root{ --rail-gutter:32px }
 .job-rail.full-bleed{
   margin-inline-start: calc(var(--shell-left) * -1);
   padding-inline-start: var(--shell-left);
   margin-inline-end: calc(var(--rail-gutter) * -1);
   padding-inline-end: var(--rail-gutter);
-
-  width: auto;          /* để track tự co theo nội dung/viewport */
-  max-width: none;
-  overflow-x: visible;
+  width:auto; max-width:none; overflow-x:visible;
 }
-
-@supports not (width: 100dvw){
-  .job-rail.full-bleed{ width: 100%; margin-left:0; padding-left:0; }
-}
-
-
-/* ========== SHORTER HEIGHT (đã có .is-compact; nén thêm chút) ========== */
-.is-compact article{ padding:14px !important; border-radius:18px !important; }
-.is-compact article header{ margin-bottom:8px !important; }
-.is-compact article h3{
-  font-size:1.125rem !important; line-height:1.35 !important; margin-bottom:2px !important;
-  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1;  /* tiêu đề 1 dòng */
-  overflow:hidden;
-}
-.is-compact article .info-grid{ gap:8px !important; margin-bottom:10px !important; }
-.is-compact article .info-grid > div{ padding:8px 10px !important; border-radius:10px !important; }
-.is-compact article .stats{ padding:6px 10px !important; margin-bottom:8px !important; }
-.is-compact article .stats *{ font-size:13px !important; }
-.is-compact article .skills{
-  margin-bottom:10px !important; gap:6px !important;
-  max-height:40px; overflow:hidden;                      /* giới hạn 2 hàng tag */
-  -webkit-mask-image:linear-gradient(#000 85%,transparent);
-          mask-image:linear-gradient(#000 85%,transparent);
-}
-.is-compact article .skills > *{ padding:4px 8px !important; font-size:11px !important; border-radius:10px !important; }
-.is-compact article button{ padding:8px 12px !important; border-radius:12px !important; }
-html, body { overflow-x: clip; }  /* giống hidden nhưng không tạo stacking mới */
-
-/* ===== Card emphasis (không đổi layout) ===== */
-.job-rail .job-rail__track > * {
-  transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
-  will-change: transform;
-}
- 
-/* hover: nổi nhẹ + đổ bóng sâu + viền sáng hơn */
-.job-rail .job-rail__track > *:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 14px 40px rgba(2,6,23,.12);
-  border-color: rgba(59,130,246,.35); /* blue-500/35 */
-}
-
-/* focus bằng bàn phím cũng được nhấn mạnh */
-.job-rail .job-rail__track > *:focus-within {
-  outline: 0;
-  box-shadow: 0 16px 44px rgba(2,6,23,.16), 0 0 0 3px rgba(59,130,246,.25);
-  transform: translateY(-4px);
-}
-
-/* ấn giữ: không bật cao quá */
-.job-rail .job-rail__track > *:active { transform: translateY(-2px) }
-
-/* hiệu ứng “glare” nhẹ khi hover (đính trên card, rất subtle) */
-.job-rail .job-rail__track > *::after{
-  content:""; pointer-events:none; position:absolute; inset:-2px;
-  background: radial-gradient(120px 60px at var(--mx,20%) -10%, rgba(255,255,255,.45), transparent 60%);
-  opacity:0; transition: opacity .25s ease;
-}
-.job-rail .job-rail__track > *:hover::after{ opacity:1 }
+@supports not (width:100dvw){ .job-rail.full-bleed{ width:100%; margin-left:0; padding-left:0 } }

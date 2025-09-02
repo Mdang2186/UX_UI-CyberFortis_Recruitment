@@ -819,6 +819,105 @@
             margin-top: 24px;
         }
 
+        
+        .stats-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+/* 3 khung bằng nhau + kéo giãn đều */
+.score-chart-section{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:24px;
+  align-items:stretch;
+}
+
+/* thẻ card và vùng vẽ biểu đồ */
+ 
+/* thu gọn trên màn nhỏ */
+@media (max-width: 1200px){
+  .score-chart-section{ grid-template-columns:1fr; }
+}
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            height: 350px;
+        }
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .stats-card.pending::before { background: rgba(245, 158, 11, 0.1); }
+        .stats-card.processing::before { background: rgba(59, 130, 246, 0.1); }
+        .stats-card.urgent::before { background: rgba(239, 68, 68, 0.1); }
+        .stats-card.completed::before { background: rgba(16, 185, 129, 0.1); }
+
+        .candidate-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.processing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-badge.urgent {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
         .modal-actions .btn {
             flex: 1;
             justify-content: center;
@@ -884,3 +983,64 @@
   transition: margin-left .3s cubic-bezier(.4,0,.2,1);
 }
 .main-content.main-content-collapsed{ margin-left: var(--sidebar-wc); }
+/* Chiều cao chuẩn cho 3 panel trên cùng (có thể chỉnh) */
+:root{
+  --panelH: 340px;
+}
+
+/* Lưới 3 cột: 2 biểu đồ to, top list nhỏ hơn chút */
+.chart-grid{
+  display: grid;
+  grid-template-columns: 1.6fr 1.6fr 1.2fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* Thẻ card chung cho 3 panel */
+.chart-card{
+  display: flex;
+  flex-direction: column;
+  min-height: var(--panelH);
+  background: #fff;
+  border: 1px solid #eef2f6;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.04);
+}
+
+/* Header card (tiêu đề) */
+.card-header{
+  padding: 12px 14px 0;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Vùng chứa canvas để Chart.js căng full */
+.chart-holder{
+  position: relative;
+  flex: 1 1 auto;
+  height: calc(var(--panelH) - 44px);
+  padding: 8px 12px 12px;
+}
+.chart-holder canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Top ứng viên xuất sắc: bật cuộn theo chiều cao bằng 2 chart bên cạnh */
+.top-list{
+  flex: 1 1 auto;
+  overflow: auto;
+  max-height: calc(var(--panelH) - 44px);
+  padding: 8px 12px 12px;
+  padding-right: 6px;
+  overscroll-behavior: contain;
+}
+/* Thanh cuộn gọn */
+.top-list::-webkit-scrollbar{ width: 7px; }
+.top-list::-webkit-scrollbar-thumb{ background: #dbe3ef; border-radius: 8px; }
+
+/* Mobile / màn hẹp: xếp 1 cột */
+@media (max-width: 1200px){
+  .chart-grid{ grid-template-columns: 1fr; }
+  :root{ --panelH: 300px; }
+}

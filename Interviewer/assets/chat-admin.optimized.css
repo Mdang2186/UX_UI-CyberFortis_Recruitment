@@ -1,0 +1,156 @@
+
+/* =====================================================
+   ChatAdmin • Optimized CSS (namespaced, non-intrusive)
+   Scope: Only elements inside #chatRoot / ChatAdmin.html
+   ===================================================== */
+
+/* Layout vars (adjust if header/sidebar heights change) */
+:root{
+  --chat-header-h: 74px;
+  --chat-panel-gap: 0px;
+}
+
+/* Root container of chat page */
+#chatRoot{
+  display:flex;
+  height: calc(100vh - var(--chat-header-h));
+  margin-top: var(--chat-header-h);
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* Left: conversation list */
+#chatListPane{
+  width: 320px;
+  min-width: 280px;
+  max-width: 360px;
+  border-right: 1px solid #e5e7eb; /* gray-200 */
+  background: #fff;
+  display:flex; flex-direction:column;
+}
+#chatList{ flex: 1; overflow-y: auto; }
+.chat-item{ cursor: pointer; }
+.chat-item.active{ background: #e7f3ff; }
+.chat-item:hover{ background:#f5f7fb; }
+
+/* Center: main chat area */
+#mainChatArea{
+  flex: 1;
+  display:flex;
+  flex-direction: column;
+  position: relative;
+  /* JS will set padding-right = width(panel) so chat doesn't hide under panel */
+  padding-right: 0;
+  transition: padding-right .2s ease;
+}
+
+/* Chat header (center) */
+#chatHeaderBar{
+  height: 56px;
+  min-height: 56px;
+  border-bottom: 1px solid #e5e7eb;
+  background:#fff;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 14px;
+  position: sticky; top: 0; z-index: 2;
+}
+
+/* Messages viewport */
+#messagesContainer{
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 18px;
+  background: #f9fafb; /* gray-50 */
+}
+
+/* Typing indicator */
+#typingIndicator{ display:none; color:#64748b; font-size:12px; padding:6px 10px; }
+#typingIndicator.show{ display:block; }
+
+/* Input area */
+#chatInputBar{
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  display:flex; align-items: flex-end; gap: 8px;
+}
+.message-input{
+  width:100%; border: none; outline: none; resize: none;
+  font: inherit; font-size: 15px; line-height: 20px; max-height: 120px;
+}
+
+/* Bubble styles */
+.message-row{ display:flex; gap:8px; margin: 6px 0; align-items:flex-end; }
+.message-bubble{
+  max-width: 72%;
+  word-wrap: break-word;
+  position: relative;
+  border-radius: 18px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  animation: chatFade .25s ease;
+}
+.message-bubble.sent   { background: #1e73ff; color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
+.message-bubble.received{ background: #eef2f7; color: #0b1320; border-bottom-left-radius: 4px; }
+.message-bubble.emoji-only{ background: transparent; padding: 0; font-size: 42px; line-height: 1; }
+
+@keyframes chatFade{ from{ opacity:0; transform: translateY(8px);} to{ opacity:1; transform: translateY(0);} }
+
+/* Avatar + online dot */
+.chat-avatar{ position: relative; width: 36px; height: 36px; border-radius: 50%; overflow:hidden; }
+.online-dot{ position:absolute; right:0; bottom:0; width: 12px; height:12px; border-radius:50%; background:#22c55e; border: 2px solid #fff; }
+
+/* Right: Info panel (kept always open via JS) */
+#chatInfoPanel{
+  width: 320px;
+  min-width: 300px;
+  max-width: 360px;
+  background: #fff;
+  border-left: 1px solid #e5e7eb;
+  display: flex; /* JS ensures this + .open */
+  flex-direction: column;
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  z-index: 3;
+  padding-bottom: 8px;
+}
+#chatInfoPanel .panel-body{ flex:1; overflow-y:auto; }
+#chatInfoPanel .panel-section{ padding: 12px 14px; }
+#chatInfoPanel .panel-title{ font-weight:700; font-size:14px; color:#0f172a; margin-bottom: 8px; }
+#chatInfoPanel .panel-list li{ padding: 8px 0; border-bottom:1px dashed #edf2f7; }
+
+/* Chat Search highlight */
+.chat-search-highlight{ background: #fef08a; padding: 0 2px; border-radius: 2px; }
+
+/* Attach menu (simple) */
+#attachmentMenu{
+  position: absolute;
+  bottom: 58px; right: 16px;
+  width: 200px; background:#fff;
+  border: 1px solid #e5e7eb; border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.12);
+  padding: 10px; z-index: 5;
+}
+#attachmentMenu.hidden{ display:none; }
+
+/* Scrollbars (light) */
+.custom-scrollbar::-webkit-scrollbar{ width: 6px; height:6px; }
+.custom-scrollbar::-webkit-scrollbar-thumb{ background: #cbd5e1; border-radius: 3px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover{ background:#94a3b8; }
+.scrollbar-hide{ -ms-overflow-style:none; scrollbar-width:none; }
+.scrollbar-hide::-webkit-scrollbar{ display:none; }
+
+/* Disable pointer for locked close buttons (when we pin info panel) */
+.chatinfo-locked{ pointer-events:none; opacity: .5; cursor: default; }
+
+/* Responsive */
+@media (max-width: 1024px){
+  #chatListPane{ width: 300px; }
+  #chatInfoPanel{ width: 300px; }
+}
+@media (max-width: 768px){
+  #chatRoot{ margin-top: 56px; height: calc(100vh - 56px); }
+  #chatListPane{ display:none; } /* focus vào đoạn chat, info panel vẫn giữ vì JS đẩy padding-right */
+}

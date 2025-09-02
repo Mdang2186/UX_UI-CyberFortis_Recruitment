@@ -1,322 +1,1054 @@
-/* ============================================================================
-   Thống Kê & Báo Cáo – Chart area có NỀN, không viền/khung, hover nổi bật
-   Tone: Navi → Green Pastel. Giữ nguyên mọi tương tác (legend/tooltip/filters)
-============================================================================ */
-(function(){
-  'use strict';
-  if (typeof window.Chart === 'undefined') return;
+  // Enhanced Chart.js configuration with professional styling
+        Chart.defaults.color = '#374151';
+        Chart.defaults.borderColor = 'rgba(229, 231, 235, 0.8)';
+        Chart.defaults.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+        Chart.defaults.font.family = 'Inter';
+        Chart.defaults.font.weight = '500';
 
-  /* ===== Defaults ===== */
-  Chart.defaults.font.family = 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
-  Chart.defaults.color = '#334155';
-  Chart.defaults.borderColor = 'rgba(226,232,240,.9)';
-  Chart.defaults.animation.duration = 600;
-  Chart.defaults.elements.point.radius = 3.5;
-  Chart.defaults.elements.point.hoverRadius = 6.5;
-  Chart.defaults.elements.point.hitRadius = 12;
-  Chart.defaults.elements.line.borderWidth = 3;
-  Chart.defaults.elements.bar.borderRadius = 10;
-  Chart.defaults.plugins.legend.labels.usePointStyle = true;
+        // Professional color palette - Blue and Green variations
+        const colorPalette = {
+            blue: {
+                primary: '#1e40af',
+                secondary: '#3b82f6',
+                light: '#60a5fa',
+                lighter: '#93c5fd',
+                lightest: '#dbeafe'
+            },
+            green: {
+                primary: '#059669',
+                secondary: '#10b981',
+                light: '#34d399',
+                lighter: '#6ee7b7',
+                lightest: '#d1fae5'
+            },
+            emerald: {
+                primary: '#047857',
+                secondary: '#059669',
+                light: '#10b981',
+                lighter: '#34d399',
+                lightest: '#d1fae5'
+            }
+        };
 
-  /* ===== Palette & helpers ===== */
-// === PALETTE MỚI: Navi → Blue → Mint Pastel (đậm → nhạt) ===
-const NAVY   = '#18356E';   // navi đậm
-const BLUE   = '#2F63D8';   // xanh dương chủ đạo
-const BLUE300= '#8FB6FF';   // xanh dương nhạt
-const TEAL   = '#6FCDBE';   // teal pastel
-const PASTEL = '#CFF6EA';   // mint pastel rất nhạt
-const GREEN  = '#17B890';   // xanh lục brand (line thứ 2, donut/stack)
+        // Data storage for different periods
+        const analyticsData = {
+            month: {
+                applications: 2847,
+                conversionRate: 8.2,
+                timeToHire: 28,
+                costPerHire: 2.4,
+                quickStats: ['8.2%', '7.8', 'LinkedIn', 'Frontend'],
+                positionTrend: {
+                    frontend: [15, 18, 16, 22, 25, 28, 26, 31, 34, 38, 42, 39],
+                    ba: [12, 14, 13, 17, 19, 21, 20, 24, 26, 29, 32, 28],
+                    designer: [8, 10, 9, 12, 14, 16, 15, 18, 20, 22, 25, 21],
+                    marketing: [6, 8, 7, 10, 11, 13, 12, 15, 17, 19, 21, 18],
+                    data: [4, 6, 5, 8, 9, 11, 10, 13, 15, 17, 19, 16]
+                },
+                department: [35, 25, 20, 12, 8],
+                source: [856, 642, 534, 423, 287],
+                monthly: [245, 289, 312, 267],
+                monthlyHired: [23, 28, 31, 26],
+                skills: [85, 78, 92, 67, 73, 58],
+                experience: [42, 35, 18, 5],
+                salary: [156, 234, 189, 98, 45],
+                interviewSuccess: [65, 68, 72, 70, 75, 78, 82, 79, 85, 88, 91, 87],
+                recruiter: [23, 19, 31, 17, 25],
+                positions: [45, 38, 25, 20, 15]
+            },
+            quarter: {
+                applications: 8541,
+                conversionRate: 8.8,
+                timeToHire: 26,
+                costPerHire: 2.2,
+                quickStats: ['8.8%', '8.1', 'LinkedIn', 'Frontend'],
+                positionTrend: {
+                    frontend: [45, 54, 48, 66, 75, 84, 78, 93, 102, 114, 126, 117],
+                    ba: [36, 42, 39, 51, 57, 63, 60, 72, 78, 87, 96, 84],
+                    designer: [24, 30, 27, 36, 42, 48, 45, 54, 60, 66, 75, 63],
+                    marketing: [18, 24, 21, 30, 33, 39, 36, 45, 51, 57, 63, 54],
+                    data: [12, 18, 15, 24, 27, 33, 30, 39, 45, 51, 57, 48]
+                },
+                department: [38, 28, 18, 10, 6],
+                source: [2568, 1926, 1602, 1269, 861],
+                monthly: [735, 867, 936, 801],
+                monthlyHired: [69, 84, 93, 78],
+                skills: [88, 82, 95, 71, 77, 62],
+                experience: [38, 40, 17, 5],
+                salary: [468, 702, 567, 294, 135],
+                interviewSuccess: [68, 71, 75, 73, 78, 81, 85, 82, 88, 91, 94, 90],
+                recruiter: [69, 57, 93, 51, 75],
+                positions: [135, 114, 75, 60, 45]
+            },
+            year: {
+                applications: 34164,
+                conversionRate: 9.1,
+                timeToHire: 24,
+                costPerHire: 2.0,
+                quickStats: ['9.1%', '8.3', 'LinkedIn', 'Frontend'],
+                positionTrend: {
+                    frontend: [180, 216, 192, 264, 300, 336, 312, 372, 408, 456, 504, 468],
+                    ba: [144, 168, 156, 204, 228, 252, 240, 288, 312, 348, 384, 336],
+                    designer: [96, 120, 108, 144, 168, 192, 180, 216, 240, 264, 300, 252],
+                    marketing: [72, 96, 84, 120, 132, 156, 144, 180, 204, 228, 252, 216],
+                    data: [48, 72, 60, 96, 108, 132, 120, 156, 180, 204, 228, 192]
+                },
+                department: [40, 30, 15, 8, 7],
+                source: [10272, 7704, 6408, 5076, 3444],
+                monthly: [2940, 3468, 3744, 3204],
+                monthlyHired: [276, 336, 372, 312],
+                skills: [92, 86, 98, 75, 81, 66],
+                experience: [35, 42, 18, 5],
+                salary: [1872, 2808, 2268, 1176, 540],
+                interviewSuccess: [72, 75, 79, 77, 82, 85, 89, 86, 92, 95, 98, 94],
+                recruiter: [276, 228, 372, 204, 300],
+                positions: [540, 456, 300, 240, 180]
+            }
+        };
 
-  const hex2rgb = h => { const n=parseInt(h.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; };
-  const rgba = (h,a)=>{ const [r,g,b]=hex2rgb(h); return `rgba(${r},${g},${b},${a})`; };
-  const gradY = (ctx, hex)=>{
-    const g = ctx.createLinearGradient(0,0,0,ctx.canvas.height||300);
-    g.addColorStop(0, rgba(hex,.24));
-    g.addColorStop(1, rgba(hex,.06));
-    return g;
-  };
-  const lerp = (a,b,t)=>a+(b-a)*t;
-  const lerpHex = (h1,h2,t)=>{
-    const [r1,g1,b1]=hex2rgb(h1), [r2,g2,b2]=hex2rgb(h2);
-    const r=Math.round(lerp(r1,r2,t)), g=Math.round(lerp(g1,g2,t)), b=Math.round(lerp(b1,b2,t));
-    return `#${[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}`;
-  };
-  const scaleBetween = (start,end,n)=> Array.from({length:n},(_,i)=> lerpHex(start,end, i/(n-1||1)) );
+        let currentPeriod = 'month';
 
-  /* ===== Plugins ===== */
-  // 1) Nền cho chart-area (không phải viền/khung)
-  const chartAreaBg = {
-    id:'chartAreaBg',
-    beforeDraw(chart, args, opts){
-      const {ctx, chartArea} = chart;
-      if(!chartArea) return;
-      const {left, top, right, bottom} = chartArea;
-      ctx.save();
-      ctx.fillStyle = opts?.color || 'rgba(37, 99, 235, .045)'; // xanh navi nhạt
-      ctx.fillRect(left, top, right-left, bottom-top);
-      ctx.restore();
-    }
-  };
-  // 2) Crosshair dọc
-  const crosshair = {
-    id:'crosshair',
-    afterDatasetsDraw(chart){
-      const act = chart.tooltip?.getActiveElements?.() || [];
-      if(!act.length) return;
-      const {ctx, chartArea:{top,bottom}, scales:{x}} = chart;
-      const idx = act[0].index;
-      const xPos = x?.getPixelForValue ? x.getPixelForValue(idx) : act[0].element?.x;
-      if(!xPos) return;
-      ctx.save();
-      ctx.setLineDash([4,4]);
-      ctx.strokeStyle = 'rgba(15,23,42,.35)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(xPos, top); ctx.lineTo(xPos, bottom); ctx.stroke();
-      ctx.restore();
-    }
-  };
-  // 3) Làm mờ dataset không active nhưng tôn trọng legend
-  const highlightActive = {
-    id:'highlightActive',
-    beforeDatasetsDraw(chart){
-      const act = chart.tooltip?.getActiveElements?.() || [];
-      const idx = act[0]?.datasetIndex ?? null;
-      const {ctx} = chart; ctx.save();
-      chart.data.datasets.forEach((_, i)=>{
-        if (!chart.isDatasetVisible(i)) return;
-        const meta = chart.getDatasetMeta(i);
-        ctx.globalAlpha = (idx===null || idx===i) ? 1 : .38;
-        meta.controller.draw();
-        ctx.globalAlpha = 1;
-      });
-      ctx.restore();
-      return true;
-    }
-  };
-  // 4) Glow cho bar/donut khi hover
-  const glow = {
-    id:'segmentGlow',
-    afterDraw(chart){
-      const act = chart.getActiveElements?.() || [];
-      if(!act.length) return;
-      const di = act[0].datasetIndex;
-      if(!chart.isDatasetVisible(di)) return;
-      const meta = chart.getDatasetMeta(di);
-      if(!['bar','doughnut','pie'].includes(meta.type)) return;
-      const {ctx} = chart;
-      ctx.save(); ctx.shadowColor='rgba(0,0,0,.18)'; ctx.shadowBlur=12; ctx.shadowOffsetY=8;
-      meta.controller.draw(); ctx.restore();
-    }
-  };
-  Chart.register(chartAreaBg, crosshair, highlightActive, glow);
+        // Initialize all charts
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePositionTrendChart();
+            initializeDepartmentChart();
+            initializeSourceChart();
+            initializeMonthlyChart();
+            initializeSkillsChart();
+            initializeExperienceChart();
+            initializeSalaryChart();
+            initializeInterviewSuccessChart();
+            initializeRecruiterChart();
+            initializePositionChart();
+        });
 
-  /* ===== Base options (áp nền chart-area qua plugin) ===== */
-  const base = {
-    responsive:true, maintainAspectRatio:false,
-    interaction:{ mode:'index', intersect:false },
-    plugins:{
-      legend:{ position:'bottom',
-        labels:{ color:'#334155', padding:16, boxWidth:10, font:{ size:12, weight:'600' } }
-      },
-      tooltip:{
-        backgroundColor:'rgba(2,6,23,.96)', borderColor:'#0f172a', borderWidth:1,
-        titleColor:'#F8FAFC', bodyColor:'#F8FAFC', cornerRadius:10, padding:12,
-        displayColors:true, titleFont:{ size:13, weight:'800' }, bodyFont:{ size:12, weight:'600' }
-      },
-      // >>> NỀN chart-area (có thể đổi đậm/nhạt ở đây)
-      chartAreaBg:{ color:'rgba(30, 58, 138, .05)' } // NAVY 5%
-    },
-    onHover:(e)=>{ e?.native && (e.native.target.style.cursor='crosshair'); },
-    scales:{
-      x:{ grid:{ display:false }, ticks:{ color:'#475569', font:{ size:12, weight:'600' } } },
-      y:{ grid:{ color:'rgba(203,213,225,.55)', drawBorder:false }, ticks:{ color:'#475569', font:{ size:12, weight:'600' } }, beginAtZero:true }
-    }
-  };
+        function initializePositionTrendChart() {
+            const ctx = document.getElementById('positionTrendChart').getContext('2d');
+            
+            window.positionTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Frontend Developer',
+                        data: [15, 18, 16, 22, 25, 28, 26, 31, 34, 38, 42, 39],
+                        borderColor: colorPalette.blue.primary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.blue.primary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Business Analyst',
+                        data: [12, 14, 13, 17, 19, 21, 20, 24, 26, 29, 32, 28],
+                        borderColor: colorPalette.blue.secondary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.blue.secondary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'UI/UX Designer',
+                        data: [8, 10, 9, 12, 14, 16, 15, 18, 20, 22, 25, 21],
+                        borderColor: colorPalette.green.primary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.primary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Marketing Specialist',
+                        data: [6, 8, 7, 10, 11, 13, 12, 15, 17, 19, 21, 18],
+                        borderColor: colorPalette.green.secondary,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.secondary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }, {
+                        label: 'Data Analyst',
+                        data: [4, 6, 5, 8, 9, 11, 10, 13, 15, 17, 19, 16],
+                        borderColor: colorPalette.green.light,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.light,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: '#374151',
+                                padding: 25,
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            displayColors: true,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13,
+                                weight: '500'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  /* ===== Safe ctx ===== */
-  const ctxOf = id => { const el=document.getElementById(id); return el ? el.getContext('2d') : null; };
+        function initializeDepartmentChart() {
+            const ctx = document.getElementById('departmentChart').getContext('2d');
+            
+            window.departmentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['IT', 'Marketing', 'Sales', 'HR', 'Finance'],
+                    datasets: [{
+                        data: [35, 25, 20, 12, 8],
+                        backgroundColor: [
+                            colorPalette.blue.primary,
+                            colorPalette.blue.secondary,
+                            colorPalette.green.primary,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light
+                        ],
+                        borderWidth: 0,
+                        cutout: '65%',
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                color: '#374151',
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  /* ===== Data packs giữ API ===== */
-  const packs = {
-    month:{ labels:['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'], candidates:[120,150,180,200,170,190,210,230,220,240,260,255], interviews:[30,45,55,60,50,58,62,66,61,70,74,72] },
-    quarter:{ labels:['Q1','Q2','Q3','Q4'], candidates:[450,520,560,640], interviews:[130,155,170,190] },
-    year:{ labels:['2021','2022','2023','2024','2025'], candidates:[1650,1820,2010,2280,2410], interviews:[480,560,650,720,790] }
-  };
-  const lineDS = (label,data,color,ctx,fill=true)=>({
-    label, data, borderColor:color,
-    backgroundColor: fill ? gradY(ctx, color) : 'transparent',
-    pointBackgroundColor:'#fff', pointBorderColor:color, pointBorderWidth:2,
-    tension:.35, fill
-  });
+        function initializeSourceChart() {
+            const ctx = document.getElementById('sourceChart').getContext('2d');
+            
+            window.sourceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['LinkedIn', 'Website', 'Referral', 'Job Boards', 'Social Media'],
+                    datasets: [{
+                        label: 'Số lượng ứng viên',
+                        data: [856, 642, 534, 423, 287],
+                        backgroundColor: [
+                            colorPalette.blue.primary,
+                            colorPalette.blue.secondary,
+                            colorPalette.green.primary,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: [
+                            colorPalette.blue.secondary,
+                            colorPalette.blue.light,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light,
+                            colorPalette.green.lighter
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  /* ===================== CHARTS ===================== */
+        function initializeMonthlyChart() {
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+            
+            window.monthlyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Ứng viên',
+                        data: [245, 289, 312, 267],
+                        backgroundColor: colorPalette.blue.secondary,
+                        borderRadius: 8,
+                        hoverBackgroundColor: colorPalette.blue.light
+                    }, {
+                        label: 'Tuyển dụng',
+                        data: [23, 28, 31, 26],
+                        backgroundColor: colorPalette.green.secondary,
+                        borderRadius: 8,
+                        hoverBackgroundColor: colorPalette.green.light
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: '#374151',
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  // 1) Xu hướng theo vị trí
-  (function(){
-    const ctx = ctxOf('positionTrendChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'line',
-      data:{ labels:['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'],
-        datasets:[
-          lineDS('Frontend',[15,18,16,22,25,28,26,31,35,40,43,39], BLUE, ctx),
-          lineDS('Business Analyst',[11,13,12,15,18,20,19,22,24,27,30,26], BLUE300, ctx),
-          lineDS('UI/UX',[7,9,8,11,12,14,13,16,18,20,22,19], GREEN, ctx),
-          lineDS('Marketing',[5,7,6,9,11,12,14,15,17,19,21,18], TEAL, ctx),
-          lineDS('Data',[4,6,5,8,9,10,12,13,15,17,19,16], PASTEL, ctx, false)
-        ]},
-      options:{ ...base, plugins:{ ...base.plugins, legend:{...base.plugins.legend, position:'top'} } }
-    });
-  })();
+        function initializePositionChart() {
+            const ctx = document.getElementById('positionChart').getContext('2d');
+            
+            window.positionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Frontend', 'Backend', 'UX/UI', 'QA', 'PM'],
+                    datasets: [{
+                        label: 'Vị trí tuyển dụng',
+                        data: [45, 38, 25, 20, 15],
+                        backgroundColor: [
+                            colorPalette.blue.primary,
+                            colorPalette.blue.secondary,
+                            colorPalette.green.primary,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: [
+                            colorPalette.blue.secondary,
+                            colorPalette.blue.light,
+                            colorPalette.green.secondary,
+                            colorPalette.green.light,
+                            colorPalette.green.lighter
+                        ]
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.x + ' vị trí';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  // 2) Phân bố phòng ban (doughnut)
-  (function(){
-    const ctx = ctxOf('departmentChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'doughnut',
-      data:{
-        labels:['IT','Marketing','Sales','HR','Finance'],
-        datasets:[{
-          data:[35,25,20,12,8],
-          backgroundColor:[NAVY, BLUE, TEAL, PASTEL, BLUE300],
-          hoverOffset:12, borderWidth:0
-        }]
-      },
-      options:{ responsive:true, maintainAspectRatio:false,
-        plugins:{ ...base.plugins, legend:{ position:'bottom', labels:{ ...base.plugins.legend.labels, padding:12 } } } }
-    });
-  })();
+        function initializeSkillsChart() {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            
+            window.skillsChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['JavaScript', 'Python', 'React', 'Node.js', 'SQL', 'AWS'],
+                    datasets: [{
+                        label: 'Nhu cầu',
+                        data: [85, 78, 92, 67, 73, 58],
+                        backgroundColor: `${colorPalette.blue.secondary}20`,
+                        borderColor: colorPalette.blue.secondary,
+                        borderWidth: 3,
+                        pointBackgroundColor: colorPalette.blue.secondary,
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 3,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: colorPalette.blue.primary,
+                        pointHoverBorderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)'
+                            },
+                            pointLabels: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '600'
+                                }
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  // 3) Xu hướng theo tháng (main)
-  (function(){
-    const ctx = ctxOf('monthlyTrendChart'); if(!ctx) return;
-    window.monthlyTrendChart = new Chart(ctx,{ type:'line',
-      data:{ labels:packs.month.labels,
-        datasets:[ lineDS('Ứng viên', packs.month.candidates, BLUE, ctx),
-                   lineDS('Phỏng vấn', packs.month.interviews, GREEN, ctx) ]},
-      options:{ ...base, plugins:{ ...base.plugins, legend:{...base.plugins.legend, position:'top', align:'end'} } }
-    });
-  })();
+        function initializeExperienceChart() {
+            const ctx = document.getElementById('experienceChart').getContext('2d');
+            
+            window.experienceChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Junior (0-2 năm)', 'Mid (2-5 năm)', 'Senior (5+ năm)', 'Lead/Manager'],
+                    datasets: [{
+                        data: [42, 35, 18, 5],
+                        backgroundColor: [
+                            colorPalette.green.light,
+                            colorPalette.green.secondary,
+                            colorPalette.blue.secondary,
+                            colorPalette.blue.primary
+                        ],
+                        borderWidth: 0,
+                        cutout: '65%',
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                color: '#374151',
+                                font: {
+                                    size: 11,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  // 4) Phễu chuyển đổi (NAVY → PASTEL GREEN across steps)
-  (function(){
-    const ctx = ctxOf('conversionFunnelChart'); if(!ctx) return;
-    const steps = ['Lượt xem','Ứng tuyển','Sàng lọc','Phỏng vấn','Offer','Nhận việc'];
-    const data = [1000,750,450,280,156,89];
-    const colors = scaleBetween(NAVY, PASTEL, steps.length);
-    const hovers  = colors.map(c=> rgba(c, .9));
+        function initializeSalaryChart() {
+            const ctx = document.getElementById('salaryChart').getContext('2d');
+            
+            window.salaryChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['5-10M', '10-15M', '15-20M', '20-30M', '30M+'],
+                    datasets: [{
+                        label: 'Số lượng',
+                        data: [156, 234, 189, 98, 45],
+                        backgroundColor: colorPalette.green.secondary,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        hoverBackgroundColor: colorPalette.green.light
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-    new Chart(ctx,{ type:'bar',
-      data:{ labels:steps, datasets:[{ label:'Số lượng', data,
-        backgroundColor:colors, hoverBackgroundColor:hovers, borderSkipped:false }] },
-      options:{ ...base, plugins:{ ...base.plugins, legend:{display:false} } }
-    });
-  })();
+        function initializeInterviewSuccessChart() {
+            const ctx = document.getElementById('interviewSuccessChart').getContext('2d');
+            
+            window.interviewSuccessChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                    datasets: [{
+                        label: 'Tỷ lệ thành công (%)',
+                        data: [65, 68, 72, 70, 75, 78, 82, 79, 85, 88, 91, 87],
+                        borderColor: colorPalette.green.secondary,
+                        backgroundColor: `${colorPalette.green.secondary}20`,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: colorPalette.green.primary,
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  // 5) Hiệu suất tuần
-  (function(){
-    const ctx = ctxOf('weeklyPerformanceChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'bar',
-      data:{ labels:['Tuần 1','Tuần 2','Tuần 3','Tuần 4'],
-        datasets:[
-          { label:'Hồ sơ mới', data:[45,52,38,48], backgroundColor:BLUE,  hoverBackgroundColor:rgba(BLUE,.9) },
-          { label:'Phỏng vấn', data:[12,15,10,14], backgroundColor:GREEN, hoverBackgroundColor:rgba(GREEN,.9) },
-          { label:'Tuyển dụng', data:[3,4,2,5],   backgroundColor:BLUE300,  hoverBackgroundColor:rgba(BLUE300,.9) }
-        ]},
-      options:{ ...base }
-    });
-  })();
+        function initializeRecruiterChart() {
+            const ctx = document.getElementById('recruiterChart').getContext('2d');
+            
+            window.recruiterChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Nguyễn An', 'Trần Bình', 'Lê Cường', 'Phạm Dung', 'Hoàng Ế'],
+                    datasets: [{
+                        label: 'Tuyển được',
+                        data: [23, 19, 31, 17, 25],
+                        backgroundColor: colorPalette.blue.secondary,
+                        borderRadius: 8,
+                        hoverBackgroundColor: colorPalette.blue.light
+                    }, {
+                        label: 'Mục tiêu',
+                        data: [25, 25, 25, 25, 25],
+                        backgroundColor: colorPalette.green.secondary,
+                        borderRadius: 8,
+                        hoverBackgroundColor: colorPalette.green.light
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: '#374151',
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#1f2937',
+                            bodyColor: '#374151',
+                            borderColor: 'rgba(59, 130, 246, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(243, 244, 246, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    hover: {
+                        animationDuration: 300
+                    }
+                }
+            });
+        }
 
-  // 6) Nguồn ứng tuyển
-  (function(){
-    const ctx = ctxOf('applicationSourceChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'doughnut',
-      data:{ labels:['Website','LinkedIn','Facebook','Giới thiệu','Khác'],
-        datasets:[{ data:[35,28,18,12,7],
-          backgroundColor:[BLUE, GREEN, BLUE300, TEAL, PASTEL],
-          hoverOffset:12, borderWidth:0 }]},
-      options:{ responsive:true, maintainAspectRatio:false,
-        plugins:{ ...base.plugins, legend:{ position:'bottom', labels:{ ...base.plugins.legend.labels, padding:12 } } } }
-    });
-  })();
+        function updatePeriod(period) {
+            currentPeriod = period;
+            
+            // Update active button with smooth transition
+            document.querySelectorAll('.filter-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(period + 'Btn').classList.add('active');
+            
+            // Update metrics with animation
+            const data = analyticsData[period];
+            
+            // Animate metric updates
+            animateValue('totalApplications', parseInt(document.getElementById('totalApplications').textContent.replace(/,/g, '')), data.applications, 1000);
+            animateValue('conversionRate', parseFloat(document.getElementById('conversionRate').textContent), data.conversionRate, 1000, '%');
+            animateValue('timeToHire', parseInt(document.getElementById('timeToHire').textContent), data.timeToHire, 1000);
+            animateValue('costPerHire', parseFloat(document.getElementById('costPerHire').textContent), data.costPerHire, 1000, 'M');
+            
+            // Update quick stats
+            document.getElementById('quickStat1').textContent = data.quickStats[0];
+            document.getElementById('quickStat2').textContent = data.quickStats[1];
+            document.getElementById('quickStat3').textContent = data.quickStats[2];
+            document.getElementById('quickStat4').textContent = data.quickStats[3];
+            
+            // Update charts with smooth transitions
+            updateChartsForPeriod(period);
+        }
+        
+        function animateValue(elementId, start, end, duration, suffix = '') {
+            const element = document.getElementById(elementId);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                
+                if (suffix === '%') {
+                    element.textContent = current.toFixed(1) + suffix;
+                } else if (suffix === 'M') {
+                    element.textContent = current.toFixed(1) + suffix;
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+        
+        function updateChartsForPeriod(period) {
+            const data = analyticsData[period];
+            
+            // Update all charts with smooth animations
+            const charts = [
+                { chart: window.positionTrendChart, updateData: () => {
+                    window.positionTrendChart.data.datasets[0].data = data.positionTrend.frontend;
+                    window.positionTrendChart.data.datasets[1].data = data.positionTrend.ba;
+                    window.positionTrendChart.data.datasets[2].data = data.positionTrend.designer;
+                    window.positionTrendChart.data.datasets[3].data = data.positionTrend.marketing;
+                    window.positionTrendChart.data.datasets[4].data = data.positionTrend.data;
+                }},
+                { chart: window.departmentChart, updateData: () => {
+                    window.departmentChart.data.datasets[0].data = data.department;
+                }},
+                { chart: window.sourceChart, updateData: () => {
+                    window.sourceChart.data.datasets[0].data = data.source;
+                }},
+                { chart: window.monthlyChart, updateData: () => {
+                    window.monthlyChart.data.datasets[0].data = data.monthly;
+                    window.monthlyChart.data.datasets[1].data = data.monthlyHired;
+                }},
+                { chart: window.positionChart, updateData: () => {
+                    window.positionChart.data.datasets[0].data = data.positions;
+                }},
+                { chart: window.skillsChart, updateData: () => {
+                    window.skillsChart.data.datasets[0].data = data.skills;
+                }},
+                { chart: window.experienceChart, updateData: () => {
+                    window.experienceChart.data.datasets[0].data = data.experience;
+                }},
+                { chart: window.salaryChart, updateData: () => {
+                    window.salaryChart.data.datasets[0].data = data.salary;
+                }},
+                { chart: window.interviewSuccessChart, updateData: () => {
+                    window.interviewSuccessChart.data.datasets[0].data = data.interviewSuccess;
+                }},
+                { chart: window.recruiterChart, updateData: () => {
+                    window.recruiterChart.data.datasets[0].data = data.recruiter;
+                }}
+            ];
+            
+            charts.forEach(({ chart, updateData }) => {
+                if (chart) {
+                    updateData();
+                    chart.update('active');
+                }
+            });
+        }
 
-  // 7) Trạng thái ứng viên
-  (function(){
-    const ctx = ctxOf('statusDistributionChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'pie',
-      data:{ labels:['Trúng tuyển','Từ chối','Rút đơn','Chờ'],
-        datasets:[{ data:[35,40,15,10],
-          backgroundColor:[GREEN, BLUE, TEAL, BLUE300], borderWidth:0 }]},
-      options:{ responsive:true, maintainAspectRatio:false,
-        plugins:{ ...base.plugins, legend:{ position:'bottom', labels:{ ...base.plugins.legend.labels, padding:12 } } } }
-    });
-  })();
+        // Enhanced window resize handler
+        window.addEventListener('resize', function() {
+            const charts = [
+                window.positionTrendChart,
+                window.departmentChart,
+                window.sourceChart,
+                window.monthlyChart,
+                window.positionChart,
+                window.skillsChart,
+                window.experienceChart,
+                window.salaryChart,
+                window.interviewSuccessChart,
+                window.recruiterChart
+            ];
+            
+            charts.forEach(chart => {
+                if (chart && typeof chart.resize === 'function') {
+                    chart.resize();
+                }
+            });
+        });
 
-  // 8) Phân bố điểm
-  (function(){
-    const ctx = ctxOf('ratingDistributionChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'bar',
-      data:{ labels:['1-2★','3★','4★','5★'],
-        datasets:[{ label:'Số lượng', data:[12,45,89,67],
-          backgroundColor:[BLUE300, BLUE, TEAL, GREEN],
-          hoverBackgroundColor:[rgba(BLUE300,.9), rgba(BLUE,.9), rgba(TEAL,.9), rgba(GREEN,.9)] }]},
-      options:{ ...base, plugins:{ ...base.plugins, legend:{display:false} }, scales:{ ...base.scales, y:{...base.scales.y, suggestedMax:100} } }
-    });
-  })();
-
-  // 9) Top vị trí (ngang)
-  (function(){
-    const ctx = ctxOf('topPositionsChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'bar',
-      data:{ labels:['Frontend Dev','Backend Dev','UX/UI','QA','PM'],
-        datasets:[{ label:'Số vị trí', data:[45,38,25,20,15],
-          backgroundColor:scaleBetween(NAVY, TEAL, 5),
-          hoverBackgroundColor:scaleBetween(BLUE, GREEN, 5) }]},
-      options:{ ...base, plugins:{ ...base.plugins, legend:{display:false} }, indexAxis:'y' }
-    });
-  })();
-
-  // 10) Time to hire
-  (function(){
-    const ctx = ctxOf('timeToHireChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'line',
-      data:{ labels:['T1','T2','T3','T4','T5','T6'],
-        datasets:[{ label:'Ngày trung bình', data:[32,28,25,30,26,24],
-          borderColor:GREEN, backgroundColor:gradY(ctx, GREEN),
-          pointBackgroundColor:'#fff', pointBorderColor:GREEN, fill:true, tension:.35 }]},
-      options:{ ...base, plugins:{ ...base.plugins, legend:{display:false} } }
-    });
-  })();
-
-  // 11) Hiệu suất phòng ban (mini)
-  (function(){
-    const ctx = ctxOf('departmentPerformanceChart'); if(!ctx) return;
-    new Chart(ctx,{ type:'bar',
-      data:{ labels:['Kỹ thuật','Kinh doanh','MKT','HR','Khác'],
-        datasets:[{ label:'Hiệu suất (%)', data:[82,75,68,90,78],
-          backgroundColor:scaleBetween(NAVY, PASTEL, 5),
-          hoverBackgroundColor:scaleBetween(BLUE, GREEN, 5) }]},
-      options:{ ...base, plugins:{ ...base.plugins, legend:{display:false} }, scales:{ ...base.scales, y:{...base.scales.y, max:100} } }
-    });
-  })();
-
-  /* ===== Dropdown giữ nguyên ===== */
-  window.toggleFilter = function(id){
-    const f = document.getElementById(id); if(!f) return;
-    document.querySelectorAll('.filter-dropdown').forEach(x=>{ if(x!==f) x.classList.remove('show'); });
-    f.classList.toggle('show');
-  };
-
-  /* ===== API cập nhật theo kỳ ===== */
-  window.updateMainChart = function(period){
-    const p = (period==='quarter')?packs.quarter : (period==='year')?packs.year : packs.month;
-    if(window.monthlyTrendChart){
-      monthlyTrendChart.data.labels = p.labels;
-      monthlyTrendChart.data.datasets[0].data = p.candidates;
-      monthlyTrendChart.data.datasets[1].data = p.interviews;
-      monthlyTrendChart.update('active');
-    }
-    [['month','monthBtn'],['quarter','quarterBtn'],['year','yearBtn']].forEach(([k,id])=>{
-      const el=document.getElementById(id); if(!el) return;
-      if(period===k){ el.classList.remove('btn-outline'); el.classList.add('filter-badge'); }
-      else{ el.classList.add('btn-outline'); el.classList.remove('filter-badge'); }
-    });
-  };
-})();
+        // Add smooth scroll behavior for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';

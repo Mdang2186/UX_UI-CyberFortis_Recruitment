@@ -52,17 +52,17 @@
             <!-- Settings Navigation -->
             <div class="settings-nav">
                 <div class="settings-nav-container">
-                    <a href="#general" class="settings-nav-item active" onclick="showSection('general', this)">
+                                        <!-- Settings Navigation – thêm tab Hồ sơ cá nhân -->
+<a href="#profile" class="settings-nav-item" onclick="showSection('profile', this)">
+  <div class="settings-nav-icon"><i class="fas fa-user-circle"></i></div>
+  <span class="settings-nav-text">Hồ sơ cá nhân</span>
+</a>
+<a href="#general" class="settings-nav-item active" onclick="showSection('general', this)">
                         <div class="settings-nav-icon">
                             <i class="fas fa-cog"></i>
                         </div>
                         <span class="settings-nav-text">Cài đặt chung</span>
                     </a>
-                    <!-- Settings Navigation – thêm tab Hồ sơ cá nhân -->
-<a href="#profile" class="settings-nav-item" onclick="showSection('profile', this)">
-  <div class="settings-nav-icon"><i class="fas fa-user-circle"></i></div>
-  <span class="settings-nav-text">Hồ sơ cá nhân</span>
-</a>
 
                     <a href="#company" class="settings-nav-item" onclick="showSection('company', this)">
                         <div class="settings-nav-icon">
@@ -96,99 +96,7 @@
 
             <!-- Settings Content -->
             <div class="settings-content">
-                <!-- General Settings -->
-                <div id="general" class="settings-section active">
-                    <div class="section-header">
-                        <h2 class="section-title">Cài đặt chung</h2>
-                        <p class="section-description">Cấu hình các thiết lập cơ bản của hệ thống</p>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Thông tin hệ thống</h3>
-                        </div>
-                        
-                        <div class="grid grid-2">
-                            <div class="form-group">
-                                <label class="form-label">Tên hệ thống</label>
-                                <input type="text" class="form-input" value="CyberFortis Recruitment System">
-                                <div class="form-help">Tên hiển thị của hệ thống</div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Phiên bản</label>
-                                <input type="text" class="form-input" value="2.1.0" readonly>
-                                <div class="form-help">Phiên bản hiện tại của hệ thống</div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Múi giờ</label>
-                                <select class="form-select">
-                                    <option value="Asia/Ho_Chi_Minh" selected>GMT+7 (Việt Nam)</option>
-                                    <option value="Asia/Bangkok">GMT+7 (Bangkok)</option>
-                                    <option value="Asia/Singapore">GMT+8 (Singapore)</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Ngôn ngữ mặc định</label>
-                                <select class="form-select">
-                                    <option value="vi" selected>Tiếng Việt</option>
-                                    <option value="en">English</option>
-                                    <option value="zh">中文</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Cài đặt giao diện</h3>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>Chế độ tối</h4>
-                                <p>Bật chế độ giao diện tối cho hệ thống</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>Sidebar thu gọn</h4>
-                                <p>Tự động thu gọn sidebar khi màn hình nhỏ</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>Hiệu ứng động</h4>
-                                <p>Bật các hiệu ứng chuyển động trong giao diện</p>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                        <button class="btn btn-secondary">Hủy bỏ</button>
-                        <button class="btn btn-primary" onclick="saveSettings('general')">
-                            <i class="fas fa-save"></i>
-                            Lưu thay đổi
-                        </button>
-                    </div>
-                </div>
-<!-- Profile Settings -->
+                <!-- Profile Settings -->
 <div id="profile" class="settings-section">
    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Profile Card -->
@@ -392,19 +300,111 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="flex justify-end space-x-4 pt-6 border-t">
-                            <button type="button" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium">
-                                Hủy bỏ
-                            </button>
-                            <button type="button" id="saveBtn" class="btn-primary px-6 py-2 text-white rounded-lg font-medium">
-                                Lưu thay đổi
-                            </button>
-                        </div>
+                        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-secondary">Hủy bỏ</button>
+                        <button class="btn btn-primary" onclick="saveSettings('general')">
+                            <i class="fas fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
 </div>
+
+                <!-- General Settings -->
+                <div id="general" class="settings-section active">
+                    <div class="section-header">
+                        <h2 class="section-title">Cài đặt chung</h2>
+                        <p class="section-description">Cấu hình các thiết lập cơ bản của hệ thống</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thông tin hệ thống</h3>
+                        </div>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Tên hệ thống</label>
+                                <input type="text" class="form-input" value="CyberFortis Recruitment System">
+                                <div class="form-help">Tên hiển thị của hệ thống</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Phiên bản</label>
+                                <input type="text" class="form-input" value="2.1.0" readonly>
+                                <div class="form-help">Phiên bản hiện tại của hệ thống</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Múi giờ</label>
+                                <select class="form-select">
+                                    <option value="Asia/Ho_Chi_Minh" selected>GMT+7 (Việt Nam)</option>
+                                    <option value="Asia/Bangkok">GMT+7 (Bangkok)</option>
+                                    <option value="Asia/Singapore">GMT+8 (Singapore)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Ngôn ngữ mặc định</label>
+                                <select class="form-select">
+                                    <option value="vi" selected>Tiếng Việt</option>
+                                    <option value="en">English</option>
+                                    <option value="zh">中文</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Cài đặt giao diện</h3>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Chế độ tối</h4>
+                                <p>Bật chế độ giao diện tối cho hệ thống</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Sidebar thu gọn</h4>
+                                <p>Tự động thu gọn sidebar khi màn hình nhỏ</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Hiệu ứng động</h4>
+                                <p>Bật các hiệu ứng chuyển động trong giao diện</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-secondary">Hủy bỏ</button>
+                        <button class="btn btn-primary" onclick="saveSettings('general')">
+                            <i class="fas fa-save"></i>
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
 
                 <!-- Company Settings -->
                 <div id="company" class="settings-section">

@@ -1509,3 +1509,71 @@ window.addEventListener('load', function () {
     if (e.target.closest('[data-action="end-call"]'))     { e.preventDefault(); closeAllCallUIs(); }
   });
 }); 
+// ----- ĐẨY KHU VỰC NHẮN TIN THEO BỀ RỘNG PANEL -----
+function reserveForInfoPanel() {
+  const main  = document.getElementById('mainChatArea');
+  const panel = document.getElementById('chatInfoPanel');
+  if (!main || !panel) return;
+
+  // Dọn sạch dấu vết cơ chế cũ để khỏi cộng dồn
+  main.classList.remove('pr-[320px]');
+  main.style.marginRight = '';
+  main.style.paddingRight = '';
+
+  // Nếu panel đang hiển thị -> áp padding-right đúng theo width thực tế
+  const shown = getComputedStyle(panel).display !== 'none';
+  if (shown) {
+    const w = Math.ceil(panel.getBoundingClientRect().width || 320);
+    main.style.paddingRight = w + 'px';
+  }
+}
+
+// Luôn mở sẵn panel & áp layout ngay khi load
+function pinInfoPanel() {
+  const panel = document.getElementById('chatInfoPanel');
+  if (!panel) return;
+  panel.classList.remove('hidden');
+  panel.classList.add('flex', 'open');
+  reserveForInfoPanel();
+}
+
+// Khóa toggle: bấm “i / X” cũng chỉ giữ trạng thái mở
+function toggleChatInfoPanel() { pinInfoPanel(); }
+
+// Khởi tạo & lắng nghe resize để re-calc khi đổi viewport
+document.addEventListener('DOMContentLoaded', pinInfoPanel);
+window.addEventListener('resize', reserveForInfoPanel);
+/* === SYNC HAMBURGER ICON WITH SIDEBAR STATE (Chat page fix) === */
+(function syncHamburgerWithSidebar(){
+  function els(){
+    return {
+      toggle: document.getElementById('menuToggle'),
+      sidebar: document.getElementById('sidebar')
+    };
+  }
+  function isCollapsed(sidebar){
+    return !!sidebar && sidebar.classList.contains('sidebar-collapsed'); // true = ĐANG ĐÓNG
+  }
+  function sync(){
+    const { toggle, sidebar } = els();
+    if(!toggle || !sidebar) return;
+    const open = !isCollapsed(sidebar);          // mở = không có class collapsed
+    if (toggle.checked !== open) toggle.checked = open;  // OPEN => checked = true => icon X
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+
+  // Lần đầu
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', sync);
+  } else { sync(); }
+
+  // Theo dõi mọi thay đổi class trên #sidebar (kể cả do code khác)
+  const { sidebar } = els();
+  if (sidebar) {
+    new MutationObserver(sync).observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // Nếu module khác broadcast hoặc đồng bộ giữa tab → vẫn sync
+  window.addEventListener('sidebarToggle', sync);
+  window.addEventListener('storage', (e)=> { if (e.key === 'sidebar-collapsed') sync(); });
+})();

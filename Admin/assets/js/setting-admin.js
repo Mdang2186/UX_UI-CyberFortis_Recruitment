@@ -1,535 +1,406 @@
-      // Settings Navigation
-        function showSection(sectionId, element) {
-            // Hide all sections
-            document.querySelectorAll('.settings-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Remove active class from all nav items
-            document.querySelectorAll('.settings-nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Add active class to clicked nav item
-            element.classList.add('active');
-        }
+/* ======================== SETTINGS – FULL JS (OPTIMIZED) ========================= */
+/* Tương thích cấu trúc hiện tại: showSection, saveSettings, uploader logo/favicon,
+   và FIX hoàn toàn chức năng đổi ảnh đại diện ở hồ sơ cá nhân.
+   - Hỗ trợ 2 mode:
+     (A) Có #avatarDropzone + #avatarInput  → dùng dropzone preview + drag&drop
+     (B) Không có dropzone                  → tự tạo input ẩn & cập nhật .profile-avatar
+   - Ảnh đại diện auto resize/crop về PNG vuông 256x256 để lên UI sắc nét.
+   - Lưu base64 avatar vào localStorage để reload vẫn hiển thị.
+*/
 
-        // Save Settings
-        function saveSettings(section) {
-            // Show loading state
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
-            button.disabled = true;
-              // gom dữ liệu hồ sơ (front-end demo)
-  if (section === 'profile') {
-    const get = id => (document.getElementById(id)?.value || '').trim();
+/* ------------------------------ UTILITIES -------------------------------- */
+const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+const $  = (sel, ctx=document) => ctx.querySelector(sel);
+const byId = (id) => document.getElementById(id);
+
+function showNotification(message, type = 'info') {
+  const el = document.createElement('div');
+  el.className = `alert alert-${type}`;
+  el.style.cssText = `
+    position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 300px;
+    display:flex;align-items:center;gap:10px; animation: slideIn .25s ease;
+  `;
+  const icon = type === 'success' ? 'check-circle'
+             : type === 'error'   ? 'exclamation-circle'
+             : 'info-circle';
+  el.innerHTML = `<i class="fas fa-${icon}"></i><span>${message}</span>`;
+  document.body.appendChild(el);
+  setTimeout(() => {
+    el.style.animation = 'slideOut .25s ease';
+    setTimeout(() => el.remove(), 260);
+  }, 3000);
+}
+
+// Animations (if not exists)
+(() => {
+  if (document.getElementById('cf-anim-style')) return;
+  const style = document.createElement('style');
+  style.id = 'cf-anim-style';
+  style.textContent = `
+    @keyframes slideIn { from{ transform: translateX(100%); opacity: 0 } to{ transform: translateX(0); opacity: 1 } }
+    @keyframes slideOut{ from{ transform: translateX(0); opacity: 1 }    to{ transform: translateX(100%); opacity: 0 } }
+  `;
+  document.head.appendChild(style);
+})();
+
+// Input helpers
+function getVal(id){ return (byId(id)?.value || '').trim(); }
+function setVal(id, v){ const el = byId(id); if (el!=null) el.value = v ?? ''; }
+
+/* ------------------------------ NAV TABS --------------------------------- */
+// Không thay đổi API: giữ signature showSection(sectionId, element)
+window.showSection = window.showSection || function(sectionId, element){
+  $$('.settings-section').forEach(s => s.classList.remove('active'));
+  byId(sectionId)?.classList.add('active');
+  $$('.settings-nav-item').forEach(i => i.classList.remove('active'));
+  element?.classList?.add('active');
+};
+
+/* ------------------------------ SAVE SETTINGS ---------------------------- */
+// Giữ nút đang bấm, hiển thị spinner, và tự reset
+window.saveSettings = window.saveSettings || function(section){
+  const btn = window.event?.target;
+  const keep = btn?.innerHTML;
+  if (btn){ btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...'; }
+
+  // Demo: lưu hồ sơ cá nhân vào localStorage (text fields)
+  if (section === 'profile'){
     const profile = {
-      fullname: get('pf_fullname'),
-      email:    get('pf_email'),
-      phone:    get('pf_phone'),
-      title:    get('pf_title'),
-      dept:     get('pf_dept'),
-      username: get('pf_username'),
-      dob:      get('pf_dob'),
-      gender:   get('pf_gender'),
-      address:  get('pf_address'),
-      bio:      get('pf_bio'),
-      website:  get('pf_website'),
-      linkedin: get('pf_linkedin'),
-      github:   get('pf_github'),
-      facebook: get('pf_facebook'),
-      twitter:  get('pf_twitter')
+      fullname: getVal('pf_fullname'),
+      email:    getVal('pf_email'),
+      phone:    getVal('pf_phone'),
+      title:    getVal('pf_title'),
+      dept:     getVal('pf_dept'),
+      username: getVal('pf_username'),
+      dob:      getVal('pf_dob'),
+      gender:   getVal('pf_gender'),
+      address:  getVal('pf_address'),
+      bio:      getVal('pf_bio'),
+      website:  getVal('pf_website'),
+      linkedin: getVal('pf_linkedin'),
+      github:   getVal('pf_github'),
+      facebook: getVal('pf_facebook'),
+      twitter:  getVal('pf_twitter')
     };
     try { localStorage.setItem('cf_profile', JSON.stringify(profile)); } catch {}
-    // TODO: gọi API thật:
-    // const fd = new FormData(); Object.entries(profile).forEach(([k,v])=>fd.set(k,v));
-    // if (uploadState.avatar.file) fd.set('avatar', uploadState.avatar.file);
-    // if (uploadState.cover.file)  fd.set('cover',  uploadState.cover.file);
-    // await fetch('/api/profile', { method:'POST', body: fd });
   }
-            // Simulate API call
-            setTimeout(() => {
-                button.innerHTML = '<i class="fas fa-check"></i> Đã lưu';
-                
-                // Show success message
-                showNotification('Cài đặt đã được lưu thành công!', 'success');
-                
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                }, 2000);
-            }, 1500);
-        }
 
-        // Save All Settings
-        function saveAllSettings() {
-            showNotification('Đang lưu tất cả cài đặt...', 'info');
-            
-            setTimeout(() => {
-                showNotification('Tất cả cài đặt đã được lưu thành công!', 'success');
-            }, 1500);
-        }
+  // Giả lập API
+  setTimeout(() => {
+    if (btn){ btn.innerHTML = '<i class="fas fa-check"></i> Đã lưu'; }
+    showNotification('Cài đặt đã được lưu thành công!', 'success');
+    setTimeout(() => {
+      if (btn){ btn.innerHTML = keep; btn.disabled = false; }
+    }, 1200);
+  }, 900);
+};
 
-        // Show Notification
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `alert alert-${type}`;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 10000;
-                min-width: 300px;
-                animation: slideIn 0.3s ease;
-            `;
-            
-            const icon = type === 'success' ? 'check-circle' : 
-                        type === 'error' ? 'exclamation-circle' : 'info-circle';
-            
-            notification.innerHTML = `
-                <i class="fas fa-${icon}"></i>
-                <span>${message}</span>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
+window.saveAllSettings = window.saveAllSettings || function(){
+  showNotification('Đang lưu tất cả cài đặt...', 'info');
+  setTimeout(() => showNotification('Tất cả cài đặt đã được lưu!', 'success'), 1200);
+};
 
-        // Add CSS for animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+/* ------------------------------ Uploader Core ---------------------------- */
+/* Drop-in initUploader cho các khối .cf-upl (logo, favicon, avatar, cover) */
+function initUploader({ root, input, maxMB, acceptTypes, transform, onFileReady }){
+  if (!root || !input) return;
 
-        // Auto-resize textareas
-        document.querySelectorAll('.form-textarea').forEach(textarea => {
-            textarea.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = this.scrollHeight + 'px';
-            });
-        });
+  const area    = root.querySelector('.cf-upl__area');
+  const preview = root.querySelector('.cf-upl__preview');
+  const img     = preview?.querySelector('img');
+  const btnChg  = preview?.querySelector('[data-action="change"]');
+  const btnDel  = preview?.querySelector('[data-action="remove"]');
 
+  const pick = () => input.click();
 
+  area?.addEventListener('click', pick);
+  btnChg?.addEventListener('click', pick);
+  btnDel?.addEventListener('click', clearFile);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set initial active section
-            showSection('general', document.querySelector('.settings-nav-item'));
-        });
-         // FAQ Functions
-        function toggleFAQ(element) {
-            const answer = element.nextElementSibling;
-            const isActive = element.classList.contains('active');
-            
-            // Close all other FAQs
-            document.querySelectorAll('.faq-question.active').forEach(q => {
-                q.classList.remove('active');
-                q.nextElementSibling.classList.remove('active');
-            });
-            
-            // Toggle current FAQ
-            if (!isActive) {
-                element.classList.add('active');
-                answer.classList.add('active');
-            }
-        }
-
-        function filterFAQ(category) {
-            // Update active category button
-            document.querySelectorAll('.faq-category').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Filter FAQ items
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach(item => {
-                if (category === 'all' || item.dataset.category === category) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-
-        function searchFAQ(searchTerm) {
-            const term = searchTerm.toLowerCase().trim();
-            const faqItems = document.querySelectorAll('.faq-item');
-            
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
-                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
-                
-                const matches = question.includes(term) || answer.includes(term);
-                item.style.display = matches ? 'block' : 'none';
-            });
-            
-            // Reset category filter if searching
-            if (term) {
-                document.querySelectorAll('.faq-category').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            }
-        }
-
-        // Utility Functions
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        function downloadGuide() {
-            alert('Đang tải xuống hướng dẫn sử dụng...');
-            // In real implementation, this would trigger a file download
-        }
- document.addEventListener('DOMContentLoaded', () => {
-  const DISABLE_HASH_NAV = true; // ← bật/tắt ở đây
-
-  if (DISABLE_HASH_NAV) {
-    // chặn tất cả link tab trong thanh cài đặt
-    document.addEventListener('click', (e) => {
-      const link = e.target.closest('.settings-nav-item[href^="#"], .settings-nav a[href^="#"]');
-      if (!link) return;
-
-      e.preventDefault(); // tắt nhảy đầu trang
-
-      // mở đúng section (tận dụng code sẵn có của bạn)
-      const sectionId =
-        link.dataset.target || link.getAttribute('data-section') ||
-        link.getAttribute('href').slice(1);
-
-      const y = window.scrollY;      // giữ nguyên vị trí cuộn
-      showSection(sectionId, link);  // hàm bạn đã có
-      requestAnimationFrame(() => window.scrollTo({ top: y, left: 0 }));
-    }, { passive: false });
-  }
-});
-document.addEventListener('DOMContentLoaded', () => {
-  // Tắt hành vi anchor '#…' để khỏi cuộn/nhảy
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href]');
-    if (!a) return;
-    const href = a.getAttribute('href');
-    // Cho phép deep-link thật sự nếu bạn muốn, còn lại thì chặn
-    if (href === '#' || /^#(?!$)/.test(href)) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-});
-document.addEventListener('DOMContentLoaded', () => {
-  // ---- state để append khi Lưu ----
-  const uploadState = {
-    logo   : { file:null, blobUrl:null },
-    favicon: { file:null, blobUrl:null } // luôn là PNG 32x32 hoặc ICO giữ nguyên
-  };
-
-  // Ngăn thả file vào window làm mở ảnh
-  ['dragover','drop'].forEach(evt => {
-    window.addEventListener(evt, e => e.preventDefault(), { passive:false });
+  // Drag&Drop
+  ['dragenter','dragover'].forEach(evt=>{
+    root.addEventListener(evt, e=>{ e.preventDefault(); root.classList.add('is-drag'); }, { passive:false });
+  });
+  ['dragleave','drop'].forEach(evt=>{
+    root.addEventListener(evt, e=>{ e.preventDefault(); root.classList.remove('is-drag'); }, { passive:false });
+  });
+  root.addEventListener('drop', e=>{
+    const f = e.dataTransfer?.files?.[0]; if (f) handleFile(f);
   });
 
-  // Khởi tạo hai dropzone
+  // Input change
+  input.addEventListener('change', ()=> {
+    const f = input.files?.[0]; if (f) handleFile(f);
+  });
+
+  async function handleFile(file){
+    if (acceptTypes?.length && !acceptTypes.includes(file.type)){
+      alert(`Định dạng không hợp lệ: ${file.type}`); return;
+    }
+    if (maxMB && file.size > maxMB * 1024 * 1024){
+      alert(`Kích thước vượt quá ${maxMB}MB`); return;
+    }
+    if (typeof transform === 'function'){
+      file = await transform(file); // ví dụ: resize/crop
+    }
+    const url = URL.createObjectURL(file);
+    if (img){ img.src = url; }
+    if (area) area.hidden = true;
+    if (preview) preview.hidden = false;
+    onFileReady?.(file, url);
+  }
+
+  function clearFile(){
+    if (area) area.hidden = false;
+    if (preview) preview.hidden = true;
+    if (img) img.src = '';
+    input.value = '';
+    onFileReady?.(null, null);
+  }
+}
+
+/* ------------------------------ Image Helpers --------------------------- */
+function readImage(file){
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+/* center-crop → PNG w×h */
+function cropToPng(img, w, h){
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  const s = Math.min(img.naturalWidth, img.naturalHeight);
+  const sx = Math.floor((img.naturalWidth - s)/2);
+  const sy = Math.floor((img.naturalHeight - s)/2);
+  ctx.clearRect(0,0,w,h);
+  ctx.drawImage(img, sx, sy, s, s, 0, 0, w, h);
+  return new Promise(res => canvas.toBlob(b => res(b), 'image/png', 0.92));
+}
+
+async function resizeAvatarTo256(file){
+  const img = await readImage(file);
+  const blob = await cropToPng(img, 256, 256);
+  return new File([blob], 'avatar.png', { type:'image/png' });
+}
+
+async function resizeCover(file){
+  const img = await readImage(file);
+  const blob = await cropToPng(img, 1200, 300);
+  return new File([blob], 'cover.png', { type:'image/png' });
+}
+
+function fileToDataURL(file){
+  return new Promise((resolve, reject)=>{
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ------------------------------ PROFILE – AVATAR FIX -------------------- */
+const AVATAR_LOCAL_KEY = 'cf_profile_avatar_b64';
+const COVER_LOCAL_KEY  = 'cf_profile_cover_b64';
+
+function setInitialsIfNeeded(){
+  const box = $('.profile-avatar');
+  if (!box || box.classList.contains('has-photo')) return;
+  const name = getVal('pf_fullname') || 'Nguyễn Văn An';
+  const initials = name.trim().split(/\s+/).slice(-2).map(s => s[0]).join('').toUpperCase() || 'NA';
+  box.textContent = initials;
+}
+
+function applyAvatarB64(b64){
+  const box = $('.profile-avatar');
+  if (!box) return;
+  if (b64){
+    box.style.backgroundImage = `url("${b64}")`;
+    box.classList.add('has-photo');
+    box.textContent = '';
+  } else {
+    box.style.backgroundImage = '';
+    box.classList.remove('has-photo');
+    setInitialsIfNeeded();
+  }
+}
+
+/* Fallback picker: nếu KHÔNG có #avatarInput thì tự tạo input ẩn */
+function ensureFallbackAvatarPicker(){
+  let input = byId('avatarInput');
+  if (!input){
+    input = document.createElement('input');
+    input.type = 'file';
+    input.id = 'avatarInput';
+    input.accept = 'image/png,image/jpeg';
+    input.hidden = true;
+    document.body.appendChild(input);
+  }
+  return input;
+}
+
+async function handleAvatarFile(file){
+  if (!file) return;
+  if (!/image\/(png|jpeg)/.test(file.type)){ alert('Chỉ nhận PNG/JPG'); return; }
+  if (file.size > 2*1024*1024){ alert('Ảnh ≤ 2MB'); return; }
+  const png = await resizeAvatarTo256(file);
+  const b64 = await fileToDataURL(png);
+  applyAvatarB64(b64);
+  try { localStorage.setItem(AVATAR_LOCAL_KEY, b64); } catch {}
+}
+
+/* ------------------------------ BOOTSTRAP ------------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
+  // Mặc định mở tab hồ sơ nếu có
+  if (byId('profile') && $('.settings-nav-item[href="#profile"]')){
+    showSection('profile', $('.settings-nav-item[href="#profile"]'));
+  }
+
+  /* ====== Khởi tạo uploader cho các khối có sẵn ====== */
+  const uploadState = {
+    logo   : { file:null, blobUrl:null },
+    favicon: { file:null, blobUrl:null },
+    avatar : { file:null, blobUrl:null },
+    cover  : { file:null, blobUrl:null }
+  };
+
+  // Ngăn mở file khi thả ảnh ngoài dropzone
+  ['dragover','drop'].forEach(evt => window.addEventListener(evt, e => e.preventDefault(), { passive:false }));
+
+  // LOGO
   initUploader({
-    root: document.getElementById('logoDropzone'),
-    input: document.getElementById('logoInput'),
+    root: byId('logoDropzone'),
+    input: byId('logoInput'),
     maxMB: 2,
     acceptTypes: ['image/png','image/jpeg','image/svg+xml'],
     onFileReady: (file, url) => { uploadState.logo = { file, blobUrl:url }; }
   });
 
+  // FAVICON
   initUploader({
-    root: document.getElementById('faviconDropzone'),
-    input: document.getElementById('faviconInput'),
-    maxMB: 0.5, // 512KB
+    root: byId('faviconDropzone'),
+    input: byId('faviconInput'),
+    maxMB: 0.5,
     acceptTypes: ['image/png','image/x-icon'],
-    // Favicon: tự co về 32x32 PNG nếu là PNG > 32
-    transform: async (file) => {
-      if (file.type === 'image/png') {
-        const img = await readImage(file);
-        const size = Math.max(img.naturalWidth, img.naturalHeight);
-        if (size !== 32) {
-          const resized = await resizePng(img, 32, 32);
-          return new File([resized], 'favicon.png', { type:'image/png' });
-        }
-      }
-      return file; // giữ nguyên ICO hoặc PNG 32x32
-    },
     onFileReady: (file, url) => { uploadState.favicon = { file, blobUrl:url }; }
   });
-// ---- state để append khi Lưu (mở rộng thêm avatar/cover) ----
-uploadState.avatar = { file:null, blobUrl:null };
-uploadState.cover  = { file:null, blobUrl:null };
 
-// Avatar 256x256 (PNG)
-initUploader({
-  root: document.getElementById('avatarDropzone'),
-  input: document.getElementById('avatarInput'),
-  maxMB: 2,
-  acceptTypes: ['image/png','image/jpeg'],
-  transform: async (file) => {
-    // ép về PNG vuông 256
-    const img = await readImage(file);
-    const size = 256;
-    const blob = await resizePng(img, size, size);
-    return new File([blob], 'avatar.png', { type:'image/png' });
-  },
-  onFileReady: (file, url) => { uploadState.avatar = { file, blobUrl:url }; }
-});
+  /* ====== AVATAR – 2 MODE ====== */
+  const avatarDrop = byId('avatarDropzone');
+  const avatarInputExisting = byId('avatarInput');
+  const avatarButton = byId('uploadBtn');
+  const avatarCircle = $('.profile-avatar');
 
-// Cover 1200x300 (PNG)
-initUploader({
-  root: document.getElementById('coverDropzone'),
-  input: document.getElementById('coverInput'),
-  maxMB: 3,
-  acceptTypes: ['image/png','image/jpeg'],
-  transform: async (file) => {
-    const img = await readImage(file);
-    const blob = await resizePng(img, 1200, 300);
-    return new File([blob], 'cover.png', { type:'image/png' });
-  },
-  onFileReady: (file, url) => { uploadState.cover = { file, blobUrl:url }; }
-});
-
-// Khôi phục dữ liệu profile từ localStorage
-try {
-  const raw = localStorage.getItem('cf_profile');
-  if (raw) {
-    const pf = JSON.parse(raw);
-    const set = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.value = v; };
-    set('pf_fullname', pf.fullname);
-    set('pf_email', pf.email);
-    set('pf_phone', pf.phone);
-    set('pf_title', pf.title);
-    set('pf_dept', pf.dept);
-    set('pf_username', pf.username);
-    set('pf_dob', pf.dob);
-    set('pf_gender', pf.gender);
-    set('pf_address', pf.address);
-    set('pf_bio', pf.bio);
-    set('pf_website', pf.website);
-    set('pf_linkedin', pf.linkedin);
-    set('pf_github', pf.github);
-    set('pf_facebook', pf.facebook);
-    set('pf_twitter', pf.twitter);
+  if (avatarDrop && avatarInputExisting){
+    // MODE A: Có dropzone avatar
+    initUploader({
+      root: avatarDrop,
+      input: avatarInputExisting,
+      maxMB: 2,
+      acceptTypes: ['image/png','image/jpeg'],
+      transform: resizeAvatarTo256,
+      onFileReady: async (file, url) => {
+        uploadState.avatar = { file, blobUrl:url };
+        if (file){
+          const b64 = await fileToDataURL(file);
+          try { localStorage.setItem(AVATAR_LOCAL_KEY, b64); } catch {}
+          applyAvatarB64(b64);
+        } else {
+          try { localStorage.removeItem(AVATAR_LOCAL_KEY); } catch {}
+          applyAvatarB64('');
+        }
+      }
+    });
+    // Cho phép click vòng tròn cũng mở picker
+    avatarCircle?.addEventListener('click', () => avatarInputExisting.click());
+    avatarButton?.addEventListener('click', () => avatarInputExisting.click());
+  } else {
+    // MODE B: Không có dropzone → tạo input ẩn
+    const fallbackInput = ensureFallbackAvatarPicker();
+    fallbackInput.addEventListener('change', e => handleAvatarFile(e.target.files?.[0]));
+    avatarCircle?.addEventListener('click', () => fallbackInput.click());
+    avatarButton?.addEventListener('click', () => fallbackInput.click());
   }
-} catch {}
 
-  // Hook nút Lưu (nếu bạn dùng AJAX)
-  const btnSave = document.querySelector('#btnSave');
-  const form = document.querySelector('#settingsForm'); // đổi đúng id form của bạn
+  /* ====== COVER (nếu có) ====== */
+  const coverDrop = byId('coverDropzone');
+  const coverInput = byId('coverInput');
+  if (coverDrop && coverInput){
+    const heroCoverEls = $$('.js-cover-target'); // nếu bạn có hero preview
+    initUploader({
+      root: coverDrop,
+      input: coverInput,
+      maxMB: 3,
+      acceptTypes: ['image/png','image/jpeg'],
+      transform: resizeCover,
+      onFileReady: async (file, url) => {
+        uploadState.cover = { file, blobUrl:url };
+        if (file){
+          const b64 = await fileToDataURL(file);
+          try { localStorage.setItem(COVER_LOCAL_KEY, b64); } catch {}
+          heroCoverEls.forEach(div => div.style.backgroundImage = `url("${b64}")`);
+        } else {
+          try { localStorage.removeItem(COVER_LOCAL_KEY); } catch {}
+          heroCoverEls.forEach(div => div.style.backgroundImage = '');
+        }
+      }
+    });
+  }
 
-  btnSave?.addEventListener('click', async () => {
-    if (!form) return;
+  /* ====== Khôi phục dữ liệu hồ sơ + avatar/cover từ localStorage ====== */
+  try {
+    const raw = localStorage.getItem('cf_profile');
+    if (raw){
+      const pf = JSON.parse(raw);
+      setVal('pf_fullname', pf.fullname);
+      setVal('pf_email',    pf.email);
+      setVal('pf_phone',    pf.phone);
+      setVal('pf_title',    pf.title);
+      setVal('pf_dept',     pf.dept);
+      setVal('pf_username', pf.username);
+      setVal('pf_dob',      pf.dob);
+      setVal('pf_gender',   pf.gender);
+      setVal('pf_address',  pf.address);
+      setVal('pf_bio',      pf.bio);
+      setVal('pf_website',  pf.website);
+      setVal('pf_linkedin', pf.linkedin);
+      setVal('pf_github',   pf.github);
+      setVal('pf_facebook', pf.facebook);
+      setVal('pf_twitter',  pf.twitter);
+    }
+  } catch {}
+
+  // Khôi phục avatar/cover
+  try {
+    const av = localStorage.getItem(AVATAR_LOCAL_KEY);
+    if (av) applyAvatarB64(av); else setInitialsIfNeeded();
+
+    const cv = localStorage.getItem(COVER_LOCAL_KEY);
+    if (cv) $$('.js-cover-target').forEach(div => div.style.backgroundImage = `url("${cv}")`);
+  } catch {}
+
+  // Khi thay đổi tên → cập nhật initials nếu chưa có ảnh
+  byId('pf_fullname')?.addEventListener('input', setInitialsIfNeeded);
+
+  /* ====== Chặn nhảy trang vì anchor #hash trong menu settings ====== */
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('.settings-nav-item[href^="#"], .settings-nav a[href^="#"]');
+    if (!link) return;
+    e.preventDefault();
+    const sectionId = link.getAttribute('href')?.slice(1);
+    if (!sectionId) return;
     const y = window.scrollY;
+    showSection(sectionId, link);
+    requestAnimationFrame(() => window.scrollTo({ top: y, left: 0 }));
+  }, { passive:false });
 
-    const fd = new FormData(form);
-    if (uploadState.logo.file)    fd.set('companyLogo', uploadState.logo.file);
-    if (uploadState.favicon.file) fd.set('favicon',     uploadState.favicon.file);
-
-    try {
-      const res = await fetch('/api/settings', { method:'POST', body: fd });
-      // TODO: toast thông báo theo response
-    } finally {
-      requestAnimationFrame(() => window.scrollTo({ top: y, left: 0 }));
-    }
+  /* ====== Auto-resize textarea ====== */
+  $$('.form-textarea').forEach(ta => {
+    const fit = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; };
+    ta.addEventListener('input', fit); fit();
   });
-
-  // ============ Helpers ============
-
-  function initUploader({ root, input, maxMB, acceptTypes, transform, onFileReady }){
-    if (!root || !input) return;
-
-    const area = root.querySelector('.cf-upl__area');
-    const preview = root.querySelector('.cf-upl__preview');
-    const img = preview.querySelector('img');
-    const btns = preview.querySelector('.cf-upl__actions');
-
-    // chọn file bằng click
-    area.addEventListener('click', () => input.click());
-    btns.querySelector('[data-action="change"]').addEventListener('click', () => input.click());
-    btns.querySelector('[data-action="remove"]').addEventListener('click', () => clearFile());
-
-    // drag & drop
-    ;['dragenter','dragover'].forEach(evt=>{
-      root.addEventListener(evt, e=>{ e.preventDefault(); e.stopPropagation(); root.classList.add('is-drag'); }, { passive:false });
-    });
-    ;['dragleave','drop'].forEach(evt=>{
-      root.addEventListener(evt, e=>{ e.preventDefault(); e.stopPropagation(); root.classList.remove('is-drag'); }, { passive:false });
-    });
-    root.addEventListener('drop', e=>{
-      const file = (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) || null;
-      if (file) handleFile(file);
-    });
-
-    // chọn bằng input
-    input.addEventListener('change', () => {
-      const file = input.files && input.files[0];
-      if (file) handleFile(file);
-    });
-
-    async function handleFile(file){
-      // validate type
-      if (acceptTypes && !acceptTypes.includes(file.type)) {
-        alert(`Định dạng không hợp lệ: ${file.type}`);
-        return;
-      }
-      // validate size
-      if (maxMB && file.size > maxMB * 1024 * 1024) {
-        alert(`Kích thước vượt quá ${maxMB}MB`);
-        return;
-      }
-      // transform (ví dụ resize favicon)
-      if (typeof transform === 'function') {
-        file = await transform(file);
-      }
-      // preview
-      const url = URL.createObjectURL(file);
-      img.src = url;
-      area.hidden = true;
-      preview.hidden = false;
-      // callback
-      onFileReady?.(file, url);
-    }
-
-    function clearFile(){
-      area.hidden = false;
-      preview.hidden = true;
-      img.src = '';
-      input.value = '';
-      onFileReady?.(null, null);
-    }
-  }
-
-  function readImage(file){
-    return new Promise((resolve, reject)=>{
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = reject;
-      img.src = URL.createObjectURL(file);
-    });
-  }
-
-  function resizePng(img, w, h){
-    return new Promise((resolve)=>{
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      // fill transparent background
-      ctx.clearRect(0,0,w,h);
-      // giữ tỉ lệ, fit vào khung
-      const ratio = Math.min(w / img.naturalWidth, h / img.naturalHeight);
-      const dw = Math.round(img.naturalWidth * ratio);
-      const dh = Math.round(img.naturalHeight * ratio);
-      const dx = Math.round((w - dw)/2);
-      const dy = Math.round((h - dh)/2);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(img, dx, dy, dw, dh);
-      canvas.toBlob(b=> resolve(b), 'image/png', 1);
-    });
-  }
 });
-const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabName = button.getAttribute('data-tab');
-                
-                // Remove active classes
-                tabButtons.forEach(btn => {
-                    btn.classList.remove('border-blue-500', 'text-blue-600');
-                    btn.classList.add('border-transparent', 'text-gray-500');
-                });
-                
-                // Add active class to clicked button
-                button.classList.remove('border-transparent', 'text-gray-500');
-                button.classList.add('border-blue-500', 'text-blue-600');
-                
-                // Hide all tab contents
-                tabContents.forEach(content => {
-                    content.classList.add('hidden');
-                });
-                
-                // Show selected tab content
-                document.getElementById(tabName + '-tab').classList.remove('hidden');
-            });
-        });
-
-        // Save button functionality
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            const notification = document.getElementById('notification');
-            notification.classList.remove('hidden');
-            
-            setTimeout(() => {
-                notification.classList.add('hidden');
-            }, 3000);
-        });
-
-        // Upload button functionality
-        document.getElementById('uploadBtn').addEventListener('click', () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = (e) => {
-                if (e.target.files[0]) {
-                    alert('Chức năng upload ảnh sẽ được triển khai trong phiên bản thực tế!');
-                }
-            };
-            input.click();
-        });
-
-        // Form validation
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                document.getElementById('saveBtn').click();
-            });
-        });
-
-        // Input validation
-        const inputs = document.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('blur', () => {
-                if (input.hasAttribute('required') && !input.value.trim()) {
-                    input.classList.add('border-red-300');
-                } else {
-                    input.classList.remove('border-red-300');
-                }
-            });
-        });

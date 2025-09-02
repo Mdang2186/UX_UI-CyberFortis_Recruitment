@@ -1,1165 +1,615 @@
-  // Chat data with different users
-        const chatData = {
-            sarah: {
-                name: 'Sarah Johnson',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23ec4899\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3ESJ%3C/text%3E%3C/svg%3E',
-                status: 'Đang hoạt động',
-                online: true
-            },
-            michael: {
-                name: 'Michael Chen',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%233b82f6\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EMC%3C/text%3E%3C/svg%3E',
-                status: 'Đang hoạt động',
-                online: true
-            },
-            emma: {
-                name: 'Emma Wilson',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%2310b981\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EEW%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 1 giờ trước',
-                online: true
-            },
-            david: {
-                name: 'David Rodriguez',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23f59e0b\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EDR%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 2 giờ trước',
-                online: false
-            },
-            lisa: {
-                name: 'Lisa Thompson',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%238b5cf6\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3ELT%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 3 giờ trước',
-                online: false
-            },
-            team: {
-                name: 'Team Alpha',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'url(%23teamGrad)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'teamGrad\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' style=\'stop-color:%238b5cf6\'/%3E%3Cstop offset=\'100%25\' style=\'stop-color:%23ec4899\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'14\' font-weight=\'bold\'%3E👥%3C/text%3E%3C/svg%3E',
-                status: '5 thành viên',
-                online: true
-            },
-            james: {
-                name: 'James Park',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23ef4444\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EJP%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 1 ngày trước',
-                online: false
-            },
-            anna: {
-                name: 'Anna Martinez',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23f97316\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EAM%3C/text%3E%3C/svg%3E',
-                status: 'Đang hoạt động',
-                online: true
-            },
-            kevin: {
-                name: 'Kevin Lee',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%2306b6d4\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EKL%3C/text%3E%3C/svg%3E',
-                status: 'Đang hoạt động',
-                online: true
-            },
-            sophie: {
-                name: 'Sophie Chen',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23d946ef\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3ESC%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 1 giờ trước',
-                online: false
-            },
-            marketing: {
-                name: 'Marketing Team',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'url(%23marketingGrad)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'marketingGrad\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' style=\'stop-color:%23ec4899\'/%3E%3Cstop offset=\'100%25\' style=\'stop-color:%23f43f5e\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'14\' font-weight=\'bold\'%3E📢%3C/text%3E%3C/svg%3E',
-                status: '12 thành viên',
-                online: true
-            },
-            tom: {
-                name: 'Tom Wilson',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%2365a30d\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3ETW%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 3 giờ trước',
-                online: false
-            },
-            rachel: {
-                name: 'Rachel Green',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23059669\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3ERG%3C/text%3E%3C/svg%3E',
-                status: 'Đang hoạt động',
-                online: true
-            },
-            design: {
-                name: 'Design Squad',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'url(%23designGrad)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'designGrad\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' style=\'stop-color:%236366f1\'/%3E%3Cstop offset=\'100%25\' style=\'stop-color:%239333ea\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'14\' font-weight=\'bold\'%3E🎨%3C/text%3E%3C/svg%3E',
-                status: '8 thành viên',
-                online: true
-            },
-            alexj: {
-                name: 'Alex Johnson',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23dc2626\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EAJ%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 6 giờ trước',
-                online: false
-            },
-            maya: {
-                name: 'Maya Patel',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23be185d\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EMP%3C/text%3E%3C/svg%3E',
-                status: 'Đang hoạt động',
-                online: true
-            },
-            family: {
-                name: 'Gia đình',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'url(%23familyGrad)\'/%3E%3Cdefs%3E%3ClinearGradient id=\'familyGrad\' x1=\'0%25\' y1=\'0%25\' x2=\'100%25\' y2=\'100%25\'%3E%3Cstop offset=\'0%25\' style=\'stop-color:%23facc15\'/%3E%3Cstop offset=\'100%25\' style=\'stop-color:%23f97316\'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'14\' font-weight=\'bold\'%3E🏠%3C/text%3E%3C/svg%3E',
-                status: '4 thành viên',
-                online: true
-            },
-            ben: {
-                name: 'Ben Taylor',
-                avatar: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'20\' fill=\'%23374151\'/%3E%3Ctext x=\'20\' y=\'26\' text-anchor=\'middle\' fill=\'white\' font-family=\'Arial\' font-size=\'16\' font-weight=\'bold\'%3EBT%3C/text%3E%3C/svg%3E',
-                status: 'Hoạt động 2 ngày trước',
-                online: false
-            }
-        };
-
-        let currentUser = 'sarah';
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            setupEventListeners();
-            updateChatHeader();
-        });
-
-        function setupEventListeners() {
-            // Chat item selection
+let currentChat = 'mai';
+        let originalMessages = [];
+        
+        function selectChat(chatId) {
+            currentChat = chatId;
+            // Remove active state from all chat items
             document.querySelectorAll('.chat-item').forEach(item => {
-                item.addEventListener('click', () => selectChat(item));
+                item.classList.remove('border-l-4', 'border-blue-500', 'bg-blue-50');
             });
-
-            // Message input
-            const messageInput = document.getElementById('messageInput');
-            messageInput.addEventListener('input', handleMessageInput);
-            messageInput.addEventListener('keydown', handleKeyDown);
-
-            // Send button
-            document.getElementById('sendBtn').addEventListener('click', sendMessage);
-
-            // Emoji button
-            document.getElementById('emojiBtn').addEventListener('click', toggleEmojiPicker);
-
-            // Chat info button
-            document.getElementById('chatInfoBtn').addEventListener('click', showChatInfo);
-
-            // Voice and video call buttons
-            document.getElementById('voiceCallBtn').addEventListener('click', startVoiceCall);
-            document.getElementById('videoCallBtn').addEventListener('click', startVideoCall);
-
-            // Sidebar toggle for mobile
-            document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
-
-            // Close emoji picker when clicking outside
-            document.addEventListener('click', function(e) {
-                const emojiPicker = document.getElementById('emojiPicker');
-                const emojiBtn = document.getElementById('emojiBtn');
-                if (!emojiPicker.contains(e.target) && !emojiBtn.contains(e.target)) {
-                    emojiPicker.classList.add('hidden');
+            
+            // Add active state to selected chat
+            event.currentTarget.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50');
+            
+            // Update chat header and messages based on selected chat
+            updateChatContent(chatId);
+        }
+        
+        function updateChatContent(chatId) {
+            const chatData = {
+                'mai': {
+                    name: 'Mai Nguyễn',
+                    avatar: 'M',
+                    color: '#FF6B9D',
+                    status: 'Đang hoạt động'
+                },
+                'duc': {
+                    name: 'Đức Trần',
+                    avatar: 'D',
+                    color: '#4A90E2',
+                    status: 'Hoạt động 5 phút trước'
+                },
+                'linh': {
+                    name: 'Linh Võ',
+                    avatar: 'L',
+                    color: '#F39C12',
+                    status: 'Hoạt động 1 giờ trước'
+                },
+                'group': {
+                    name: 'Nhóm Bạn Thân',
+                    avatar: 'Nhóm',
+                    color: '#9B59B6',
+                    status: '5 thành viên'
+                },
+                'an': {
+                    name: 'An Lê',
+                    avatar: 'A',
+                    color: '#27AE60',
+                    status: 'Hoạt động 5 giờ trước'
+                },
+                'hoa': {
+                    name: 'Hoa Phạm',
+                    avatar: 'H',
+                    color: '#E74C3C',
+                    status: 'Đang hoạt động'
+                },
+                'work': {
+                    name: 'Nhóm Công Việc',
+                    avatar: 'Work',
+                    color: '#34495E',
+                    status: '8 thành viên'
+                },
+                'nam': {
+                    name: 'Nam Vũ',
+                    avatar: 'N',
+                    color: '#FF9500',
+                    status: 'Hoạt động 1 tuần trước'
+                },
+                'family': {
+                    name: 'Gia Đình',
+                    avatar: 'GĐ',
+                    color: '#E91E63',
+                    status: '4 thành viên'
+                },
+                'study': {
+                    name: 'Nhóm Học Tập',
+                    avatar: 'HT',
+                    color: '#673AB7',
+                    status: '12 thành viên'
+                },
+                'gaming': {
+                    name: 'Gaming Squad',
+                    avatar: 'GS',
+                    color: '#FF5722',
+                    status: '6 thành viên'
+                },
+                'travel': {
+                    name: 'Du Lịch Cùng Nhau',
+                    avatar: 'DL',
+                    color: '#00BCD4',
+                    status: '8 thành viên'
+                },
+                'food': {
+                    name: 'Hội Ăn Uống',
+                    avatar: 'AU',
+                    color: '#FF9800',
+                    status: '15 thành viên'
+                },
+                'sport': {
+                    name: 'CLB Thể Thao',
+                    avatar: 'TT',
+                    color: '#4CAF50',
+                    status: '20 thành viên'
                 }
-            });
-        }
-
-        function selectChat(item) {
-            // Remove active class from all items
-            document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
-            
-            // Add active class to selected item
-            item.classList.add('active');
-            
-            // Update current user
-            currentUser = item.dataset.user;
-            updateChatHeader();
-            
-            // Remove notification badges
-            const badge = item.querySelector('.bg-red-500');
-            if (badge) {
-                badge.remove();
-            }
-            
-            // Remove unread indicator
-            const unreadDot = item.querySelector('.bg-blue-500');
-            if (unreadDot) {
-                unreadDot.remove();
-            }
-        }
-
-        function updateChatHeader() {
-            const user = chatData[currentUser];
-            if (!user) return;
-
-            document.getElementById('currentUserName').textContent = user.name;
-            document.getElementById('currentUserAvatar').src = user.avatar;
-            document.getElementById('currentUserStatus').textContent = user.status;
-            document.getElementById('currentUserStatus').className = user.online ? 'text-sm text-green-500' : 'text-sm text-gray-500';
-        }
-
-        function handleMessageInput() {
-            const messageInput = document.getElementById('messageInput');
-            messageInput.style.height = 'auto';
-            messageInput.style.height = Math.min(messageInput.scrollHeight, 100) + 'px';
-        }
-
-        function handleKeyDown(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
-
-        function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value.trim();
-            
-            if (!message) return;
-            
-            // Create message element
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'flex justify-end';
-            messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="message-bubble sent">
-                        ${message}
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
-                    </div>
-                </div>
-            `;
-            
-            // Add to messages container
-            const messagesContainer = document.getElementById('messagesContainer');
-            messagesContainer.appendChild(messageDiv);
-            
-            // Clear input
-            messageInput.value = '';
-            messageInput.style.height = 'auto';
-            
-            // Scroll to bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            // Simulate read receipt after a delay
-            setTimeout(() => {
-                const checkIcon = messageDiv.querySelector('.fa-check');
-                if (checkIcon) {
-                    checkIcon.className = 'fas fa-check-double text-blue-400 ml-1';
-                }
-            }, 1000);
-        }
-
-        function toggleEmojiPicker() {
-            const emojiPicker = document.getElementById('emojiPicker');
-            emojiPicker.classList.toggle('hidden');
-        }
-
-        function closeEmojiPicker() {
-            document.getElementById('emojiPicker').classList.add('hidden');
-        }
-
-        function insertEmoji(emoji) {
-            const messageInput = document.getElementById('messageInput');
-            const cursorPos = messageInput.selectionStart;
-            const textBefore = messageInput.value.substring(0, cursorPos);
-            const textAfter = messageInput.value.substring(cursorPos);
-            
-            messageInput.value = textBefore + emoji + textAfter;
-            messageInput.focus();
-            messageInput.setSelectionRange(cursorPos + emoji.length, cursorPos + emoji.length);
-            
-            handleMessageInput();
-        }
-
-        function showChatInfo() {
-            const user = chatData[currentUser];
-            if (!user) return;
-
-            const infoPanel = document.getElementById('chatInfoPanel');
-            infoPanel.className = 'w-80 bg-white border-l border-gray-200 flex flex-col';
-            infoPanel.innerHTML = `
-                <!-- Header -->
-                <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-                    <h3 class="font-semibold text-gray-900">Thông tin đoạn chat</h3>
-                    <button onclick="closeChatInfo()" class="p-1 hover:bg-gray-100 rounded-full">
-                        <i class="fas fa-times text-gray-400"></i>
-                    </button>
-                </div>
-                
-                <!-- User Info -->
-                <div class="p-6 text-center border-b border-gray-200">
-                    <img src="${user.avatar}" alt="${user.name}" class="w-20 h-20 rounded-full mx-auto mb-3">
-                    <h4 class="font-semibold text-gray-900 text-lg">${user.name}</h4>
-                    <p class="text-sm text-gray-500">${user.status}</p>
-                    
-                    <!-- Quick Actions -->
-                    <div class="flex justify-center space-x-4 mt-4">
-                        <button onclick="startVoiceCall()" class="p-3 bg-gray-100 hover:bg-gray-200 rounded-full">
-                            <i class="fas fa-phone text-blue-500"></i>
-                        </button>
-                        <button onclick="startVideoCall()" class="p-3 bg-gray-100 hover:bg-gray-200 rounded-full">
-                            <i class="fas fa-video text-blue-500"></i>
-                        </button>
-                        <button class="p-3 bg-gray-100 hover:bg-gray-200 rounded-full">
-                            <i class="fas fa-user-plus text-blue-500"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Options -->
-                <div class="flex-1 overflow-y-auto">
-                    <div class="p-4 space-y-2">
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-bell text-gray-600"></i>
-                            <span class="text-gray-900">Tắt thông báo</span>
-                        </button>
-                        
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-search text-gray-600"></i>
-                            <span class="text-gray-900">Tìm kiếm trong đoạn chat</span>
-                        </button>
-                        
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-palette text-gray-600"></i>
-                            <span class="text-gray-900">Thay đổi chủ đề</span>
-                        </button>
-                        
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-thumbs-up text-gray-600"></i>
-                            <span class="text-gray-900">Thay đổi emoji</span>
-                        </button>
-                        
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-user-friends text-gray-600"></i>
-                            <span class="text-gray-900">Tạo nhóm với ${user.name}</span>
-                        </button>
-                    </div>
-                    
-                    <!-- Media & Files -->
-                    <div class="p-4 border-t border-gray-200">
-                        <h5 class="font-semibold text-gray-900 mb-3">File phương tiện, file và liên kết</h5>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-image text-gray-400"></i>
-                            </div>
-                            <div class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-file text-gray-400"></i>
-                            </div>
-                            <div class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-link text-gray-400"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Privacy & Support -->
-                    <div class="p-4 border-t border-gray-200 space-y-2">
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-exclamation-triangle text-gray-600"></i>
-                            <span class="text-gray-900">Báo cáo</span>
-                        </button>
-                        
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-ban text-red-500"></i>
-                            <span class="text-red-500">Chặn</span>
-                        </button>
-                        
-                        <button class="w-full flex items-center space-x-3 p-3 hover:bg-gray-100 rounded-lg text-left">
-                            <i class="fas fa-trash text-red-500"></i>
-                            <span class="text-red-500">Xóa đoạn chat</span>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function closeChatInfo() {
-            document.getElementById('chatInfoPanel').className = 'w-80 bg-white border-l border-gray-200 hidden';
-        }
-
-        function startVoiceCall() {
-            const user = chatData[currentUser];
-            showToast(`Đang gọi ${user.name}...`, 'info');
-            
-            // Create call overlay
-            const callOverlay = document.createElement('div');
-            callOverlay.id = 'callOverlay';
-            callOverlay.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center';
-            callOverlay.innerHTML = `
-                <div class="text-center text-white">
-                    <img src="${user.avatar}" alt="${user.name}" class="w-32 h-32 rounded-full mx-auto mb-6">
-                    <h3 class="text-2xl font-semibold mb-2">${user.name}</h3>
-                    <p class="text-lg mb-8">Đang gọi...</p>
-                    
-                    <div class="flex justify-center space-x-6">
-                        <button onclick="endCall()" class="w-16 h-16 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center">
-                            <i class="fas fa-phone-slash text-white text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(callOverlay);
-        }
-
-        let callState = {
-            isVideoOn: true,
-            isMicOn: true,
-            isScreenSharing: false,
-            callDuration: 0,
-            callTimer: null
-        };
-
-        function startVideoCall() {
-            const user = chatData[currentUser];
-            showToast(`Đang gọi video ${user.name}...`, 'info');
-            
-            // Reset call state
-            callState = {
-                isVideoOn: true,
-                isMicOn: true,
-                isScreenSharing: false,
-                callDuration: 0,
-                callTimer: null
             };
             
-            // Create video call overlay
-            const callOverlay = document.createElement('div');
-            callOverlay.id = 'callOverlay';
-            callOverlay.className = 'fixed inset-0 bg-black z-50 flex flex-col';
-            callOverlay.innerHTML = `
-                <!-- Call Header -->
-                <div class="absolute top-0 left-0 right-0 z-10 p-4 bg-gradient-to-b from-black/50 to-transparent">
-                    <div class="flex items-center justify-between text-white">
-                        <div class="flex items-center space-x-3">
-                            <img src="${user.avatar}" alt="${user.name}" class="w-10 h-10 rounded-full">
-                            <div>
-                                <h3 class="font-semibold">${user.name}</h3>
-                                <p id="callDuration" class="text-sm text-gray-300">Đang kết nối...</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="minimizeCall()" class="p-2 hover:bg-white/20 rounded-full">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button onclick="toggleFullscreen()" class="p-2 hover:bg-white/20 rounded-full">
-                                <i class="fas fa-expand"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            const chat = chatData[chatId];
+            if (chat) {
+                // Update header
+                document.getElementById('chatName').textContent = chat.name;
+                document.getElementById('chatStatus').textContent = chat.status;
                 
-                <!-- Video Area -->
-                <div class="flex-1 relative">
-                    <!-- Remote Video -->
-                    <div id="remoteVideo" class="w-full h-full bg-gray-900 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <img src="${user.avatar}" alt="${user.name}" class="w-48 h-48 rounded-full mx-auto mb-6">
-                            <h3 class="text-3xl font-semibold mb-2">${user.name}</h3>
-                            <p class="text-xl">Đang kết nối...</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Local Video -->
-                    <div id="localVideo" class="absolute top-6 right-6 w-48 h-36 bg-gray-800 rounded-lg overflow-hidden border-2 border-white/20 cursor-move">
-                        <div class="w-full h-full flex items-center justify-center text-white">
-                            <div class="text-center">
-                                <i class="fas fa-user text-4xl mb-2"></i>
-                                <p class="text-xs">Bạn</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Screen Share Indicator -->
-                    <div id="screenShareIndicator" class="absolute top-6 left-6 bg-green-500 text-white px-3 py-1 rounded-full text-sm hidden">
-                        <i class="fas fa-desktop mr-2"></i>
-                        Đang chia sẻ màn hình
-                    </div>
-                    
-                    <!-- Participants Panel -->
-                    <div id="participantsPanel" class="absolute top-20 left-6 bg-black/70 rounded-lg p-4 text-white hidden">
-                        <h4 class="font-semibold mb-3">Người tham gia (2)</h4>
-                        <div class="space-y-2">
-                            <div class="flex items-center space-x-2">
-                                <img src="${user.avatar}" alt="${user.name}" class="w-8 h-8 rounded-full">
-                                <span class="text-sm">${user.name}</span>
-                                <i class="fas fa-microphone text-green-400 text-xs"></i>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <span class="text-xs font-bold">You</span>
-                                </div>
-                                <span class="text-sm">Bạn</span>
-                                <i id="yourMicStatus" class="fas fa-microphone text-green-400 text-xs"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                // Update avatar
+                const avatarSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='${encodeURIComponent(chat.color)}'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-size='16' font-weight='bold'%3E${chat.avatar}%3C/text%3E%3C/svg%3E`;
+                document.getElementById('chatAvatar').src = avatarSvg;
                 
-                <!-- Controls -->
-                <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
-                    <div class="flex justify-center items-center space-x-4">
-                        <!-- Mic Toggle -->
-                        <button id="micToggle" onclick="toggleMic()" class="w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors">
-                            <i class="fas fa-microphone text-white"></i>
-                        </button>
-                        
-                        <!-- Video Toggle -->
-                        <button id="videoToggle" onclick="toggleVideo()" class="w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors">
-                            <i class="fas fa-video text-white"></i>
-                        </button>
-                        
-                        <!-- Screen Share -->
-                        <button id="screenShareToggle" onclick="toggleScreenShare()" class="w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors">
-                            <i class="fas fa-desktop text-white"></i>
-                        </button>
-                        
-                        <!-- More Options -->
-                        <div class="relative">
-                            <button onclick="toggleCallOptions()" class="w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors">
-                                <i class="fas fa-ellipsis-h text-white"></i>
-                            </button>
-                            
-                            <!-- Options Menu -->
-                            <div id="callOptionsMenu" class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-lg py-2 min-w-48 hidden">
-                                <button onclick="toggleParticipants()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
-                                    <i class="fas fa-users text-gray-600"></i>
-                                    <span>Hiện người tham gia</span>
-                                </button>
-                                <button onclick="openChat()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
-                                    <i class="fas fa-comment text-gray-600"></i>
-                                    <span>Mở chat</span>
-                                </button>
-                                <button onclick="recordCall()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
-                                    <i class="fas fa-record-vinyl text-gray-600"></i>
-                                    <span>Ghi âm cuộc gọi</span>
-                                </button>
-                                <button onclick="takeSnapshot()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2">
-                                    <i class="fas fa-camera text-gray-600"></i>
-                                    <span>Chụp ảnh màn hình</span>
-                                </button>
-                                <hr class="my-1">
-                                <button onclick="reportIssue()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center space-x-2 text-red-600">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    <span>Báo cáo sự cố</span>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- End Call -->
-                        <button onclick="endCall()" class="w-16 h-16 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors">
-                            <i class="fas fa-phone-slash text-white text-xl"></i>
-                        </button>
-                        
-                        <!-- Add Participant -->
-                        <button onclick="addParticipant()" class="w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors">
-                            <i class="fas fa-user-plus text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(callOverlay);
-            
-            // Start call timer after 2 seconds (simulate connection)
-            setTimeout(() => {
-                startCallTimer();
-                document.getElementById('callDuration').textContent = '00:00';
-            }, 2000);
-            
-            // Make local video draggable
-            makeDraggable(document.getElementById('localVideo'));
-        }
-
-        function endCall() {
-            const overlay = document.getElementById('callOverlay');
-            if (overlay) {
-                overlay.remove();
-            }
-            
-            // Clear call timer
-            if (callState.callTimer) {
-                clearInterval(callState.callTimer);
-                callState.callTimer = null;
-            }
-            
-            showToast('Cuộc gọi đã kết thúc', 'info');
-        }
-
-        function toggleMic() {
-            callState.isMicOn = !callState.isMicOn;
-            const micToggle = document.getElementById('micToggle');
-            const yourMicStatus = document.getElementById('yourMicStatus');
-            
-            if (callState.isMicOn) {
-                micToggle.className = 'w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors';
-                micToggle.innerHTML = '<i class="fas fa-microphone text-white"></i>';
-                if (yourMicStatus) yourMicStatus.className = 'fas fa-microphone text-green-400 text-xs';
-                showToast('Đã bật microphone', 'success');
-            } else {
-                micToggle.className = 'w-14 h-14 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors';
-                micToggle.innerHTML = '<i class="fas fa-microphone-slash text-white"></i>';
-                if (yourMicStatus) yourMicStatus.className = 'fas fa-microphone-slash text-red-400 text-xs';
-                showToast('Đã tắt microphone', 'error');
-            }
-        }
-
-        function toggleVideo() {
-            callState.isVideoOn = !callState.isVideoOn;
-            const videoToggle = document.getElementById('videoToggle');
-            const localVideo = document.getElementById('localVideo');
-            
-            if (callState.isVideoOn) {
-                videoToggle.className = 'w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors';
-                videoToggle.innerHTML = '<i class="fas fa-video text-white"></i>';
-                localVideo.innerHTML = `
-                    <div class="w-full h-full flex items-center justify-center text-white">
-                        <div class="text-center">
-                            <i class="fas fa-user text-4xl mb-2"></i>
-                            <p class="text-xs">Bạn</p>
-                        </div>
-                    </div>
-                `;
-                showToast('Đã bật camera', 'success');
-            } else {
-                videoToggle.className = 'w-14 h-14 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors';
-                videoToggle.innerHTML = '<i class="fas fa-video-slash text-white"></i>';
-                localVideo.innerHTML = `
-                    <div class="w-full h-full flex items-center justify-center text-white bg-gray-900">
-                        <div class="text-center">
-                            <i class="fas fa-video-slash text-4xl mb-2"></i>
-                            <p class="text-xs">Camera đã tắt</p>
-                        </div>
-                    </div>
-                `;
-                showToast('Đã tắt camera', 'error');
-            }
-        }
-
-        function toggleScreenShare() {
-            callState.isScreenSharing = !callState.isScreenSharing;
-            const screenShareToggle = document.getElementById('screenShareToggle');
-            const screenShareIndicator = document.getElementById('screenShareIndicator');
-            const remoteVideo = document.getElementById('remoteVideo');
-            
-            if (callState.isScreenSharing) {
-                screenShareToggle.className = 'w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors';
-                screenShareIndicator.classList.remove('hidden');
+                // Update panel info if open
+                updateChatInfoPanel(chat);
                 
-                // Simulate screen sharing view
-                remoteVideo.innerHTML = `
-                    <div class="w-full h-full bg-blue-900 flex items-center justify-center relative">
-                        <div class="text-center text-white">
-                            <i class="fas fa-desktop text-6xl mb-4"></i>
-                            <h3 class="text-2xl font-semibold mb-2">Đang chia sẻ màn hình</h3>
-                            <p class="text-lg">Màn hình của bạn đang được chia sẻ</p>
-                        </div>
-                        <div class="absolute top-4 right-4 bg-black/50 rounded-lg p-2">
-                            <p class="text-white text-sm">1920x1080</p>
-                        </div>
-                    </div>
-                `;
-                showToast('Đã bắt đầu chia sẻ màn hình', 'success');
-            } else {
-                screenShareToggle.className = 'w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors';
-                screenShareIndicator.classList.add('hidden');
-                
-                // Return to normal video view
-                const user = chatData[currentUser];
-                remoteVideo.innerHTML = `
-                    <div class="text-center text-white">
-                        <img src="${user.avatar}" alt="${user.name}" class="w-48 h-48 rounded-full mx-auto mb-6">
-                        <h3 class="text-3xl font-semibold mb-2">${user.name}</h3>
-                        <p class="text-xl">Đang trong cuộc gọi</p>
-                    </div>
-                `;
-                showToast('Đã dừng chia sẻ màn hình', 'info');
+                // Clear messages and show typing indicator briefly
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                }, 1500);
             }
         }
-
-        function toggleCallOptions() {
-            const menu = document.getElementById('callOptionsMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        function toggleParticipants() {
-            const panel = document.getElementById('participantsPanel');
-            panel.classList.toggle('hidden');
-            toggleCallOptions();
-        }
-
-        function openChat() {
-            // Create chat overlay during call
-            const chatOverlay = document.createElement('div');
-            chatOverlay.id = 'callChatOverlay';
-            chatOverlay.className = 'fixed top-20 right-6 w-80 h-96 bg-white rounded-lg shadow-2xl z-60 flex flex-col';
-            chatOverlay.innerHTML = `
-                <div class="p-3 border-b border-gray-200 flex items-center justify-between">
-                    <h4 class="font-semibold">Chat trong cuộc gọi</h4>
-                    <button onclick="closeCallChat()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="flex-1 overflow-y-auto p-3 space-y-2">
-                    <div class="text-center text-gray-500 text-sm">
-                        Bắt đầu trò chuyện trong cuộc gọi
-                    </div>
-                </div>
-                <div class="p-3 border-t border-gray-200">
-                    <div class="flex space-x-2">
-                        <input type="text" placeholder="Nhập tin nhắn..." class="flex-1 px-3 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button class="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
+        
+        function updateChatInfoPanel(chat) {
+            document.getElementById('panelChatName').textContent = chat.name;
+            document.getElementById('panelChatStatus').textContent = chat.status;
             
-            document.body.appendChild(chatOverlay);
-            toggleCallOptions();
+            const panelAvatarSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='${encodeURIComponent(chat.color)}'/%3E%3Ctext x='40' y='50' text-anchor='middle' fill='white' font-size='32' font-weight='bold'%3E${chat.avatar}%3C/text%3E%3C/svg%3E`;
+            document.getElementById('panelChatAvatar').src = panelAvatarSvg;
         }
-
-        function closeCallChat() {
-            const overlay = document.getElementById('callChatOverlay');
-            if (overlay) overlay.remove();
-        }
-
-        function recordCall() {
-            showToast('Đã bắt đầu ghi âm cuộc gọi', 'success');
-            toggleCallOptions();
-        }
-
-        function takeSnapshot() {
-            showToast('Đã chụp ảnh màn hình', 'success');
-            toggleCallOptions();
-        }
-
-        function reportIssue() {
-            showToast('Đã gửi báo cáo sự cố', 'info');
-            toggleCallOptions();
-        }
-
-        function addParticipant() {
-            showToast('Tính năng thêm người tham gia sẽ có sớm', 'info');
-        }
-
-        function minimizeCall() {
-            const overlay = document.getElementById('callOverlay');
-            overlay.style.transform = 'scale(0.3)';
-            overlay.style.transformOrigin = 'bottom right';
-            overlay.style.width = '300px';
-            overlay.style.height = '200px';
-            overlay.style.position = 'fixed';
-            overlay.style.bottom = '20px';
-            overlay.style.right = '20px';
-            overlay.style.top = 'auto';
-            overlay.style.left = 'auto';
-        }
-
-        function toggleFullscreen() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            } else {
-                document.getElementById('callOverlay').requestFullscreen();
-            }
-        }
-
-        function startCallTimer() {
-            callState.callTimer = setInterval(() => {
-                callState.callDuration++;
-                const minutes = Math.floor(callState.callDuration / 60);
-                const seconds = callState.callDuration % 60;
-                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        function toggleChatInfoPanel() {
+            const panel = document.getElementById('chatInfoPanel');
+            const mainArea = document.getElementById('mainChatArea');
+            
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+                mainArea.style.marginRight = '320px';
                 
-                const durationElement = document.getElementById('callDuration');
-                if (durationElement) {
-                    durationElement.textContent = timeString;
+                // Update panel with current chat info
+                const chatData = {
+                    'mai': { name: 'Mai Nguyễn', avatar: 'M', color: '#FF6B9D', status: 'Đang hoạt động' },
+                    'duc': { name: 'Đức Trần', avatar: 'D', color: '#4A90E2', status: 'Hoạt động 5 phút trước' },
+                    'linh': { name: 'Linh Võ', avatar: 'L', color: '#F39C12', status: 'Hoạt động 1 giờ trước' },
+                    'group': { name: 'Nhóm Bạn Thân', avatar: 'Nhóm', color: '#9B59B6', status: '5 thành viên' },
+                    'an': { name: 'An Lê', avatar: 'A', color: '#27AE60', status: 'Hoạt động 5 giờ trước' },
+                    'hoa': { name: 'Hoa Phạm', avatar: 'H', color: '#E74C3C', status: 'Đang hoạt động' },
+                    'work': { name: 'Nhóm Công Việc', avatar: 'Work', color: '#34495E', status: '8 thành viên' },
+                    'nam': { name: 'Nam Vũ', avatar: 'N', color: '#FF9500', status: 'Hoạt động 1 tuần trước' },
+                    'family': { name: 'Gia Đình', avatar: 'GĐ', color: '#E91E63', status: '4 thành viên' },
+                    'study': { name: 'Nhóm Học Tập', avatar: 'HT', color: '#673AB7', status: '12 thành viên' },
+                    'gaming': { name: 'Gaming Squad', avatar: 'GS', color: '#FF5722', status: '6 thành viên' },
+                    'travel': { name: 'Du Lịch Cùng Nhau', avatar: 'DL', color: '#00BCD4', status: '8 thành viên' },
+                    'food': { name: 'Hội Ăn Uống', avatar: 'AU', color: '#FF9800', status: '15 thành viên' },
+                    'sport': { name: 'CLB Thể Thao', avatar: 'TT', color: '#4CAF50', status: '20 thành viên' }
+                };
+                
+                const chat = chatData[currentChat];
+                if (chat) {
+                    updateChatInfoPanel(chat);
                 }
-            }, 1000);
-        }
-
-        function makeDraggable(element) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            
-            element.onmousedown = dragMouseDown;
-            
-            function dragMouseDown(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
-            
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                element.style.top = (element.offsetTop - pos2) + "px";
-                element.style.left = (element.offsetLeft - pos1) + "px";
-            }
-            
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
+            } else {
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+                mainArea.style.marginRight = '0';
             }
         }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
+        
+        // Search functions
+        function searchChats(query) {
+            const chatItems = document.querySelectorAll('.chat-item');
+            chatItems.forEach(item => {
+                const name = item.getAttribute('data-name').toLowerCase();
+                const message = item.getAttribute('data-message').toLowerCase();
+                const searchTerm = query.toLowerCase();
+                
+                if (name.includes(searchTerm) || message.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = query ? 'none' : 'block';
+                }
+            });
         }
-
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.className = `fixed top-4 right-4 z-50 px-4 py-2 rounded-lg text-white font-medium ${
-                type === 'success' ? 'bg-green-500' : 
-                type === 'error' ? 'bg-red-500' : 
-                'bg-blue-500'
-            }`;
-            toast.textContent = message;
-            
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
+        
+        function showChatSearch() {
+            document.getElementById('chatSearchBar').classList.remove('hidden');
+            document.getElementById('chatSearchInput').focus();
+            closeChatInfo();
         }
-
+        
+        function closeChatSearch() {
+            document.getElementById('chatSearchBar').classList.add('hidden');
+            document.getElementById('chatSearchInput').value = '';
+            clearChatSearchHighlights();
+        }
+        
+        function searchInChat(query) {
+            const messages = document.querySelectorAll('#messagesContainer .message-bubble p');
+            clearChatSearchHighlights();
+            
+            if (query.trim()) {
+                messages.forEach(message => {
+                    const text = message.textContent;
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    const highlightedText = text.replace(regex, '<span class="chat-search-highlight">$1</span>');
+                    message.innerHTML = highlightedText;
+                });
+            }
+        }
+        
+        function clearChatSearchHighlights() {
+            const highlights = document.querySelectorAll('.chat-search-highlight');
+            highlights.forEach(highlight => {
+                const parent = highlight.parentNode;
+                parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                parent.normalize();
+            });
+        }
+        
+        // Modal functions
         function showNewChatModal() {
-            const modal = document.createElement('div');
-            modal.id = 'newChatModal';
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center';
-            modal.innerHTML = `
-                <div class="bg-white rounded-lg w-96 max-h-96 flex flex-col">
-                    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-                        <h3 class="font-semibold text-lg">Tạo đoạn chat mới</h3>
-                        <button onclick="closeNewChatModal()" class="text-gray-400 hover:text-gray-600">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="p-4">
-                        <div class="mb-4">
-                            <input type="text" id="newChatSearch" placeholder="Nhập tên hoặc số điện thoại..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div class="space-y-2 max-h-48 overflow-y-auto">
-                            <h4 class="text-sm font-medium text-gray-700 mb-2">Gợi ý</h4>
-                            
-                            <div class="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer" onclick="createNewChat('alex', 'Alex Thompson', '#10b981')">
-                                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
-                                    <span class="text-white font-bold text-sm">AT</span>
-                                </div>
-                                <div>
-                                    <p class="font-medium">Alex Thompson</p>
-                                    <p class="text-sm text-gray-500">Đang hoạt động</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer" onclick="createNewChat('maria', 'Maria Garcia', '#f59e0b')">
-                                <div class="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center">
-                                    <span class="text-white font-bold text-sm">MG</span>
-                                </div>
-                                <div>
-                                    <p class="font-medium">Maria Garcia</p>
-                                    <p class="text-sm text-gray-500">Hoạt động 5 phút trước</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer" onclick="createNewChat('ryan', 'Ryan Kim', '#8b5cf6')">
-                                <div class="w-10 h-10 bg-violet-500 rounded-full flex items-center justify-center">
-                                    <span class="text-white font-bold text-sm">RK</span>
-                                </div>
-                                <div>
-                                    <p class="font-medium">Ryan Kim</p>
-                                    <p class="text-sm text-gray-500">Hoạt động 1 giờ trước</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg cursor-pointer" onclick="createNewGroup()">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-users text-white"></i>
-                                </div>
-                                <div>
-                                    <p class="font-medium">Tạo nhóm mới</p>
-                                    <p class="text-sm text-gray-500">Tạo nhóm chat với nhiều người</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
+            document.getElementById('newChatModal').classList.remove('hidden');
         }
-
+        
         function closeNewChatModal() {
-            const modal = document.getElementById('newChatModal');
-            if (modal) modal.remove();
+            document.getElementById('newChatModal').classList.add('hidden');
         }
-
-        function createNewChat(userId, userName, color) {
-            // Add new chat to sidebar
-            const chatList = document.querySelector('.flex-1.overflow-y-auto.custom-scrollbar');
-            const newChatItem = document.createElement('div');
-            newChatItem.className = 'chat-item p-3 cursor-pointer';
-            newChatItem.dataset.user = userId;
-            newChatItem.innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <div class="relative">
-                        <div class="w-14 h-14 rounded-full flex items-center justify-center" style="background-color: ${color}">
-                            <span class="text-white font-bold text-lg">${userName.split(' ').map(n => n[0]).join('')}</span>
-                        </div>
-                        <div class="online-dot"></div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-semibold text-gray-900 truncate">${userName}</h3>
-                            <span class="text-xs text-gray-500">Vừa xong</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm text-gray-600 truncate">Bắt đầu cuộc trò chuyện...</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Add to chat data
-            chatData[userId] = {
-                name: userName,
-                avatar: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='${encodeURIComponent(color)}'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'%3E${userName.split(' ').map(n => n[0]).join('')}%3C/text%3E%3C/svg%3E`,
-                status: 'Đang hoạt động',
-                online: true
-            };
-            
-            // Insert at top of chat list
-            chatList.insertBefore(newChatItem, chatList.firstChild);
-            
-            // Add event listener
-            newChatItem.addEventListener('click', () => selectChat(newChatItem));
-            
-            // Select the new chat
-            selectChat(newChatItem);
-            
-            closeNewChatModal();
-            showToast(`Đã tạo đoạn chat với ${userName}`, 'success');
+        
+        function showRoomModal() {
+    closeAllModals();
+    document.getElementById('roomModal').classList.remove('hidden');
+}
+        
+        function closeRoomModal() {
+            document.getElementById('roomModal').classList.add('hidden');
         }
-
-        function createNewGroup() {
-            closeNewChatModal();
-            showToast('Tính năng tạo nhóm sẽ có sớm', 'info');
+        
+        let meetingTimer;
+        let meetingStartTime;
+        let currentRoomCode = '';
+        let isMeetingMuted = true;
+        let isMeetingVideoOn = false;
+        let isMeetingScreenSharing = false;
+        
+        function createRoom() {
+    currentRoomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    document.getElementById('currentRoomCode').textContent = currentRoomCode;
+    closeAllModals(); // ẩn mọi modal khác
+    document.getElementById('meetingRoomModal').classList.remove('hidden');
+    startMeetingTimer();
+}
+        
+        function joinRoom() {
+    const roomCode = document.getElementById('roomCodeInput').value.trim();
+    if (roomCode) {
+        currentRoomCode = roomCode;
+        document.getElementById('currentRoomCode').textContent = roomCode;
+        closeAllModals();
+        document.getElementById('meetingRoomModal').classList.remove('hidden');
+        startMeetingTimer();
+    } else {
+        alert('Vui lòng nhập mã cuộc họp!');
+    }
+}
+        
+        function startMeeting() {
+            document.getElementById('meetingRoomModal').classList.remove('hidden');
+            startMeetingTimer();
         }
-
-        function toggleAttachmentMenu() {
+        
+        function startMeetingTimer() {
+            meetingStartTime = Date.now();
+            meetingTimer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - meetingStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                const seconds = (elapsed % 60).toString().padStart(2, '0');
+                const timeString = `${minutes}:${seconds}`;
+                
+                const meetingDuration = document.getElementById('meetingDuration');
+                const miniMeetingDuration = document.getElementById('miniMeetingDuration');
+                if (meetingDuration) meetingDuration.textContent = timeString;
+                if (miniMeetingDuration) miniMeetingDuration.textContent = timeString;
+            }, 1000);
+        }
+        
+        function stopMeetingTimer() {
+            if (meetingTimer) {
+                clearInterval(meetingTimer);
+                meetingTimer = null;
+            }
+        }
+        
+        function endMeeting() {
+    if (confirm('Bạn có chắc chắn muốn kết thúc cuộc họp?')) {
+        closeAllModals();
+        stopMeetingTimer();
+        // reset state nếu cần
+        isMeetingMuted = true;
+        isMeetingVideoOn = false;
+        isMeetingScreenSharing = false;
+        currentRoomCode = '';
+    }
+}function closeVoiceCall() {
+    closeAllModals();
+    stopCallTimer();
+}
+function closeVideoCall() {
+    closeAllModals();
+    stopCallTimer();
+}
+        
+        function toggleMeetingMute() {
+            isMeetingMuted = !isMeetingMuted;
+            const muteBtn = document.getElementById('meetingMuteBtn');
+            const icon = muteBtn.querySelector('i');
+            
+            if (isMeetingMuted) {
+                muteBtn.classList.remove('bg-gray-600');
+                muteBtn.classList.add('bg-red-600');
+                icon.classList.remove('fa-microphone');
+                icon.classList.add('fa-microphone-slash');
+            } else {
+                muteBtn.classList.remove('bg-red-600');
+                muteBtn.classList.add('bg-gray-600');
+                icon.classList.remove('fa-microphone-slash');
+                icon.classList.add('fa-microphone');
+            }
+        }
+        
+        function toggleMeetingVideo() {
+            isMeetingVideoOn = !isMeetingVideoOn;
+            const videoBtn = document.getElementById('meetingVideoBtn');
+            const icon = videoBtn.querySelector('i');
+            
+            if (!isMeetingVideoOn) {
+                videoBtn.classList.remove('bg-gray-600');
+                videoBtn.classList.add('bg-red-600');
+                icon.classList.remove('fa-video');
+                icon.classList.add('fa-video-slash');
+            } else {
+                videoBtn.classList.remove('bg-red-600');
+                videoBtn.classList.add('bg-gray-600');
+                icon.classList.remove('fa-video-slash');
+                icon.classList.add('fa-video');
+            }
+        }
+        
+        function toggleMeetingScreenShare() {
+            isMeetingScreenSharing = !isMeetingScreenSharing;
+            const btn = event.currentTarget;
+            
+            if (isMeetingScreenSharing) {
+                btn.classList.remove('bg-gray-600');
+                btn.classList.add('bg-blue-600');
+                alert('Đang chia sẻ màn hình...');
+            } else {
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-gray-600');
+                alert('Đã dừng chia sẻ màn hình');
+            }
+        }
+        
+        function inviteToMeeting() {
+            document.getElementById('inviteMeetingModal').classList.remove('hidden');
+        }
+        
+        function closeInviteMeeting() {
+            document.getElementById('inviteMeetingModal').classList.add('hidden');
+        }
+        
+        function inviteUser(userId) {
+            alert(`Đã gửi lời mời tham gia cuộc họp đến ${userId}!`);
+        }
+        
+        function copyMeetingLink() {
+            const link = `https://meet.app/${currentRoomCode}`;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Đã sao chép link cuộc họp!');
+            }).catch(() => {
+                alert('Không thể sao chép link. Vui lòng thử lại!');
+            });
+        }
+        
+        function shareRoomCode() {
+            const message = `Tham gia cuộc họp của tôi!\nMã cuộc họp: ${currentRoomCode}\nLink: https://meet.app/${currentRoomCode}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Lời mời cuộc họp',
+                    text: message
+                });
+            } else {
+                navigator.clipboard.writeText(message).then(() => {
+                    alert('Đã sao chép thông tin cuộc họp!');
+                }).catch(() => {
+                    alert('Không thể chia sẻ. Vui lòng thử lại!');
+                });
+            }
+        }
+        
+        function showParticipants() {
+            alert('Danh sách thành viên:\n- Bạn (Chủ phòng)\n- Mai Nguyễn\n- Đức Trần\n- Linh Võ');
+        }
+        
+        function showMeetingChat() {
+            alert('Tính năng chat trong cuộc họp sẽ được cập nhật sớm!');
+        }
+        
+        function showMeetingSettings() {
+            alert('Cài đặt cuộc họp sẽ được cập nhật sớm!');
+        }
+        
+        // New functions for enhanced features
+        function answerCall() {
+            document.getElementById('answerCallBtn').classList.add('hidden');
+            alert('Đã trả lời cuộc gọi!');
+        }
+        
+        function showScheduleMeeting() {
+            document.getElementById('scheduleMeetingModal').classList.remove('hidden');
+            closeRoomModal();
+        }
+        
+        function closeScheduleMeeting() {
+            document.getElementById('scheduleMeetingModal').classList.add('hidden');
+        }
+        
+        function scheduleMeeting() {
+            alert('Đã lập lịch cuộc họp thành công! Thông báo sẽ được gửi đến những người được mời.');
+            closeScheduleMeeting();
+        }
+        
+        function minimizeMeeting() {
+            document.getElementById('meetingRoomModal').classList.add('hidden');
+            document.getElementById('minimizedMeeting').classList.remove('hidden');
+            
+            // Sync timer with minimized window
+            const duration = document.getElementById('meetingDuration').textContent;
+            document.getElementById('miniMeetingDuration').textContent = duration;
+        }
+        
+        function maximizeMeeting() {
+            document.getElementById('minimizedMeeting').classList.add('hidden');
+            document.getElementById('meetingRoomModal').classList.remove('hidden');
+        }
+        
+        // Simulate incoming call
+        function simulateIncomingCall() {
+            document.getElementById('answerCallBtn').classList.remove('hidden');
+            document.getElementById('voiceCallModal').classList.remove('hidden');
+            
+            // Auto-hide answer button after 10 seconds
+            setTimeout(() => {
+                document.getElementById('answerCallBtn').classList.add('hidden');
+            }, 10000);
+        }
+        
+        // Call functions
+        let callTimer;
+        let callStartTime;
+        let isMuted = false;
+        let isVideoOn = true;
+        let isScreenSharing = false;
+        
+        function startCallTimer() {
+            callStartTime = Date.now();
+            callTimer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                const seconds = (elapsed % 60).toString().padStart(2, '0');
+                const timeString = `${minutes}:${seconds}`;
+                
+                const callDuration = document.getElementById('callDuration');
+                const voiceCallDuration = document.getElementById('voiceCallDuration');
+                if (callDuration) callDuration.textContent = timeString;
+                if (voiceCallDuration) voiceCallDuration.textContent = timeString;
+            }, 1000);
+        }
+        
+        function stopCallTimer() {
+            if (callTimer) {
+                clearInterval(callTimer);
+                callTimer = null;
+            }
+        }
+        
+        function toggleMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('muteBtn');
+            const icon = muteBtn.querySelector('i');
+            
+            if (isMuted) {
+                muteBtn.classList.remove('bg-gray-600');
+                muteBtn.classList.add('bg-red-600');
+                icon.classList.remove('fa-microphone');
+                icon.classList.add('fa-microphone-slash');
+            } else {
+                muteBtn.classList.remove('bg-red-600');
+                muteBtn.classList.add('bg-gray-600');
+                icon.classList.remove('fa-microphone-slash');
+                icon.classList.add('fa-microphone');
+            }
+        }
+        
+        function toggleVoiceMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('voiceMuteBtn');
+            const icon = muteBtn.querySelector('i');
+            
+            if (isMuted) {
+                muteBtn.classList.remove('bg-gray-600');
+                muteBtn.classList.add('bg-red-600');
+                icon.classList.remove('fa-microphone');
+                icon.classList.add('fa-microphone-slash');
+            } else {
+                muteBtn.classList.remove('bg-red-600');
+                muteBtn.classList.add('bg-gray-600');
+                icon.classList.remove('fa-microphone-slash');
+                icon.classList.add('fa-microphone');
+            }
+        }
+        
+        function toggleVideo() {
+            isVideoOn = !isVideoOn;
+            const videoBtn = document.getElementById('videoBtn');
+            const icon = videoBtn.querySelector('i');
+            
+            if (!isVideoOn) {
+                videoBtn.classList.remove('bg-gray-600');
+                videoBtn.classList.add('bg-red-600');
+                icon.classList.remove('fa-video');
+                icon.classList.add('fa-video-slash');
+            } else {
+                videoBtn.classList.remove('bg-red-600');
+                videoBtn.classList.add('bg-gray-600');
+                icon.classList.remove('fa-video-slash');
+                icon.classList.add('fa-video');
+            }
+        }
+        
+        function toggleScreenShare() {
+            isScreenSharing = !isScreenSharing;
+            const btn = event.currentTarget;
+            
+            if (isScreenSharing) {
+                btn.classList.remove('bg-gray-600');
+                btn.classList.add('bg-blue-600');
+                alert('Đang chia sẻ màn hình...');
+            } else {
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-gray-600');
+                alert('Đã dừng chia sẻ màn hình');
+            }
+        }
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        function switchToVideo() {
+            document.getElementById('voiceCallModal').classList.add('hidden');
+            document.getElementById('videoCallModal').classList.remove('hidden');
+        }
+        
+        function showThemeModal() {
+            alert('Tính năng đổi chủ đề sẽ được cập nhật sớm!');
+        }
+        
+        function toggleDarkMode(checkbox) {
+            if (checkbox.checked) {
+                document.body.classList.add('dark');
+                alert('Chế độ tối sẽ được áp dụng trong phiên bản tiếp theo!');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        }
+        
+        function logout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                alert('Đã đăng xuất thành công!');
+                closeSettings();
+            }
+        }
+        
+        // File handling
+        function showAttachmentMenu() {
             const menu = document.getElementById('attachmentMenu');
             menu.classList.toggle('hidden');
         }
-
-        function attachFile(type) {
-            toggleAttachmentMenu();
-            
-            switch(type) {
-                case 'image':
-                    sendImageMessage();
-                    break;
-                case 'document':
-                    sendDocumentMessage();
-                    break;
-                case 'audio':
-                    sendAudioMessage();
-                    break;
-                case 'location':
-                    sendLocationMessage();
-                    break;
-                case 'contact':
-                    sendContactMessage();
-                    break;
-                case 'poll':
-                    createPoll();
-                    break;
-            }
+        
+        function selectFile() {
+            document.getElementById('fileInput').click();
+            document.getElementById('attachmentMenu').classList.add('hidden');
         }
-
-        function sendImageMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'flex justify-end';
-            messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="image-message">
-                        <div class="w-64 h-48 bg-gradient-to-br from-green-400 to-blue-500 rounded-lg flex items-center justify-center">
-                            <div class="text-center text-white">
-                                <i class="fas fa-image text-4xl mb-2"></i>
-                                <p class="text-sm">Sunset_Beach.jpg</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
-                    </div>
-                </div>
-            `;
-            
-            addMessageToChat(messageDiv);
-            showToast('Đã gửi ảnh', 'success');
+        
+        function selectImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*,video/*';
+            input.onchange = handleFileSelect;
+            input.click();
+            document.getElementById('attachmentMenu').classList.add('hidden');
         }
-
-        function sendDocumentMessage() {
-            const documents = [
-                { name: 'Presentation.pptx', size: '3.2 MB', icon: 'fas fa-file-powerpoint', color: 'bg-orange-500' },
-                { name: 'Report.docx', size: '1.8 MB', icon: 'fas fa-file-word', color: 'bg-blue-500' },
-                { name: 'Spreadsheet.xlsx', size: '2.1 MB', icon: 'fas fa-file-excel', color: 'bg-green-500' },
-                { name: 'Archive.zip', size: '5.4 MB', icon: 'fas fa-file-archive', color: 'bg-gray-500' }
-            ];
-            
-            const randomDoc = documents[Math.floor(Math.random() * documents.length)];
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'flex justify-end';
-            messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="file-message sent">
-                        <div class="file-icon ${randomDoc.color} text-white">
-                            <i class="${randomDoc.icon}"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="font-medium text-white">${randomDoc.name}</p>
-                            <p class="text-xs text-gray-200">${randomDoc.size}</p>
-                        </div>
-                        <button class="p-2 hover:bg-white/20 rounded-full">
-                            <i class="fas fa-download text-white"></i>
-                        </button>
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
-                    </div>
-                </div>
-            `;
-            
-            addMessageToChat(messageDiv);
-            showToast('Đã gửi tài liệu', 'success');
-        }
-
-        function sendAudioMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'flex justify-end';
-            messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="voice-message sent">
-                        <button class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-play text-white text-xs"></i>
-                        </button>
-                        <div class="voice-waveform">
-                            <div class="wave-bar" style="height: 8px; animation-delay: 0s;"></div>
-                            <div class="wave-bar" style="height: 12px; animation-delay: 0.1s;"></div>
-                            <div class="wave-bar" style="height: 6px; animation-delay: 0.2s;"></div>
-                            <div class="wave-bar" style="height: 14px; animation-delay: 0.3s;"></div>
-                            <div class="wave-bar" style="height: 10px; animation-delay: 0.4s;"></div>
-                            <div class="wave-bar" style="height: 8px; animation-delay: 0.5s;"></div>
-                            <div class="wave-bar" style="height: 12px; animation-delay: 0.6s;"></div>
-                        </div>
-                        <span class="text-xs text-white">0:23</span>
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
-                    </div>
-                </div>
-            `;
-            
-            addMessageToChat(messageDiv);
-            showToast('Đã gửi tin nhắn thoại', 'success');
-        }
-
-        function sendLocationMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'flex justify-end';
-            messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="max-w-xs">
-                        <div class="bg-gray-100 rounded-lg overflow-hidden">
-                            <div class="h-32 bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
-                                <i class="fas fa-map-marker-alt text-white text-3xl"></i>
-                            </div>
-                            <div class="p-3">
-                                <p class="font-medium text-gray-900">Vị trí hiện tại</p>
-                                <p class="text-sm text-gray-600">123 Đường ABC, Quận 1, TP.HCM</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
-                    </div>
-                </div>
-            `;
-            
-            addMessageToChat(messageDiv);
-            showToast('Đã chia sẻ vị trí', 'success');
-        }
-
-        function sendContactMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'flex justify-end';
-            messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="bg-gray-100 rounded-lg p-3 max-w-xs">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold">JD</span>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-900">John Doe</p>
-                                <p class="text-sm text-gray-600">+84 123 456 789</p>
-                            </div>
-                        </div>
-                        <button class="w-full mt-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                            Thêm vào danh bạ
-                        </button>
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
-                    </div>
-                </div>
-            `;
-            
-            addMessageToChat(messageDiv);
-            showToast('Đã chia sẻ danh bạ', 'success');
-        }
-
-        function createPoll() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'flex justify-end';
-            messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-xs">
-                        <div class="flex items-center space-x-2 mb-3">
-                            <i class="fas fa-poll text-blue-500"></i>
-                            <h4 class="font-medium text-gray-900">Bình chọn</h4>
-                        </div>
-                        <p class="text-gray-900 mb-3">Chúng ta nên họp lúc nào?</p>
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between p-2 bg-white rounded border hover:bg-gray-50 cursor-pointer">
-                                <span class="text-sm">9:00 AM</span>
-                                <span class="text-xs text-gray-500">0 phiếu</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-white rounded border hover:bg-gray-50 cursor-pointer">
-                                <span class="text-sm">2:00 PM</span>
-                                <span class="text-xs text-gray-500">0 phiếu</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-white rounded border hover:bg-gray-50 cursor-pointer">
-                                <span class="text-sm">4:00 PM</span>
-                                <span class="text-xs text-gray-500">0 phiếu</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
-                    </div>
-                </div>
-            `;
-            
-            addMessageToChat(messageDiv);
-            showToast('Đã tạo bình chọn', 'success');
-        }
-
-        function takePhoto() {
-            showToast('Tính năng chụp ảnh sẽ có sớm', 'info');
-        }
-
+        
         function handleFileSelect(event) {
             const files = event.target.files;
             if (files.length > 0) {
@@ -1168,88 +618,556 @@
                 }
             }
         }
-
+        
         function sendFileMessage(file) {
-            const fileType = file.type.split('/')[0];
-            const fileName = file.name;
-            const fileSize = (file.size / 1024 / 1024).toFixed(1) + ' MB';
-            
-            let icon = 'fas fa-file';
-            let color = 'bg-gray-500';
-            
-            if (fileType === 'image') {
-                icon = 'fas fa-image';
-                color = 'bg-green-500';
-            } else if (fileType === 'video') {
-                icon = 'fas fa-video';
-                color = 'bg-red-500';
-            } else if (fileType === 'audio') {
-                icon = 'fas fa-music';
-                color = 'bg-purple-500';
-            } else if (fileName.endsWith('.pdf')) {
-                icon = 'fas fa-file-pdf';
-                color = 'bg-red-500';
-            } else if (fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
-                icon = 'fas fa-file-word';
-                color = 'bg-blue-500';
-            } else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx')) {
-                icon = 'fas fa-file-excel';
-                color = 'bg-green-500';
-            } else if (fileName.endsWith('.ppt') || fileName.endsWith('.pptx')) {
-                icon = 'fas fa-file-powerpoint';
-                color = 'bg-orange-500';
-            }
+            const messagesContainer = document.getElementById('messagesContainer');
+            const fileIcon = getFileIcon(file.type);
+            const fileSize = formatFileSize(file.size);
             
             const messageDiv = document.createElement('div');
             messageDiv.className = 'flex justify-end';
             messageDiv.innerHTML = `
-                <div class="flex flex-col space-y-1 items-end">
-                    <div class="file-message sent">
-                        <div class="file-icon ${color} text-white">
-                            <i class="${icon}"></i>
+                <div class="bg-blue-500 text-white rounded-2xl px-4 py-3 max-w-xs message-bubble">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas ${fileIcon} text-2xl"></i>
+                        <div>
+                            <p class="font-medium">${file.name}</p>
+                            <p class="text-xs opacity-75">${fileSize}</p>
                         </div>
-                        <div class="flex-1">
-                            <p class="font-medium text-white">${fileName}</p>
-                            <p class="text-xs text-gray-200">${fileSize}</p>
-                        </div>
-                        <button class="p-2 hover:bg-white/20 rounded-full">
-                            <i class="fas fa-download text-white"></i>
-                        </button>
-                    </div>
-                    <div class="message-status sent">
-                        Vừa xong <i class="fas fa-check text-gray-400 ml-1"></i>
                     </div>
                 </div>
             `;
             
-            addMessageToChat(messageDiv);
-            showToast(`Đã gửi ${fileName}`, 'success');
-        }
-
-        function addMessageToChat(messageDiv) {
-            const messagesContainer = document.getElementById('messagesContainer');
-            messagesContainer.appendChild(messageDiv);
+            const typingIndicator = document.getElementById('typingIndicator');
+            messagesContainer.insertBefore(messageDiv, typingIndicator);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
-            // Simulate read receipt after a delay
+            // Show response
             setTimeout(() => {
-                const checkIcon = messageDiv.querySelector('.fa-check');
-                if (checkIcon) {
-                    checkIcon.className = 'fas fa-check-double text-blue-400 ml-1';
-                }
-            }, 1000);
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addResponseMessage('Đã nhận tài liệu! 📄');
+                }, 2000);
+            }, 500);
         }
-
-        // Close attachment menu when clicking outside
-        document.addEventListener('click', function(e) {
-            const attachmentMenu = document.getElementById('attachmentMenu');
-            const attachmentBtn = e.target.closest('[onclick="toggleAttachmentMenu()"]');
+        
+        function getFileIcon(fileType) {
+            if (fileType.startsWith('image/')) return 'fa-image';
+            if (fileType.startsWith('video/')) return 'fa-video';
+            if (fileType.includes('pdf')) return 'fa-file-pdf';
+            if (fileType.includes('word')) return 'fa-file-word';
+            if (fileType.includes('excel') || fileType.includes('spreadsheet')) return 'fa-file-excel';
+            return 'fa-file';
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function createPoll() {
+            alert('Tính năng bình chọn sẽ được cập nhật sớm!');
+            document.getElementById('attachmentMenu').classList.add('hidden');
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
             
-            if (attachmentMenu && !attachmentMenu.contains(e.target) && !attachmentBtn) {
+            if (message) {
+                const messagesContainer = document.getElementById('messagesContainer');
+                
+                // Create new message element
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'flex justify-end';
+                messageDiv.innerHTML = `
+                    <div class="bg-blue-500 text-white rounded-2xl px-4 py-2 max-w-xs message-bubble">
+                        <p>${message}</p>
+                    </div>
+                `;
+                
+                // Insert before typing indicator
+                const typingIndicator = document.getElementById('typingIndicator');
+                messagesContainer.insertBefore(messageDiv, typingIndicator);
+                
+                // Clear input
+                input.value = '';
+                
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Show typing indicator after a delay
+                setTimeout(() => {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        // Add a response message
+                        addResponseMessage();
+                    }, 2000);
+                }, 500);
+            }
+        }
+        
+        function addResponseMessage(customMessage = null) {
+            const responses = [
+                "Cảm ơn bạn! 😊",
+                "Mình hiểu rồi!",
+                "Ý kiến hay đấy! 👍",
+                "Được thôi, mình sẽ suy nghĩ về điều đó",
+                "Haha, bạn vui quá! 😄"
+            ];
+            
+            const randomResponse = customMessage || responses[Math.floor(Math.random() * responses.length)];
+            const messagesContainer = document.getElementById('messagesContainer');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex justify-start';
+            messageDiv.innerHTML = `
+                <div class="flex items-end space-x-2 max-w-xs">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23FF6B9D'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='white' font-size='12' font-weight='bold'%3EM%3C/text%3E%3C/svg%3E" 
+                         alt="Mai" class="w-7 h-7 rounded-full">
+                    <div class="bg-gray-200 rounded-2xl px-4 py-2 message-bubble">
+                        <p class="text-gray-800">${randomResponse}</p>
+                    </div>
+                </div>
+            `;
+            
+            const typingIndicator = document.getElementById('typingIndicator');
+            messagesContainer.insertBefore(messageDiv, typingIndicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').classList.remove('hidden');
+            document.getElementById('messagesContainer').scrollTop = document.getElementById('messagesContainer').scrollHeight;
+        }
+        
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').classList.add('hidden');
+        }
+        
+        function startVideoCall() {
+            document.getElementById('videoCallModal').classList.remove('hidden');
+            startCallTimer();
+            closeChatInfo();
+        }
+        
+        function startVoiceCall() {
+            document.getElementById('voiceCallModal').classList.remove('hidden');
+            startCallTimer();
+            closeChatInfo();
+        }
+        function startVoiceCall() {
+    closeAllModals();
+    document.getElementById('voiceCallModal').classList.remove('hidden');
+    startCallTimer(); // nếu có timer
+}
+function startVideoCall() {
+    closeAllModals();
+    document.getElementById('videoCallModal').classList.remove('hidden');
+    startCallTimer();
+}
+
+        function endCall() {
+            document.getElementById('videoCallModal').classList.add('hidden');
+            document.getElementById('voiceCallModal').classList.add('hidden');
+            stopCallTimer();
+            
+            // Reset call states
+            isMuted = false;
+            isVideoOn = true;
+            isScreenSharing = false;
+        }
+        
+        function showSettings() {
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+        
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+        
+        function showChatInfo() {
+            // Update chat info modal with current chat data
+            const chatData = {
+                'mai': {
+                    name: 'Mai Nguyễn',
+                    avatar: 'M',
+                    color: '#FF6B9D',
+                    status: 'Đang hoạt động'
+                },
+                'duc': {
+                    name: 'Đức Trần',
+                    avatar: 'D',
+                    color: '#4A90E2',
+                    status: 'Hoạt động 5 phút trước'
+                },
+                'linh': {
+                    name: 'Linh Võ',
+                    avatar: 'L',
+                    color: '#F39C12',
+                    status: 'Hoạt động 1 giờ trước'
+                }
+            };
+            
+            const chat = chatData[currentChat];
+            if (chat) {
+                document.getElementById('chatInfoName').textContent = chat.name;
+                document.getElementById('chatInfoStatus').textContent = chat.status;
+                
+                const avatarSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='${encodeURIComponent(chat.color)}'/%3E%3Ctext x='40' y='50' text-anchor='middle' fill='white' font-size='32' font-weight='bold'%3E${chat.avatar}%3C/text%3E%3C/svg%3E`;
+                document.getElementById('chatInfoAvatar').src = avatarSvg;
+            }
+            
+            document.getElementById('chatInfoModal').classList.remove('hidden');
+        }
+        
+        function closeChatInfo() {
+            document.getElementById('chatInfoModal').classList.add('hidden');
+        }
+        
+        // Close modals and menus when clicking outside
+        document.addEventListener('click', function(event) {
+            const modals = ['settingsModal', 'chatInfoModal', 'newChatModal', 'roomModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+            
+            // Close attachment menu when clicking outside
+            const attachmentMenu = document.getElementById('attachmentMenu');
+            if (!event.target.closest('#attachmentMenu') && !event.target.closest('button[onclick="showAttachmentMenu()"]')) {
                 attachmentMenu.classList.add('hidden');
             }
         });
         
+        // Drag and drop file upload
+        document.addEventListener('DOMContentLoaded', function() {
+            const messagesContainer = document.getElementById('messagesContainer');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Drag and drop functionality
+            const chatArea = document.querySelector('.flex-1.flex.flex-col');
+            
+            chatArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                document.getElementById('fileUploadArea').classList.remove('hidden');
+            });
+            
+            chatArea.addEventListener('dragleave', function(e) {
+                if (!chatArea.contains(e.relatedTarget)) {
+                    document.getElementById('fileUploadArea').classList.add('hidden');
+                }
+            });
+            
+            chatArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                document.getElementById('fileUploadArea').classList.add('hidden');
+                
+                const files = e.dataTransfer.files;
+                for (let file of files) {
+                    sendFileMessage(file);
+                }
+            });
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + K to focus search
+            if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+                event.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            
+            // Escape to close modals and search
+            if (event.key === 'Escape') {
+                document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+                    modal.classList.add('hidden');
+                });
+                closeChatSearch();
+                document.getElementById('attachmentMenu').classList.add('hidden');
+            }
+        }); 
+function toggleChatInfoPanel() {
+  const panel = document.getElementById('chatInfoPanel');
+  const main  = document.getElementById('mainChatArea');
+
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    main.classList.add('pr-[320px]');
+    // luôn đồng bộ nội dung theo cuộc trò chuyện đang xem
+    renderInfo(CURRENT_THREAD);
+  } else {
+    main.classList.remove('pr-[320px]');
+  }
+}
+ 
+/* ==== 1) Data threads: mỗi id là một cuộc trò chuyện ==== */
+const THREADS = {
+  mai: {
+    name: "Mai Nguyễn",
+    avatar: svgAvatar("M", "#FF6B9D"),
+    status: { text: "Đang hoạt động", color: "text-green-600" },
+    messages: [
+      { from: "other", text: "Chào bạn! Hôm nay thế nào? 😊" },
+      { from: "me",    text: "Chào Mai! Mình ổn, cảm ơn bạn. Còn bạn thì sao?" },
+      { from: "other", text: "Mình cũng tốt! Ngày mai có rảnh không? Mình mời cà phê ☕" },
+      { from: "me",    text: "Ý tưởng hay đấy! Mấy giờ nhỉ?" },
+      { from: "other", text: "2 giờ chiều được không? Quán gần trường cũ 📍" },
+      { from: "me",    text: "Oke, hẹn gặp lại nhé! 👋" }
+    ]
+  },
+
+  duc: {
+    name: "Đức Trần",
+    avatar: svgAvatar("D", "#4A90E2"),
+    status: { text: "Vừa hoạt động", color: "text-gray-500" },
+    messages: [
+      { from: "other", text: "Hôm nay có rảnh không? 🤔" },    { from: "other", text: "Ok, để mình gửi file Google Docs." },
+    { from: "me", text: "Cứu tinh của đời mình 🙏" },
+    { from: "other", text: "Haha, học chung mới vui chứ!" },
+    { from: "me", text: "Tối call học nhóm đi." },
+    { from: "other", text: "Quá chuẩn, 8h nhé!" },
+      { from: "me",    text: "Chiều tớ bận, tối 8h được chứ?" },
+      { from: "other", text: "Ok nhé!" }
+    ]
+  },
+
+  linh: {
+    name: "Linh Võ",
+    avatar: svgAvatar("L", "#F39C12"),
+    status: { text: "Ngoại tuyến", color: "text-gray-400" },
+    messages: [
+      { from: "me",    text: "Cảm ơn bạn nhiều! ❤️" },    { from: "other", text: "Ok, để mình gửi file Google Docs." },
+    { from: "me", text: "Cứu tinh của đời mình 🙏" },
+
+      { from: "other", text: "Không có gì nè!" }
+    ]
+  },
+
+  group: {
+    name: "Nhóm Bạn Thân",
+    avatar: svgAvatar("Nhóm", "#9B59B6"),
+    status: { text: "5 thành viên", color: "text-gray-500" },
+    messages: [
+      { from: "other", sender:"An", text: "Ai đi xem phim không? 🎬" },
+      { from: "me",    text: "Tớ đi!" },
+   { from: "other", text: "Ok, để mình gửi file Google Docs." },
+    { from: "me", text: "Cứu tinh của đời mình 🙏" },
+    { from: "other", text: "Haha, học chung mới vui chứ!" },
+    { from: "me", text: "Tối call học nhóm đi." },
+    { from: "other", text: "Quá chuẩn, 8h nhé!" },
+    ]
+  },hoa: {
+  name: "Hoa Phạm",
+  avatar: svgAvatar("H", "#E91E63"),
+  status: { text: "Đang gõ…", color: "text-green-500" },
+  messages: [
+    { from: "other", text: "Mai thi chưa ôn gì luôn 😅" },
+    { from: "me", text: "Ôi, đang cày đây. Bạn ôn tới đâu rồi?" },
+    { from: "other", text: "Mình mới làm đề cương xong, stress quá!" },
+    { from: "me", text: "Chia sẻ cho mình với, mình làm bài tập mãi chưa xong." },
+   
+    { from: "other", text: "Haha, học chung mới vui chứ!" },
+    { from: "me", text: "Tối call học nhóm đi." },
+    { from: "other", text: "Quá chuẩn, 8h nhé!" },
+  ]
+},
+
+
+  // … thêm các thread khác tương tự: an, hoa, work, nam, family, study, gaming, ...
+};
+
+/* (tuỳ chọn) Lưu draft theo từng thread */
+const DRAFTS = new Map();
+
+/* ==== 2) Helper tạo avatar SVG ==== */
+function svgAvatar(text, color){
+  const enc = encodeURIComponent;
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='${enc(color)}'/%3E%3Ctext x='40' y='50' text-anchor='middle' fill='white' font-size='32' font-weight='bold'%3E${enc(text)}%3C/text%3E%3C/svg%3E`;
+}
+
+/* ==== 3) Render header + messages + panel ==== */
+function renderThread(threadId){
+  const t = THREADS[threadId];
+  if(!t) return;
+
+  // Header
+  document.getElementById('chatAvatar').src  = t.avatar;
+  document.getElementById('chatName').textContent = t.name;
+  const statusEl = document.getElementById('chatStatus');
+  statusEl.className = `text-sm ${t.status.color}`;
+  statusEl.textContent = t.status.text;
+
+  // Panel info (khi mở)
+  const pName   = document.getElementById('panelChatName');
+  const pStatus = document.getElementById('panelChatStatus');
+  const pAvatar = document.getElementById('panelChatAvatar');
+  if (pName)   pName.textContent = t.name;
+  if (pStatus) { pStatus.className = `${t.status.color} text-sm`; pStatus.textContent = t.status.text; }
+  if (pAvatar) pAvatar.src = t.avatar;
+
+  // Messages
+  const box = document.getElementById('messagesContainer');
+  box.innerHTML = t.messages.map(m => {
+    if(m.from === 'me'){
+      return `
+        <div class="flex justify-end">
+          <div class="bg-blue-500 text-white rounded-2xl px-4 py-2 max-w-xs message-bubble">
+            <p>${escapeHTML(m.text)}</p>
+          </div>
+        </div>`;
+    } else {
+      const senderChip = m.sender ? `<span class="text-xs text-gray-500 block mb-0.5">${escapeHTML(m.sender)}</span>` : "";
+      return `
+        <div class="flex justify-start">
+          <div class="flex items-end space-x-2 max-w-xs">
+            <img src="${t.avatar.replace("80","28")}" class="w-7 h-7 rounded-full" alt="">
+            <div class="bg-gray-200 rounded-2xl px-4 py-2 message-bubble">
+              ${senderChip}<p class="text-gray-800">${escapeHTML(m.text)}</p>
+            </div>
+          </div>
+        </div>`;
+    }
+  }).join("");
+
+  // Scroll đáy
+  box.scrollTop = box.scrollHeight + 1000;
+
+  // Khôi phục draft (nếu có)
+  const input = document.getElementById('messageInput');
+  input.value = DRAFTS.get(threadId) || "";
+}
+function renderInfo(threadId){
+  const t = THREADS[threadId];
+  if(!t) return;
+
+  // header của panel
+  document.getElementById('panelChatName').textContent  = t.name;
+  const statusEl = document.getElementById('panelChatStatus');
+  statusEl.className = `${t.status.color} text-sm`;
+  statusEl.textContent = t.status.text;
+  document.getElementById('panelChatAvatar').src = t.avatar;
+
+  // thân panel
+  const info = t.info || {};
+  const panel = document.getElementById('panelInfoBody');
+  if(!panel) return;
+
+  const about = info.about ? `
+    <section class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+      <h4 class="text-sm font-semibold text-gray-800 mb-1">Giới thiệu</h4>
+      <p class="text-sm text-gray-700 leading-6">${escapeHTML(info.about)}</p>
+    </section>` : "";
+
+  const contact = (info.phone || info.email) ? `
+    <section class="bg-white border border-gray-200 rounded-lg p-3">
+      <h4 class="text-sm font-semibold text-gray-800 mb-2">Liên hệ</h4>
+      ${info.phone ? `<div class="text-sm text-gray-700"><i class="fa fa-phone mr-2 text-gray-500"></i>${escapeHTML(info.phone)}</div>` : ""}
+      ${info.email ? `<div class="text-sm text-gray-700 mt-1"><i class="fa fa-envelope mr-2 text-gray-500"></i>${escapeHTML(info.email)}</div>` : ""}
+    </section>` : "";
+
+  const members = Array.isArray(info.members) ? `
+    <section class="bg-white border border-gray-200 rounded-lg p-3">
+      <h4 class="text-sm font-semibold text-gray-800 mb-2">Thành viên (${info.members.length})</h4>
+      <ul class="space-y-1">
+        ${info.members.map(m => `
+          <li class="text-sm text-gray-700 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full ${m.me ? 'bg-blue-500' : 'bg-gray-300'}"></span>
+            ${escapeHTML(m.name)}${m.me ? " <span class='ml-1 text-xs text-blue-500'>(Bạn)</span>" : ""}
+          </li>`).join("")}
+      </ul>
+    </section>` : "";
+
+  const files = Array.isArray(info.files) && info.files.length ? `
+    <section class="bg-white border border-gray-200 rounded-lg p-3">
+      <h4 class="text-sm font-semibold text-gray-800 mb-2">Tệp đã chia sẻ</h4>
+      <ul class="space-y-2">
+        ${info.files.map(f => `
+          <li class="text-sm text-gray-700 flex items-center gap-2">
+            <i class="fa fa-file text-gray-400"></i>
+            <a class="text-blue-600 hover:underline" href="${f.url || '#'}">${escapeHTML(f.name)}</a>
+          </li>`).join("")}
+      </ul>
+    </section>` : "";
+
+  panel.innerHTML = [about, contact, members, files].filter(Boolean).join('<div class="h-3"></div>');
+}
+
+/* ==== 4) Chọn thread từ list ==== */
+let CURRENT_THREAD = 'mai';
+function selectChat(idOrEl){
+  const id = typeof idOrEl === 'string' ? idOrEl : (idOrEl.dataset?.id || idOrEl.getAttribute('data-id'));
+  if(!id || !THREADS[id]) return;
+
+  // Lưu draft thread cũ
+  const input = document.getElementById('messageInput');
+  if (window.CURRENT_THREAD) DRAFTS.set(CURRENT_THREAD, input.value);
+
+  window.CURRENT_THREAD = id;
+
+  renderThread(id);   // 1. cập nhật tin nhắn, header, panel info header
+  renderInfo(id);     // 2. cập nhật nội dung panel (bắt buộc GỌI NGAY Ở ĐÂY!)
+
+  // Active UI cho item list (nếu có)
+  document.querySelectorAll('#chatList .chat-item').forEach(it => {
+    it.classList.remove('active');
+  });
+  const activeEl = document.querySelector(`#chatList .chat-item[data-id="${id}"]`)
+                 || document.querySelector(`#chatList .chat-item[onclick*="${id}"]`);
+  activeEl?.classList.add('active');
+}
+
+
+/* ==== 5) Gửi tin gắn với thread hiện tại ==== */
+function sendMessage(){
+  const input = document.getElementById('messageInput');
+  const text  = (input.value || "").trim();
+  if(!text || !CURRENT_THREAD) return;
+
+  // Lưu vào data
+  THREADS[CURRENT_THREAD].messages.push({ from:'me', text });
+
+  // Render nhanh phần cuối + scroll
+  const box = document.getElementById('messagesContainer');
+  box.insertAdjacentHTML('beforeend', `
+    <div class="flex justify-end">
+      <div class="bg-blue-500 text-white rounded-2xl px-4 py-2 max-w-xs message-bubble">
+        <p>${escapeHTML(text)}</p>
+      </div>
+    </div>`);
+  box.scrollTop = box.scrollHeight + 1000;
+
+  input.value = "";
+  DRAFTS.set(CURRENT_THREAD, "");
+}
+
+/* ==== 6) Event khởi tạo & tiện ích ==== */
+document.addEventListener('DOMContentLoaded', () => {
+  // Ủy quyền sự kiện cho trường hợp dùng data-id
+  document.getElementById('chatList')?.addEventListener('click', (e) => {
+    const item = e.target.closest('.chat-item');
+    if(item && item.dataset.id){ selectChat(item); }
+  });
+
+  // Thread mặc định
+  selectChat(CURRENT_THREAD);
+});
+
+function escapeHTML(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
   /* ---- Sidebar collapse ---- */
   function applyCollapse(on){
     const S = sb(), M = main();
@@ -1263,3 +1181,399 @@
   function isCollapsed(){ return sb()?.classList.contains('sidebar-collapsed'); }
   function toggleSidebar(){ applyCollapse(!isCollapsed()); }
   function restore(){ try{ applyCollapse(localStorage.getItem('sb.state')==='1'); }catch(e){} }
+function startVoiceCall() {
+  showCallOverlay('voice');
+}
+function startVideoCall() {
+  showCallOverlay('video');
+}
+function closeAllModals() {
+    // Ẩn tất cả modal liên quan gọi/thảo luận
+    document.getElementById('meetingRoomModal')?.classList.add('hidden');
+    document.getElementById('voiceCallModal')?.classList.add('hidden');
+    document.getElementById('videoCallModal')?.classList.add('hidden');
+    document.getElementById('roomModal')?.classList.add('hidden');
+    document.getElementById('newChatModal')?.classList.add('hidden');
+    // Ẩn luôn minimized nếu có
+    document.getElementById('minimizedMeeting')?.classList.add('hidden');
+}
+
+function startMeeting() {
+  showCallOverlay('meeting');
+}
+function showCallOverlay(type) {
+  const overlay = document.getElementById('callOverlay');
+  let icon = 'video', title = 'Đang gọi video...';
+  if (type === 'voice') {
+    icon = 'phone'; title = 'Đang gọi thoại...';
+  }
+  if (type === 'meeting') {
+    icon = 'users'; title = 'Phòng họp video đang diễn ra...';
+  }
+
+  // Avatar & tên (fake ví dụ, tuỳ chat thật bạn thay biến)
+  const avatar = `<div class="w-32 h-32 rounded-full bg-pink-400 flex items-center justify-center text-6xl text-white font-bold mx-auto mb-4">M</div>`;
+  const name = `<div class="text-2xl font-semibold text-white mb-2">Mai Nguyễn</div>`;
+  const status = `<div class="text-base text-gray-300 mb-6">${title}</div>`;
+
+  overlay.innerHTML = `
+    <div class="w-full h-full flex flex-col items-center justify-center">
+      ${avatar}
+      ${name}
+      ${status}
+      <div class="call-controls flex justify-center gap-4 mt-8">
+        <button title="Mic" class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center text-xl hover:bg-gray-600"><i class="fas fa-microphone"></i></button>
+        <button title="Cam" class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center text-xl hover:bg-gray-600"><i class="fas fa-video"></i></button>
+        <button title="Screen share" class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center text-xl hover:bg-gray-600"><i class="fas fa-desktop"></i></button>
+        <button title="End call" onclick="closeCallOverlay()" class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center text-xl hover:bg-red-800"><i class="fas fa-phone-slash"></i></button>
+      </div>
+    </div>
+  `;
+  overlay.classList.remove('hidden');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Ẩn header và sidebar
+  let header = document.getElementById('header');
+  let sidebar = document.getElementById('sidebar');
+  if (header) header.style.display = 'none';
+  if (sidebar) sidebar.style.display = 'none';
+}
+
+function closeCallOverlay() {
+  const overlay = document.getElementById('callOverlay');
+  overlay.classList.remove('active');
+  overlay.classList.add('hidden');
+  overlay.innerHTML = '';
+  document.body.style.overflow = '';
+
+  // Hiện lại header và sidebar
+  let header = document.getElementById('header');
+  let sidebar = document.getElementById('sidebar');
+  if (header) header.style.display = '';
+  if (sidebar) sidebar.style.display = '';
+}
+/* ==== Kết nối UI gọi thoại & gọi video đã có sẵn ==== */
+(function () {
+  // 1) Selector "linh hoạt" để không cần đổi HTML sẵn có
+  const VOICE_SELECTOR = '#voiceCallModal,[data-modal="voice-call"],.voice-call-modal';
+  const VIDEO_SELECTOR = '#videoCallModal,[data-modal="video-call"],.video-call-modal';
+
+  const $ = (sel) => document.querySelector(sel);
+
+  // 2) Helper đảm bảo full screen (che header + sidebar)
+  function ensureFullscreen(el) {
+    if (!el) return;
+    // Không phá layout sẵn — chỉ ép full màn hình nếu modal bạn chưa set
+    el.style.position = 'fixed';
+    el.style.inset = '0';
+    el.style.zIndex = '99999';
+  }
+
+  function lockLayout() {
+    document.body.style.overflow = 'hidden';
+    const header = $('#header'), sidebar = $('#sidebar');
+    if (header) header.style.display = 'none';
+    if (sidebar) sidebar.style.display = 'none';
+  }
+
+  function restoreLayout() {
+    document.body.style.overflow = '';
+    const header = $('#header'), sidebar = $('#sidebar');
+    if (header) header.style.display = '';
+    if (sidebar) sidebar.style.display = '';
+  }
+
+  function showModal(modalEl) {
+    if (!modalEl) return false;
+    ensureFullscreen(modalEl);
+    // Ưu tiên tailwind: .hidden/.flex; nếu UI cũ dùng display thì fallback set display:flex
+    modalEl.classList.remove('hidden');
+    // Nếu vẫn display:none do CSS riêng → ép hiển thị
+    if (getComputedStyle(modalEl).display === 'none') {
+      modalEl.style.display = 'flex';
+      modalEl.style.alignItems = modalEl.style.alignItems || 'center';
+      modalEl.style.justifyContent = modalEl.style.justifyContent || 'center';
+      modalEl.style.background = modalEl.style.background || 'rgba(0,0,0,.85)';
+    }
+    return true;
+  }
+
+  function hideModal(modalEl) {
+    if (!modalEl) return;
+    // Trả về cơ chế tailwind
+    modalEl.classList.add('hidden');
+    // Gỡ ép display nếu có
+    modalEl.style.display = '';
+  }
+
+  // 3) Đóng nhanh tất cả UI call (không đụng phòng họp/meeting)
+  function closeAllCallUIs() {
+    hideModal($(VOICE_SELECTOR));
+    hideModal($(VIDEO_SELECTOR));
+    restoreLayout();
+    // Dừng timer nếu app bạn có
+    if (window.stopCallTimer) try { window.stopCallTimer(); } catch (e) {}
+  }
+  window.closeAllCallUIs = closeAllCallUIs;
+
+  // 4) Mở UI gọi thoại
+  window.startVoiceCall = function () {
+    closeAllCallUIs(); // tránh chồng chéo
+    const voice = $(VOICE_SELECTOR);
+    if (!showModal(voice)) {
+      console.warn('Không tìm thấy UI gọi thoại. Kiểm tra lại id/class: #voiceCallModal hoặc data-modal="voice-call"');
+      return;
+    }
+    lockLayout();
+    // Nếu bạn có timer, truyền id hiển thị thời lượng (tùy UI sẵn có của bạn)
+    if (window.startCallTimer) try { window.startCallTimer(['voiceCallDuration', 'callDuration']); } catch (e) {}
+  };
+
+  // 5) Mở UI gọi video
+  window.startVideoCall = function () {
+    closeAllCallUIs();
+    const video = $(VIDEO_SELECTOR);
+    if (!showModal(video)) {
+      console.warn('Không tìm thấy UI gọi video. Kiểm tra lại id/class: #videoCallModal hoặc data-modal="video-call"');
+      return;
+    }
+    lockLayout();
+    if (window.startCallTimer) try { window.startCallTimer(['videoCallDuration', 'callDuration']); } catch (e) {}
+  };
+
+  // 6) Gắn phím ESC để thoát nhanh
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAllCallUIs();
+  });
+
+  // 7) Bắt các nút đóng nếu UI sẵn có đã có data-action
+  document.addEventListener('click', (e) => {
+    const btnCloseVoice = e.target.closest('[data-action="close-voice"]');
+    if (btnCloseVoice) { e.preventDefault(); closeAllCallUIs(); }
+    const btnCloseVideo = e.target.closest('[data-action="close-video"]');
+    if (btnCloseVideo) { e.preventDefault(); closeAllCallUIs(); }
+  });
+})();
+/* ==== Kết nối UI gọi thoại & gọi video — Fullscreen, không làm mất header/sidebar sau khi tắt ==== */
+(function () {
+  // 1) Khai báo selector linh hoạt (đặt theo id/class bạn đang dùng)
+  const VOICE_SELECTOR = '#voiceCallModal,[data-modal="voice-call"],.voice-call-modal';
+  const VIDEO_SELECTOR = '#videoCallModal,[data-modal="video-call"],.video-call-modal';
+
+  const $ = (sel) => document.querySelector(sel);
+
+  // 2) Body flag để ẩn/hiện header + sidebar
+  function lockLayout()   { document.body.classList.add('call-active'); }
+  function restoreLayout(){ document.body.classList.remove('call-active'); }
+
+  // 3) Show/Hide modal tiện dụng (không can thiệp HTML sẵn có)
+  function showModal(modalEl) {
+    if (!modalEl) return false;
+    // ưu tiên Tailwind: .hidden/.flex; nếu CSS cũ đang display:none thì ép flex
+    modalEl.classList.remove('hidden');
+    if (getComputedStyle(modalEl).display === 'none') {
+      modalEl.style.display = 'flex';
+      modalEl.style.alignItems = modalEl.style.alignItems || 'center';
+      modalEl.style.justifyContent = modalEl.style.justifyContent || 'center';
+    }
+    return true;
+  }
+  function hideModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.classList.add('hidden');
+    modalEl.style.display = ''; // gỡ ép display nếu có
+  }
+
+  // 4) Đóng tất cả UI call (KHÔNG đụng meeting)
+  function closeAllCallUIs() {
+    hideModal($(VOICE_SELECTOR));
+    hideModal($(VIDEO_SELECTOR));
+    restoreLayout();
+    // dừng timer nếu app có
+    if (window.stopCallTimer) try { window.stopCallTimer(); } catch (e) {}
+  }
+  window.closeAllCallUIs = closeAllCallUIs;
+
+  // 5) Mở UI gọi thoại
+  window.startVoiceCall = function () {
+    closeAllCallUIs(); // tránh chồng chéo
+    const voice = $(VOICE_SELECTOR);
+    if (!showModal(voice)) {
+      console.warn('Không tìm thấy UI gọi thoại. Kiểm tra selector: #voiceCallModal / [data-modal="voice-call"] / .voice-call-modal');
+      return;
+    }
+    lockLayout();
+    if (window.startCallTimer) try { window.startCallTimer(['voiceCallDuration','callDuration']); } catch (e) {}
+  };
+
+  // 6) Mở UI gọi video
+  window.startVideoCall = function () {
+    closeAllCallUIs();
+    const video = $(VIDEO_SELECTOR);
+    if (!showModal(video)) {
+      console.warn('Không tìm thấy UI gọi video. Kiểm tra selector: #videoCallModal / [data-modal="video-call"] / .video-call-modal');
+      return;
+    }
+    lockLayout();
+    if (window.startCallTimer) try { window.startCallTimer(['videoCallDuration','callDuration']); } catch (e) {}
+  };
+
+  // 7) Bắt phím ESC để thoát nhanh
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllCallUIs(); });
+
+  // 8) Bắt các nút đóng nếu UI có sẵn data-action
+  document.addEventListener('click', (e) => {
+    const btnCloseVoice = e.target.closest('[data-action="close-voice"]');
+    if (btnCloseVoice) { e.preventDefault(); closeAllCallUIs(); }
+    const btnCloseVideo = e.target.closest('[data-action="close-video"]');
+    if (btnCloseVideo) { e.preventDefault(); closeAllCallUIs(); }
+  });
+})(); 
+// === PATCH: Trình quản lý gọi thoại / gọi video — Fullscreen + khôi phục layout chuẩn ===
+window.addEventListener('load', function () {
+  // a) Selector linh hoạt: hỗ trợ cả id/class/data-attr bạn đang dùng
+  const SELECTORS = {
+    voice: ['#voiceCallModal', '#voiceCallOverlay', '[data-modal="voice-call"]', '.voice-call-modal'],
+    video: ['#videoCallModal', '#videoCallOverlay', '[data-modal="video-call"]', '.video-call-modal'],
+  };
+
+  const $ = (s) => document.querySelector(s);
+  const find = (arr) => { for (const s of arr) { const el = $(s); if (el) return el; } return null; };
+
+  // b) Layout flag: dùng đúng .call-active như CSS của bạn
+  function lockLayout()    { document.body.classList.add('call-active'); }
+  function restoreLayout() { document.body.classList.remove('call-active'); }
+
+  // c) Show/Hide modal tiện dụng
+  function show(el) {
+    if (!el) return false;
+    // Ép full màn hình nếu UI sẵn chưa set
+    el.style.position = el.style.position || 'fixed';
+    el.style.inset = el.style.inset || '0';
+    el.style.zIndex = el.style.zIndex || '99999';
+    // Ưu tiên cơ chế Tailwind .hidden/.flex
+    el.classList.remove('hidden');
+    if (getComputedStyle(el).display === 'none') {
+      el.style.display = 'flex';
+      el.style.alignItems = el.style.alignItems || 'center';
+      el.style.justifyContent = el.style.justifyContent || 'center';
+    }
+    return true;
+  }
+  function hide(el) {
+    if (!el) return;
+    el.classList.add('hidden');
+    el.style.display = ''; // bỏ ép display về mặc định
+  }
+
+  // d) Đóng tất cả UI call + khôi phục layout + dừng timer
+  function closeAllCallUIs() {
+    hide(find(SELECTORS.voice));
+    hide(find(SELECTORS.video));
+    restoreLayout();
+    if (window.stopCallTimer) { try { window.stopCallTimer(); } catch (e) {} }
+  }
+
+  // e) Mở call theo loại
+  function openCall(type) {
+    closeAllCallUIs(); // tránh chồng chéo
+    const el = find(SELECTORS[type]);
+    if (!show(el)) {
+      console.warn('Không tìm thấy UI:', type, '→ kiểm tra id/class/data-attr của modal');
+      return;
+    }
+    lockLayout();
+    if (window.startCallTimer) {
+      try {
+        const targets = (type === 'voice')
+          ? ['voiceCallDuration', 'callDuration']
+          : ['videoCallDuration', 'callDuration'];
+        window.startCallTimer(targets);
+      } catch (e) {}
+    }
+  }
+
+  // f) PUBLIC API — ép override các hàm cũ (kể cả inline onclick)
+  window.startVoiceCall = function () { openCall('voice'); };
+  window.startVideoCall = function () { openCall('video'); };
+  window.endCall        = function () { closeAllCallUIs(); };     // nút “kết thúc”
+  window.closeVoiceCall = function () { closeAllCallUIs(); };     // nếu UI cũ gọi tên này
+  window.closeVideoCall = function () { closeAllCallUIs(); };
+
+  // g) UX: ESC để thoát nhanh + auto bind các nút có data-action
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllCallUIs(); });
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-action="close-voice"]'))  { e.preventDefault(); closeAllCallUIs(); }
+    if (e.target.closest('[data-action="close-video"]'))  { e.preventDefault(); closeAllCallUIs(); }
+    if (e.target.closest('[data-action="end-call"]'))     { e.preventDefault(); closeAllCallUIs(); }
+  });
+}); 
+// ----- ĐẨY KHU VỰC NHẮN TIN THEO BỀ RỘNG PANEL -----
+function reserveForInfoPanel() {
+  const main  = document.getElementById('mainChatArea');
+  const panel = document.getElementById('chatInfoPanel');
+  if (!main || !panel) return;
+
+  // Dọn sạch dấu vết cơ chế cũ để khỏi cộng dồn
+  main.classList.remove('pr-[320px]');
+  main.style.marginRight = '';
+  main.style.paddingRight = '';
+
+  // Nếu panel đang hiển thị -> áp padding-right đúng theo width thực tế
+  const shown = getComputedStyle(panel).display !== 'none';
+  if (shown) {
+    const w = Math.ceil(panel.getBoundingClientRect().width || 320);
+    main.style.paddingRight = w + 'px';
+  }
+}
+
+// Luôn mở sẵn panel & áp layout ngay khi load
+function pinInfoPanel() {
+  const panel = document.getElementById('chatInfoPanel');
+  if (!panel) return;
+  panel.classList.remove('hidden');
+  panel.classList.add('flex', 'open');
+  reserveForInfoPanel();
+}
+
+// Khóa toggle: bấm “i / X” cũng chỉ giữ trạng thái mở
+function toggleChatInfoPanel() { pinInfoPanel(); }
+
+// Khởi tạo & lắng nghe resize để re-calc khi đổi viewport
+document.addEventListener('DOMContentLoaded', pinInfoPanel);
+window.addEventListener('resize', reserveForInfoPanel);
+/* === SYNC HAMBURGER ICON WITH SIDEBAR STATE (Chat page fix) === */
+(function syncHamburgerWithSidebar(){
+  function els(){
+    return {
+      toggle: document.getElementById('menuToggle'),
+      sidebar: document.getElementById('sidebar')
+    };
+  }
+  function isCollapsed(sidebar){
+    return !!sidebar && sidebar.classList.contains('sidebar-collapsed'); // true = ĐANG ĐÓNG
+  }
+  function sync(){
+    const { toggle, sidebar } = els();
+    if(!toggle || !sidebar) return;
+    const open = !isCollapsed(sidebar);          // mở = không có class collapsed
+    if (toggle.checked !== open) toggle.checked = open;  // OPEN => checked = true => icon X
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+
+  // Lần đầu
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', sync);
+  } else { sync(); }
+
+  // Theo dõi mọi thay đổi class trên #sidebar (kể cả do code khác)
+  const { sidebar } = els();
+  if (sidebar) {
+    new MutationObserver(sync).observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // Nếu module khác broadcast hoặc đồng bộ giữa tab → vẫn sync
+  window.addEventListener('sidebarToggle', sync);
+  window.addEventListener('storage', (e)=> { if (e.key === 'sidebar-collapsed') sync(); });
+})();

@@ -163,4 +163,62 @@
 
   // expose namespace early
   window[ns] = { mount };
-})(); 
+})(); /* ===== Force my messages to be "right side" ===== */
+(function ensureRightAlign(){
+  const list = document.querySelector('.cf-chat__messages');
+  if (!list) return;
+
+  const tagNode = (node) => {
+    if (node.nodeType !== 1) return;
+    if (!node.classList.contains('cf-chat__msg')) return;
+
+    // Nếu đã đánh dấu bot thì bỏ qua
+    if (node.classList.contains('cf-chat__msg--bot')) return;
+
+    // Heuristic: nếu avatar có chữ "CB" => bot, ngược lại là user
+    const av = node.querySelector('.cf-chat__msgAvatar');
+    const isBot = av && /CB/i.test(av.textContent.trim());
+    if (isBot) {
+      node.classList.add('cf-chat__msg--bot');
+    } else {
+      node.classList.add('cf-chat__msg--user');
+      node.setAttribute('data-role', 'user');
+    }
+  };
+
+  // Tag các tin hiện có
+  [...list.children].forEach(tagNode);
+
+  // Tag mọi tin mới thêm
+  new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(tagNode)))
+    .observe(list, { childList:true });
+
+  // Sau khi bấm gửi, chắc chắn gắn class cho tin cuối
+  const markLastAsUser = () => {
+    const last = [...list.querySelectorAll('.cf-chat__msg')].pop();
+    if (last && !last.classList.contains('cf-chat__msg--bot')) {
+      last.classList.add('cf-chat__msg--user');
+    }
+    list.scrollTop = list.scrollHeight;
+  };
+  document.querySelector('.cf-chat__send')?.addEventListener('click', () => setTimeout(markLastAsUser, 0));
+})();
+
+/* ===== Auto open chat on page load ===== */
+(function autoOpen(){
+  const openNow = () => {
+    if (window.CFChat?.open) window.CFChat.open();
+    else {
+      const w = document.querySelector('.cf-chat');
+      if (w) { w.classList.add('is-open'); w.removeAttribute('aria-hidden'); }
+    }
+    setTimeout(() => {
+      const sc = document.querySelector('.cf-chat__messages');
+      sc && (sc.scrollTop = sc.scrollHeight);
+    }, 50);
+  };
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', () => setTimeout(openNow, 120));
+  else
+    setTimeout(openNow, 120);
+})();
