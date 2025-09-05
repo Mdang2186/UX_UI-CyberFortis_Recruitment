@@ -404,3 +404,32 @@ document.addEventListener('DOMContentLoaded', () => {
     ta.addEventListener('input', fit); fit();
   });
 });
+// ==== FIX tabs: scope theo container, tránh đụng ID trùng ====
+(function initScopedTabs() {
+  // Với mỗi cụm card có tabs
+  document.querySelectorAll('.card-shadow').forEach(container => {
+    const tabButtons  = container.querySelectorAll('.tab-btn');
+    const tabContents = container.querySelectorAll('.tab-content');
+    if (!tabButtons.length || !tabContents.length) return;
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tabName = button.getAttribute('data-tab');
+
+        // 1) Visual state cho nút trong CÙNG container
+        tabButtons.forEach(btn => {
+          btn.classList.remove('border-blue-500', 'text-blue-600');
+          btn.classList.add('border-transparent', 'text-gray-500');
+        });
+        button.classList.remove('border-transparent', 'text-gray-500');
+        button.classList.add('border-blue-500', 'text-blue-600');
+
+        // 2) Ẩn/hiện panel trong CÙNG container
+        tabContents.forEach(content => content.classList.add('hidden'));
+        const target = container.querySelector(`#${tabName}-tab`);
+        if (target) target.classList.remove('hidden');
+      });
+    });
+  });
+})();
+

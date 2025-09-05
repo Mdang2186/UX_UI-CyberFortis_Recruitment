@@ -82,7 +82,7 @@
 
         .header-search input:focus {
             outline: none;
-            background: white;
+            background: rgb(255, 255, 255);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
@@ -452,3 +452,18 @@
   transition: margin-left .3s cubic-bezier(.4,0,.2,1);
 }
 .main-content.main-content-collapsed{ margin-left: var(--sidebar-wc); }
+/* ===== Search input: text xanh khi gõ + highlight kết quả ===== */
+.header-search input.is-typing{
+  color: #062b92;      /* chữ xanh lá */
+  caret-color: #1658a3;/* con trỏ xanh */
+}
+.header-search input::placeholder{
+  color: #64748b;      /* placeholder giữ màu xám */
+  opacity: .9;
+}
+/* Bôi xanh phần khớp từ khóa (không nền để gọn) */
+mark.faq-hl{
+  color: #164ea3;
+  background: transparent;
+  font-weight: 700;
+}

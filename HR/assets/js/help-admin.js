@@ -35,24 +35,39 @@
         }
 
         function searchFAQ(searchTerm) {
-            const term = searchTerm.toLowerCase().trim();
-            const faqItems = document.querySelectorAll('.faq-item');
-            
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
-                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
-                
-                const matches = question.includes(term) || answer.includes(term);
-                item.style.display = matches ? 'block' : 'none';
-            });
-            
-            // Reset category filter if searching
-            if (term) {
-                document.querySelectorAll('.faq-category').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            }
-        }
+  const term = (searchTerm || '').toLowerCase().trim();
+  const faqItems = document.querySelectorAll('.faq-item');
+
+  faqItems.forEach(item => {
+    const qSpan = item.querySelector('.faq-question span');
+    const aDiv  = item.querySelector('.faq-answer-content');
+
+    // Lấy text gốc (cache ở DOMContentLoaded)
+    const qOrig = qSpan?.dataset.orig || qSpan?.textContent || '';
+    const aOrig = aDiv?.dataset.orig  || aDiv?.textContent  || '';
+
+    const matches = qOrig.toLowerCase().includes(term) || aOrig.toLowerCase().includes(term);
+    item.style.display = matches ? 'block' : 'none';
+
+    // Reset về nội dung gốc
+    if (qSpan && qSpan.dataset.orig) qSpan.innerHTML = qSpan.dataset.orig;
+    if (aDiv  && aDiv.dataset.orig)  aDiv.innerHTML  = aDiv.dataset.orig;
+
+    // Highlight phần trùng khớp (chỉ khi có term)
+    if (term && matches) {
+      const rx = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      if (qSpan) qSpan.innerHTML = qSpan.innerHTML.replace(rx, '<mark class="faq-hl">$1</mark>');
+      // Nếu muốn bôi cả phần trả lời, mở comment dòng dưới:
+      // if (aDiv) aDiv.innerHTML = aDiv.innerHTML.replace(rx, '<mark class="faq-hl">$1</mark>');
+    }
+  });
+
+  // Đang tìm thì bỏ active ở category
+  if (term) {
+    document.querySelectorAll('.faq-category').forEach(btn => btn.classList.remove('active'));
+  }
+}
+
 
         // Utility Functions
         function scrollToSection(sectionId) {
@@ -65,4 +80,24 @@
             alert('Đang tải xuống hướng dẫn sử dụng...');
             // In real implementation, this would trigger a file download
         }
- 
+ // ===== Search input: bật màu xanh khi có chữ + cache text gốc để highlight
+document.addEventListener('DOMContentLoaded', () => {
+  // 1) Gắn class is-typing để CSS tô xanh chữ khi gõ
+  const searchEl = document.querySelector('.header-search input');
+  const updateTypingClass = () => {
+    if (!searchEl) return;
+    searchEl.classList.toggle('is-typing', !!searchEl.value.trim());
+  };
+  if (searchEl){
+    searchEl.addEventListener('input', updateTypingClass);
+    updateTypingClass();
+  }
+
+  // 2) Cache nội dung gốc (để reset/rehighlight mượt)
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const qSpan = item.querySelector('.faq-question span');
+    const aDiv  = item.querySelector('.faq-answer-content');
+    if (qSpan && !qSpan.dataset.orig) qSpan.dataset.orig = qSpan.innerHTML;
+    if (aDiv  && !aDiv.dataset.orig)  aDiv.dataset.orig  = aDiv.innerHTML;
+  });
+});

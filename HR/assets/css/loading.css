@@ -3,9 +3,9 @@
   --dots-size: 20px;                  /* kích thước mỗi chấm (to hơn để dễ nhìn) */
   --dots-gap: 12px;                   /* khoảng cách giữa các chấm */
   --blue-weak: #dbeafe;               /* xanh dương pastel nhạt */
-  --blue-strong: #60a5fa;             /* xanh dương pastel đậm */
+  --blue-strong: #3778c7;             /* xanh dương pastel đậm */
   --green-weak:#d1fae5;               /* xanh lục pastel nhạt */
-  --green-strong:#34d399;             /* xanh lục pastel đậm */
+  --green-strong:#209b6e;             /* xanh lục pastel đậm */
 }
 
 /* Icon nhỏ giữa trang; không phủ toàn trang, không chặn click */
@@ -49,7 +49,7 @@
 .dot:nth-child(even){
   --c1: var(--green-weak);
   --c2: var(--green-strong);
-  --glow: rgba(52,211,153,.5);
+  --glow: rgba(63, 220, 163, 0.5);
   background-color: var(--c1);
 }
 
