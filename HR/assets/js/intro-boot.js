@@ -2,7 +2,7 @@
   // Cấu hình qua data-* khi nhúng (có mặc định)
   var s = document.currentScript || {};
   var INTRO = (s.dataset && s.dataset.intro) || 'IntroOnePageEmployee.html';
-  var HOME  = (s.dataset && s.dataset.home)  || 'DashboardAdmin.html';
+  var HOME  = (s.dataset && s.dataset.home)  || 'DashboardHR.html';
   var KEY   = 'intro:seen';          // sessionStorage key
   var QS_R  = 'return';              // param "return" (không bắt buộc dùng)
   var QS_F  = 'fromIntro';           // đánh dấu đã đi từ Intro

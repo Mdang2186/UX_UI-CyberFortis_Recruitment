@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberFortis - Tuyển Dụng | Bảo Mật - Thiết Kế Ứng Dụng - Quản Trị Mạng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sage': {
+                            50: '#f0f9f0',
+                            100: '#dcf2dc',
+                            200: '#bce5bc',
+                            300: '#8dd18d',
+                            400: '#5bb85b',
+                            500: '#3a9f3a',
+                            600: '#2d7f2d',
+                            700: '#256525',
+                            800: '#215121',
+                            900: '#1d431d'
+                        },
+                        'sky-pastel': {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-text { 
+            background: linear-gradient(135deg, #3a9f3a, #0ea5e9, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0f9f0 0%, #e0f2fe 50%, #bae6fd 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+        
+        .card-hover:hover { 
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(58, 159, 58, 0.25);
+        }
+        
+        .service-icon {
+            background: linear-gradient(135deg, #3a9f3a, #0ea5e9);
+            box-shadow: 0 10px 30px rgba(58, 159, 58, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .service-icon:hover {
+            transform: rotate(5deg) scale(1.1);
+            box-shadow: 0 15px 40px rgba(58, 159, 58, 0.4);
+        }
+        
+        .job-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #dcf2dc, #bae6fd) border-box;
+        }
+        
+        .job-card:hover {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #3a9f3a, #0ea5e9) border-box;
+            box-shadow: 0 20px 40px rgba(58, 159, 58, 0.15);
+            transform: translateY(-8px);
+        }
+        
+        .parallax-element {
+            transition: transform 0.1s ease-out;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .floating-element {
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(2deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+            75% { transform: translateY(-15px) rotate(1deg); }
+        }
+        
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            80%, 100% { transform: scale(1.2); opacity: 0; }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid #3a9f3a;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #3a9f3a; }
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: linear-gradient(90deg, #3a9f3a, #0ea5e9);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3a9f3a, #0ea5e9);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(58, 159, 58, 0.3);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #3a9f3a, #0ea5e9);
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #dcf2dc, #bae6fd, transparent);
+            margin: 0 auto;
+            width: 80%;
+        }
+        
+        .stats-counter {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .morphing-blob {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morph 8s ease-in-out infinite;
+        }
+        
+        @keyframes morph {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+        
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: loading-dots 1.5s infinite;
+        }
+        
+        @keyframes loading-dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+    </style>
+</head>
+<body class="bg-white overflow-x-hidden">
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect shadow-lg transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4 hover-lift">
+                    <div class="relative">
+                        <div class="w-14 h-14 bg-gradient-to-br from-sage-500 to-sky-pastel-500 rounded-2xl flex items-center justify-center shadow-lg">
+                            <span class="text-white font-bold text-2xl">🛡️</span>
+                        </div>
+                        <div class="absolute -top-1 -right-1 w-4 h-4 bg-sage-400 rounded-full pulse-ring"></div>
+                    </div>
+                    <div>
+                        <span class="text-3xl font-black text-gray-900 text-shadow">CyberFortis</span>
+                        <div class="text-xs text-sage-600 font-medium tracking-wider">SECURITY • DESIGN • NETWORK</div>
+                    </div>
+                </div>
+                
+                <div class="hidden lg:flex space-x-8">
+                    <a href="#about" class="nav-link text-gray-700 hover:text-sage-600 font-semibold">Giới thiệu</a>
+                    <a href="#services" class="nav-link text-gray-700 hover:text-sage-600 font-semibold">Dịch vụ</a>
+                    <a href="#jobs" class="nav-link text-gray-700 hover:text-sage-600 font-semibold">Tuyển dụng</a>
+                    <a href="#culture" class="nav-link text-gray-700 hover:text-sage-600 font-semibold">Văn hóa</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-sage-600 font-semibold">Liên hệ</a>
+                </div>
+                
+                <div class="flex items-center gap-3">
+  <!-- Đăng nhập (outline xanh) -->
+  <button id="btnLoginNav"
+          class="px-6 py-3 rounded-xl font-semibold border-2 border-sage-400 text-sage-700
+                 hover:bg-sage-50 transition">
+    Đăng nhập
+  </button>
+
+  <!-- Ứng tuyển ngay (giữ gradient, thêm .btn-apply) -->
+  <button class="btn-primary btn-apply text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg"
+          data-job="">
+    Ứng tuyển ngay
+  </button>
+</div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen gradient-bg relative overflow-hidden flex items-center">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-32 h-32 bg-sage-200 rounded-full morphing-blob floating-element opacity-60"></div>
+            <div class="absolute top-40 right-20 w-24 h-24 bg-sky-pastel-200 rounded-full floating-element opacity-60" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-32 left-1/4 w-20 h-20 bg-sage-300 rounded-full floating-element opacity-60" style="animation-delay: 4s;"></div>
+            <div class="absolute top-1/2 right-1/3 w-16 h-16 bg-sky-pastel-300 rounded-full floating-element opacity-60" style="animation-delay: 6s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 pt-24 relative z-10">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10 scroll-reveal">
+                    <div class="inline-flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg hover-lift">
+                        <div class="relative">
+                            <span class="w-3 h-3 bg-sage-500 rounded-full animate-pulse block"></span>
+                            <span class="absolute w-3 h-3 bg-sage-500 rounded-full animate-ping block"></span>
+                        </div>
+                        <span class="text-sage-700 font-bold text-lg">Đang tuyển dụng tích cực</span>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h1 class="text-6xl xl:text-7xl font-black leading-tight text-shadow">
+                            <span class="text-gray-900">Gia nhập</span>
+                            <br>
+                            <span class="gradient-text typewriter">CyberFortis</span>
+                        </h1>
+                        
+                        <p class="text-2xl text-gray-700 leading-relaxed font-medium max-w-2xl">
+                            Công ty công nghệ hàng đầu chuyên về 
+                            <span class="text-sage-600 font-bold">Bảo mật thông tin</span>, 
+                            <span class="text-sky-pastel-600 font-bold">Thiết kế ứng dụng</span> và 
+                            <span class="text-sage-600 font-bold">Quản trị mạng</span>. 
+                            Cùng chúng tôi xây dựng tương lai công nghệ an toàn.
+                        </p>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <button class="btn-primary text-white px-10 py-5 rounded-2xl font-bold text-xl shadow-2xl group">
+                            <span class="flex items-center space-x-3">
+                                <span>🚀</span>
+                                <span>Khám phá cơ hội</span>
+                                <span class="group-hover:translate-x-1 transition-transform">→</span>
+                            </span>
+                        </button>
+                        <button class="bg-white/90 backdrop-blur-sm border-2 border-sage-300 hover:border-sage-500 text-sage-700 hover:text-sage-800 px-10 py-5 rounded-2xl font-bold text-xl transition-all hover-lift shadow-lg">
+                            <span class="flex items-center space-x-3">
+                                <span>📖</span>
+                                <span>Về chúng tôi</span>
+                            </span>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-8 pt-12">
+                        <div class="text-center hover-lift">
+                            <div class="text-5xl font-black text-sage-600 stats-counter mb-2">500+</div>
+                            <div class="text-gray-600 font-semibold text-lg">Chuyên gia</div>
+                        </div>
+                        <div class="text-center hover-lift">
+                            <div class="text-5xl font-black text-sky-pastel-600 stats-counter mb-2">15+</div>
+                            <div class="text-gray-600 font-semibold text-lg">Năm kinh nghiệm</div>
+                        </div>
+                        <div class="text-center hover-lift">
+                            <div class="text-5xl font-black text-sage-600 stats-counter mb-2">1000+</div>
+                            <div class="text-gray-600 font-semibold text-lg">Dự án thành công</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative scroll-reveal" style="animation-delay: 0.3s;">
+                    <div class="glass-effect rounded-3xl shadow-2xl p-10 border-2 border-white/20 hover-lift">
+                        <div class="space-y-8">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-3xl font-bold text-gray-900 text-shadow">Tại sao chọn CyberFortis?</h3>
+                                <div class="w-16 h-16 bg-gradient-to-br from-sage-400 to-sky-pastel-400 rounded-2xl flex items-center justify-center shadow-lg service-icon">
+                                    <span class="text-3xl">✨</span>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start space-x-5 p-4 rounded-2xl bg-sage-50/50 hover:bg-sage-50 transition-all hover-lift">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-sage-400 to-sage-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                        <span class="text-white text-xl">🛡️</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 text-xl mb-2">Chuyên gia bảo mật hàng đầu</h4>
+                                        <p class="text-gray-600 font-medium">Đội ngũ với chứng chỉ quốc tế CISSP, CEH, OSCP</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-5 p-4 rounded-2xl bg-sky-pastel-50/50 hover:bg-sky-pastel-50 transition-all hover-lift">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-sky-pastel-400 to-sky-pastel-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                        <span class="text-white text-xl">🎨</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 text-xl mb-2">Thiết kế ứng dụng sáng tạo</h4>
+                                        <p class="text-gray-600 font-medium">UI/UX hiện đại, trải nghiệm người dùng tối ưu</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start space-x-5 p-4 rounded-2xl bg-sage-50/50 hover:bg-sage-50 transition-all hover-lift">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-sage-500 to-sky-pastel-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                        <span class="text-white text-xl">🌐</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 text-xl mb-2">Hạ tầng mạng enterprise</h4>
+                                        <p class="text-gray-600 font-medium">Giải pháp mạng doanh nghiệp, cloud-native</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider -->
+    <div class="section-divider"></div>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 scroll-reveal">
+                <h2 class="text-5xl font-black text-gray-900 mb-6 text-shadow">Về CyberFortis</h2>
+                <p class="text-2xl text-gray-600 max-w-4xl mx-auto font-medium leading-relaxed">
+                    Được thành lập từ 2009, CyberFortis là công ty tiên phong trong lĩnh vực công nghệ thông tin tại Việt Nam, 
+                    với sứ mệnh bảo vệ và phát triển hệ sinh thái số an toàn.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20">
+                <div class="text-center scroll-reveal hover-lift" style="animation-delay: 0.1s;">
+                    <div class="relative mb-8">
+                        <div class="w-24 h-24 bg-gradient-to-br from-sage-400 to-sage-500 rounded-3xl flex items-center justify-center mx-auto shadow-2xl service-icon">
+                            <span class="text-4xl">🎯</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6 text-shadow">Sứ mệnh</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg font-medium">
+                        Bảo vệ và phát triển hệ thống công nghệ thông tin an toàn, hiệu quả, 
+                        giúp doanh nghiệp Việt Nam chuyển đổi số thành công
+                    </p>
+                </div>
+                
+                <div class="text-center scroll-reveal hover-lift" style="animation-delay: 0.2s;">
+                    <div class="relative mb-8">
+                        <div class="w-24 h-24 bg-gradient-to-br from-sky-pastel-400 to-sky-pastel-500 rounded-3xl flex items-center justify-center mx-auto shadow-2xl service-icon">
+                            <span class="text-4xl">👁️</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6 text-shadow">Tầm nhìn</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg font-medium">
+                        Trở thành công ty công nghệ hàng đầu Đông Nam Á về bảo mật và phát triển ứng dụng, 
+                        dẫn dắt xu hướng công nghệ tương lai
+                    </p>
+                </div>
+                
+                <div class="text-center scroll-reveal hover-lift" style="animation-delay: 0.3s;">
+                    <div class="relative mb-8">
+                        <div class="w-24 h-24 bg-gradient-to-br from-sage-500 to-sky-pastel-400 rounded-3xl flex items-center justify-center mx-auto shadow-2xl service-icon">
+                            <span class="text-4xl">💎</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6 text-shadow">Giá trị cốt lõi</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg font-medium">
+                        Chất lượng - Sáng tạo - Tin cậy - Phát triển bền vững cùng đội ngũ và khách hàng, 
+                        tạo ra giá trị thực cho xã hội
+                    </p>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-16 shadow-2xl border-2 border-white/20 scroll-reveal">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                    <div class="hover-lift">
+                        <div class="text-6xl font-black text-sage-600 mb-4 stats-counter">500+</div>
+                        <div class="text-gray-600 font-bold text-xl">Nhân viên tài năng</div>
+                        <div class="text-gray-500 text-sm mt-2">Chuyên gia hàng đầu</div>
+                    </div>
+                    <div class="hover-lift">
+                        <div class="text-6xl font-black text-sky-pastel-600 mb-4 stats-counter">1000+</div>
+                        <div class="text-gray-600 font-bold text-xl">Dự án hoàn thành</div>
+                        <div class="text-gray-500 text-sm mt-2">Thành công vượt mong đợi</div>
+                    </div>
+                    <div class="hover-lift">
+                        <div class="text-6xl font-black text-sage-600 mb-4 stats-counter">200+</div>
+                        <div class="text-gray-600 font-bold text-xl">Khách hàng tin tưởng</div>
+                        <div class="text-gray-500 text-sm mt-2">Từ startup đến tập đoàn</div>
+                    </div>
+                    <div class="hover-lift">
+                        <div class="text-6xl font-black text-sky-pastel-600 mb-4 stats-counter">15+</div>
+                        <div class="text-gray-600 font-bold text-xl">Năm phát triển</div>
+                        <div class="text-gray-500 text-sm mt-2">Kinh nghiệm sâu rộng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 gradient-bg relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 scroll-reveal">
+                <h2 class="text-5xl font-black text-gray-900 mb-6 text-shadow">Lĩnh vực chuyên môn</h2>
+                <p class="text-2xl text-gray-600 font-medium">Ba trụ cột công nghệ định hình tương lai CyberFortis</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div class="card-hover glass-effect p-10 rounded-3xl shadow-2xl border-2 border-white/20 scroll-reveal" style="animation-delay: 0.1s;">
+                    <div class="relative mb-8">
+                        <div class="service-icon w-20 h-20 rounded-3xl flex items-center justify-center mb-6 mx-auto">
+                            <span class="text-white text-3xl">🛡️</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center text-shadow">Bảo mật thông tin</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed text-lg font-medium text-center">
+                        Giải pháp bảo mật toàn diện từ phân tích rủi ro, thiết kế hệ thống bảo mật 
+                        đến giám sát và ứng phó sự cố 24/7.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sage-50/50 hover:bg-sage-50 transition-all">
+                            <div class="w-3 h-3 bg-sage-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">Penetration Testing & Red Team</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sage-50/50 hover:bg-sage-50 transition-all">
+                            <div class="w-3 h-3 bg-sage-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">Security Audit & Compliance</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sage-50/50 hover:bg-sage-50 transition-all">
+                            <div class="w-3 h-3 bg-sage-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">SOC Services & Threat Hunting</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-hover glass-effect p-10 rounded-3xl shadow-2xl border-2 border-white/20 scroll-reveal" style="animation-delay: 0.2s;">
+                    <div class="relative mb-8">
+                        <div class="service-icon w-20 h-20 rounded-3xl flex items-center justify-center mb-6 mx-auto">
+                            <span class="text-white text-3xl">🎨</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center text-shadow">Thiết kế ứng dụng</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed text-lg font-medium text-center">
+                        Phát triển ứng dụng web, mobile với UI/UX hiện đại, tối ưu trải nghiệm người dùng 
+                        và hiệu suất cao trên mọi nền tảng.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sky-pastel-50/50 hover:bg-sky-pastel-50 transition-all">
+                            <div class="w-3 h-3 bg-sky-pastel-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">Progressive Web Applications</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sky-pastel-50/50 hover:bg-sky-pastel-50 transition-all">
+                            <div class="w-3 h-3 bg-sky-pastel-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">Cross-platform Mobile Apps</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sky-pastel-50/50 hover:bg-sky-pastel-50 transition-all">
+                            <div class="w-3 h-3 bg-sky-pastel-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">Advanced UI/UX Design</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-hover glass-effect p-10 rounded-3xl shadow-2xl border-2 border-white/20 scroll-reveal" style="animation-delay: 0.3s;">
+                    <div class="relative mb-8">
+                        <div class="service-icon w-20 h-20 rounded-3xl flex items-center justify-center mb-6 mx-auto">
+                            <span class="text-white text-3xl">🌐</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center text-shadow">Quản trị mạng</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed text-lg font-medium text-center">
+                        Thiết kế, triển khai và vận hành hạ tầng mạng doanh nghiệp với độ tin cậy cao, 
+                        bảo mật tối ưu và khả năng mở rộng linh hoạt.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sage-50/50 hover:bg-sage-50 transition-all">
+                            <div class="w-3 h-3 bg-sage-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">Enterprise Network Design</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sage-50/50 hover:bg-sage-50 transition-all">
+                            <div class="w-3 h-3 bg-sage-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">Multi-Cloud Infrastructure</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-3 rounded-xl bg-sage-50/50 hover:bg-sage-50 transition-all">
+                            <div class="w-3 h-3 bg-sage-500 rounded-full"></div>
+                            <span class="font-semibold text-gray-700">24/7 Network Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jobs Section -->
+    <section id="jobs" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 scroll-reveal">
+                <h2 class="text-5xl font-black text-gray-900 mb-6 text-shadow">Cơ hội nghề nghiệp</h2>
+                <p class="text-2xl text-gray-600 font-medium">Tham gia đội ngũ chuyên gia công nghệ hàng đầu Việt Nam</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                <div class="job-card rounded-3xl p-8 transition-all duration-300 shadow-lg scroll-reveal" style="animation-delay: 0.1s;">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-sage-400 to-sage-500 rounded-2xl flex items-center justify-center shadow-lg service-icon">
+                            <span class="text-white text-2xl">🛡️</span>
+                        </div>
+                        <span class="bg-gradient-to-r from-red-400 to-red-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">URGENT</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Senior Security Engineer</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">
+                        Chuyên gia bảo mật thông tin cấp cao, phân tích và xử lý các mối đe dọa an ninh mạng phức tạp, 
+                        thiết kế kiến trúc bảo mật enterprise.
+                    </p>
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sage-500">📍</span>
+                            <span>Hà Nội, TP.HCM, Remote</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sage-500">💰</span>
+                            <span>35-60 triệu VNĐ + Bonus</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sage-500">⏰</span>
+                            <span>Full-time, Flexible hours</span>
+                        </div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg">
+                        Ứng tuyển ngay
+                    </button>
+                </div>
+                
+                <div class="job-card rounded-3xl p-8 transition-all duration-300 shadow-lg scroll-reveal" style="animation-delay: 0.2s;">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-sky-pastel-400 to-sky-pastel-500 rounded-2xl flex items-center justify-center shadow-lg service-icon">
+                            <span class="text-white text-2xl">🎨</span>
+                        </div>
+                        <span class="bg-gradient-to-r from-orange-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">HOT</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Lead Frontend Developer</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">
+                        Phát triển giao diện người dùng hiện đại với React, Vue.js, Next.js và các công nghệ frontend tiên tiến nhất. 
+                        Dẫn dắt team frontend.
+                    </p>
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sky-pastel-500">📍</span>
+                            <span>Remote/Hybrid preferred</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sky-pastel-500">💰</span>
+                            <span>30-50 triệu VNĐ + Equity</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sky-pastel-500">⏰</span>
+                            <span>Full-time, Work-life balance</span>
+                        </div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg">
+                        Ứng tuyển ngay
+                    </button>
+                </div>
+                
+                <div class="job-card rounded-3xl p-8 transition-all duration-300 shadow-lg scroll-reveal" style="animation-delay: 0.3s;">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-sage-500 to-sky-pastel-400 rounded-2xl flex items-center justify-center shadow-lg service-icon">
+                            <span class="text-white text-2xl">🌐</span>
+                        </div>
+                        <span class="bg-gradient-to-r from-green-400 to-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">NEW</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Senior Network Architect</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">
+                        Thiết kế và quản trị hệ thống mạng doanh nghiệp quy mô lớn, đảm bảo hoạt động ổn định, 
+                        bảo mật và hiệu suất cao.
+                    </p>
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sage-500">📍</span>
+                            <span>Hà Nội, Đà Nẵng</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sage-500">💰</span>
+                            <span>28-45 triệu VNĐ + Benefits</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-sage-500">⏰</span>
+                            <span>Full-time, On-site/Hybrid</span>
+                        </div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg">
+                        Ứng tuyển ngay
+                    </button>
+                </div>
+                
+                <div class="job-card rounded-3xl p-8 transition-all duration-300 shadow-lg scroll-reveal" style="animation-delay: 0.4s;">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg service-icon">
+                            <span class="text-white text-2xl">📱</span>
+                        </div>
+                        <span class="bg-gradient-to-r from-purple-400 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">SENIOR</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Mobile App Architect</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">
+                        Phát triển ứng dụng di động iOS/Android với Flutter, React Native, Swift và Kotlin. 
+                        Thiết kế kiến trúc mobile scalable.
+                    </p>
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-purple-500">📍</span>
+                            <span>TP.HCM, Remote OK</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-purple-500">💰</span>
+                            <span>32-55 triệu VNĐ + Stock</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-purple-500">⏰</span>
+                            <span>Full-time, Flexible</span>
+                        </div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg">
+                        Ứng tuyển ngay
+                    </button>
+                </div>
+                
+                <div class="job-card rounded-3xl p-8 transition-all duration-300 shadow-lg scroll-reveal" style="animation-delay: 0.5s;">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-400 to-red-500 rounded-2xl flex items-center justify-center shadow-lg service-icon">
+                            <span class="text-white text-2xl">☁️</span>
+                        </div>
+                        <span class="bg-gradient-to-r from-red-400 to-red-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">URGENT</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Senior DevOps Engineer</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">
+                        Quản lý hạ tầng cloud AWS/Azure/GCP, CI/CD pipeline, Kubernetes, 
+                        và tự động hóa quy trình phát triển enterprise.
+                    </p>
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-red-500">📍</span>
+                            <span>Remote worldwide</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-red-500">💰</span>
+                            <span>40-70 triệu VNĐ + RSU</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-red-500">⏰</span>
+                            <span>Full-time, Global team</span>
+                        </div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg">
+                        Ứng tuyển ngay
+                    </button>
+                </div>
+                
+                <div class="job-card rounded-3xl p-8 transition-all duration-300 shadow-lg scroll-reveal" style="animation-delay: 0.6s;">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg service-icon">
+                            <span class="text-white text-2xl">🎯</span>
+                        </div>
+                        <span class="bg-gradient-to-r from-blue-400 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">HOT</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Senior Product Manager</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed font-medium">
+                        Quản lý sản phẩm công nghệ từ ý tưởng đến thị trường, phối hợp cross-functional teams, 
+                        định hướng roadmap và strategy.
+                    </p>
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-indigo-500">📍</span>
+                            <span>Hà Nội, TP.HCM, Hybrid</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-indigo-500">💰</span>
+                            <span>45-80 triệu VNĐ + Bonus</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-600 font-medium">
+                            <span class="text-indigo-500">⏰</span>
+                            <span>Full-time, Leadership role</span>
+                        </div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg">
+                        Ứng tuyển ngay
+                    </button>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16 scroll-reveal">
+                <button class="bg-white border-2 border-sage-300 hover:border-sage-500 text-sage-700 hover:text-sage-800 px-12 py-4 rounded-2xl font-bold text-xl transition-all hover-lift shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <span>Xem tất cả 50+ vị trí</span>
+                        <span>→</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Culture Section -->
+    <section id="culture" class="py-24 gradient-bg relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 scroll-reveal">
+                <h2 class="text-5xl font-black text-gray-900 mb-6 text-shadow">Văn hóa CyberFortis</h2>
+                <p class="text-2xl text-gray-600 font-medium">Môi trường làm việc hiện đại, sáng tạo và phát triển bền vững</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+                <div class="text-center scroll-reveal hover-lift" style="animation-delay: 0.1s;">
+                    <div class="w-24 h-24 bg-gradient-to-br from-sage-400 to-sage-500 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl service-icon">
+                        <span class="text-4xl">🚀</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Innovation First</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed">
+                        Khuyến khích ý tưởng đột phá, thử nghiệm công nghệ tiên tiến, 
+                        tạo ra sản phẩm thay đổi thị trường
+                    </p>
+                </div>
+                
+                <div class="text-center scroll-reveal hover-lift" style="animation-delay: 0.2s;">
+                    <div class="w-24 h-24 bg-gradient-to-br from-sky-pastel-400 to-sky-pastel-500 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl service-icon">
+                        <span class="text-4xl">🤝</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Collaborative Excellence</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed">
+                        Làm việc nhóm hiệu quả, cross-functional collaboration, 
+                        hỗ trợ lẫn nhau phát triển và thành công
+                    </p>
+                </div>
+                
+                <div class="text-center scroll-reveal hover-lift" style="animation-delay: 0.3s;">
+                    <div class="w-24 h-24 bg-gradient-to-br from-sage-500 to-sky-pastel-400 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl service-icon">
+                        <span class="text-4xl">📚</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Continuous Learning</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed">
+                        Đầu tư mạnh vào đào tạo, phát triển kỹ năng chuyên môn, 
+                        học hỏi công nghệ mới liên tục
+                    </p>
+                </div>
+                
+                <div class="text-center scroll-reveal hover-lift" style="animation-delay: 0.4s;">
+                    <div class="w-24 h-24 bg-gradient-to-br from-purple-400 to-purple-500 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl service-icon">
+                        <span class="text-4xl">⚖️</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Work-Life Harmony</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed">
+                        Cân bằng hoàn hảo giữa công việc và cuộc sống, 
+                        flexible working, mental health support
+                    </p>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-16 shadow-2xl border-2 border-white/20 scroll-reveal">
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h3 class="text-4xl font-bold text-gray-900 mb-10 text-shadow">Quyền lợi đặc biệt</h3>
+                        <div class="space-y-8">
+                            <div class="flex items-start space-x-6 p-6 rounded-2xl bg-sage-50/50 hover:bg-sage-50 transition-all hover-lift">
+                                <div class="w-16 h-16 bg-gradient-to-br from-sage-400 to-sage-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <span class="text-white text-2xl">💰</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-2xl mb-3">Compensation Package</h4>
+                                    <p class="text-gray-600 font-medium text-lg">
+                                        Lương cạnh tranh top market + Thưởng hiệu suất + Stock options + 
+                                        Review lương 2 lần/năm + 13th month salary
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-6 p-6 rounded-2xl bg-sky-pastel-50/50 hover:bg-sky-pastel-50 transition-all hover-lift">
+                                <div class="w-16 h-16 bg-gradient-to-br from-sky-pastel-400 to-sky-pastel-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <span class="text-white text-2xl">🏥</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-2xl mb-3">Healthcare Premium</h4>
+                                    <p class="text-gray-600 font-medium text-lg">
+                                        BHXH, BHYT, BHTN + Bảo hiểm sức khỏe cao cấp cho cả gia đình + 
+                                        Annual health check-up + Mental health support
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-6 p-6 rounded-2xl bg-sage-50/50 hover:bg-sage-50 transition-all hover-lift">
+                                <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <span class="text-white text-2xl">🎓</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-2xl mb-3">Learning & Development</h4>
+                                    <p class="text-gray-600 font-medium text-lg">
+                                        Budget đào tạo 50M/năm + Chứng chỉ quốc tế + Tech conferences + 
+                                        Internal training programs + Mentorship
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-6 p-6 rounded-2xl bg-sky-pastel-50/50 hover:bg-sky-pastel-50 transition-all hover-lift">
+                                <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <span class="text-white text-2xl">🏖️</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-2xl mb-3">Work-Life Benefits</h4>
+                                    <p class="text-gray-600 font-medium text-lg">
+                                        20 ngày phép/năm + Flexible working hours + Remote work + 
+                                        Team building quarterly + Company trip + Sabbatical leave
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-3xl p-12 border-2 border-white/20 shadow-xl">
+                        <div class="text-center">
+                            <div class="text-8xl mb-8">🎉</div>
+                            <h4 class="text-3xl font-bold text-gray-900 mb-6 text-shadow">
+                                Sẵn sàng thay đổi cuộc đời?
+                            </h4>
+                            <p class="text-gray-600 mb-10 text-xl font-medium leading-relaxed">
+                                Cơ hội phát triển sự nghiệp vượt bậc trong môi trường công nghệ hàng đầu 
+                                với đội ngũ chuyên gia tài năng và passionate.
+                            </p>
+                            <div class="space-y-4">
+                                <button class="w-full btn-primary text-white px-10 py-4 rounded-2xl font-bold text-xl shadow-lg">
+                                    <span class="flex items-center justify-center space-x-3">
+                                        <span>🚀</span>
+                                        <span>Khám phá cơ hội</span>
+                                    </span>
+                                </button>
+                                <button class="w-full bg-white/90 backdrop-blur-sm border-2 border-sage-300 hover:border-sage-500 text-sage-700 hover:text-sage-800 px-10 py-4 rounded-2xl font-bold text-xl transition-all hover-lift">
+                                    <span class="flex items-center justify-center space-x-3">
+                                        <span>📞</span>
+                                        <span>Tư vấn career</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 scroll-reveal">
+                <h2 class="text-5xl font-black text-gray-900 mb-6 text-shadow">Kết nối với chúng tôi</h2>
+                <p class="text-2xl text-gray-600 font-medium">Sẵn sàng tư vấn và hỗ trợ bạn 24/7 - Hãy bắt đầu hành trình mới</p>
+            </div>
+            
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-16">
+                <div class="space-y-10 scroll-reveal">
+                    <div class="flex items-start space-x-6 p-6 rounded-2xl bg-sage-50/50 hover:bg-sage-50 transition-all hover-lift">
+                        <div class="w-16 h-16 bg-gradient-to-br from-sage-400 to-sage-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg service-icon">
+                            <span class="text-white text-2xl">📍</span>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Địa chỉ văn phòng</h4>
+                            <div class="space-y-3 text-gray-600 font-medium text-lg">
+                                <p>
+                                    <strong class="text-sage-600">Hà Nội:</strong> Tầng 15-20, Tòa nhà FPT Tower<br>
+                                    17 Duy Tân, Dịch Vọng Hậu, Cầu Giấy
+                                </p>
+                                <p>
+                                    <strong class="text-sage-600">TP.HCM:</strong> Tầng 10-15, Bitexco Financial Tower<br>
+                                    2 Hải Triều, Bến Nghé, Quận 1
+                                </p>
+                                <p>
+                                    <strong class="text-sage-600">Đà Nẵng:</strong> Tầng 8, Tòa nhà SkyHub<br>
+                                    15 Lê Thánh Tôn, Hải Châu
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-6 p-6 rounded-2xl bg-sky-pastel-50/50 hover:bg-sky-pastel-50 transition-all hover-lift">
+                        <div class="w-16 h-16 bg-gradient-to-br from-sky-pastel-400 to-sky-pastel-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg service-icon">
+                            <span class="text-white text-2xl">📞</span>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Hotline tuyển dụng</h4>
+                            <div class="space-y-3 text-gray-600 font-medium text-lg">
+                                <p><strong class="text-sky-pastel-600">Hà Nội:</strong> (024) 3999 8888</p>
+                                <p><strong class="text-sky-pastel-600">TP.HCM:</strong> (028) 3999 9999</p>
+                                <p><strong class="text-sky-pastel-600">Đà Nẵng:</strong> (0236) 3999 7777</p>
+                                <p><strong class="text-sky-pastel-600">24/7 Support:</strong> 1900 1234</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-6 p-6 rounded-2xl bg-sage-50/50 hover:bg-sage-50 transition-all hover-lift">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg service-icon">
+                            <span class="text-white text-2xl">✉️</span>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold text-gray-900 mb-4 text-shadow">Email liên hệ</h4>
+                            <div class="space-y-3 text-gray-600 font-medium text-lg">
+                                <p><strong class="text-purple-600">Tuyển dụng:</strong> careers@cyberfortis.com</p>
+                                <p><strong class="text-purple-600">Hỗ trợ kỹ thuật:</strong> support@cyberfortis.com</p>
+                                <p><strong class="text-purple-600">Hợp tác kinh doanh:</strong> business@cyberfortis.com</p>
+                                <p><strong class="text-purple-600">Media & PR:</strong> media@cyberfortis.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-effect rounded-3xl p-12 shadow-2xl border-2 border-white/20 scroll-reveal">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center text-shadow">Gửi CV ứng tuyển</h3>
+                    <form class="space-y-6" id="applicationForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-semibold text-lg">Họ và tên *</label>
+                                <input type="text" required placeholder="Nguyễn Văn A" 
+                                       class="w-full px-6 py-4 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-sage-500 transition-all font-medium text-lg">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-semibold text-lg">Email *</label>
+                                <input type="email" required placeholder="your.email@example.com" 
+                                       class="w-full px-6 py-4 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-sage-500 transition-all font-medium text-lg">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-semibold text-lg">Số điện thoại *</label>
+                                <input type="tel" required placeholder="0901 234 567" 
+                                       class="w-full px-6 py-4 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-sage-500 transition-all font-medium text-lg">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-gray-700 font-semibold text-lg">Vị trí ứng tuyển *</label>
+                                <select required class="w-full px-6 py-4 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-sage-500 transition-all font-medium text-lg">
+                                    <option value="">Chọn vị trí...</option>
+                                    <option>Senior Security Engineer</option>
+                                    <option>Lead Frontend Developer</option>
+                                    <option>Senior Network Architect</option>
+                                    <option>Mobile App Architect</option>
+                                    <option>Senior DevOps Engineer</option>
+                                    <option>Senior Product Manager</option>
+                                    <option>Khác (ghi rõ trong mô tả)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-gray-700 font-semibold text-lg">Kinh nghiệm & Kỹ năng</label>
+                            <textarea placeholder="Mô tả ngắn gọn về kinh nghiệm làm việc, kỹ năng chuyên môn và thành tích nổi bật của bạn..." 
+                                      rows="5" class="w-full px-6 py-4 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-sage-500 transition-all font-medium text-lg resize-none"></textarea>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <label class="text-gray-700 font-semibold text-lg">Upload CV/Resume *</label>
+                            <div class="border-2 border-dashed border-sage-300 rounded-2xl p-8 text-center hover:border-sage-500 transition-all cursor-pointer" id="fileUpload">
+                                <div class="space-y-4">
+                                    <div class="text-6xl">📎</div>
+                                    <div>
+                                        <p class="text-sage-600 font-semibold text-xl">Kéo thả file CV hoặc click để chọn</p>
+                                        <p class="text-gray-500 font-medium">Hỗ trợ: PDF, DOC, DOCX (tối đa 10MB)</p>
+                                    </div>
+                                </div>
+                                <input type="file" class="hidden" accept=".pdf,.doc,.docx" id="cvFile">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full btn-primary text-white py-5 rounded-2xl font-bold text-xl shadow-2xl">
+                            <span class="flex items-center justify-center space-x-3">
+                                <span>🚀</span>
+                                <span class="loading-text">Gửi ứng tuyển ngay</span>
+                            </span>
+                        </button>
+                        
+                        <p class="text-center text-gray-500 text-sm font-medium">
+                            Bằng việc gửi CV, bạn đồng ý với 
+                            <a href="#" class="text-sage-600 hover:text-sage-700 font-semibold">Chính sách bảo mật</a> 
+                            của CyberFortis
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-20 h-20 bg-sage-400 rounded-full floating-element"></div>
+            <div class="absolute top-20 right-20 w-16 h-16 bg-sky-pastel-400 rounded-full floating-element" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-20 left-1/3 w-12 h-12 bg-sage-500 rounded-full floating-element" style="animation-delay: 4s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-sage-500 to-sky-pastel-500 rounded-2xl flex items-center justify-center shadow-lg">
+                            <span class="text-white font-bold text-2xl">🛡️</span>
+                        </div>
+                        <div>
+                            <span class="text-3xl font-black">CyberFortis</span>
+                            <div class="text-xs text-gray-400 font-medium tracking-wider">SECURITY • DESIGN • NETWORK</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 font-medium leading-relaxed">
+                        Công ty công nghệ hàng đầu về bảo mật, thiết kế ứng dụng và quản trị mạng. 
+                        Tạo ra giá trị bền vững cho khách hàng và xã hội.
+                    </p>
+                    <div class="flex space-x-4">
+                        <div class="w-12 h-12 bg-sage-600 hover:bg-sage-500 rounded-xl flex items-center justify-center cursor-pointer transition-all hover-lift">
+                            <span class="text-xl">📘</span>
+                        </div>
+                        <div class="w-12 h-12 bg-sky-pastel-600 hover:bg-sky-pastel-500 rounded-xl flex items-center justify-center cursor-pointer transition-all hover-lift">
+                            <span class="text-xl">🐦</span>
+                        </div>
+                        <div class="w-12 h-12 bg-sage-600 hover:bg-sage-500 rounded-xl flex items-center justify-center cursor-pointer transition-all hover-lift">
+                            <span class="text-xl">💼</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <h4 class="text-2xl font-bold text-white">Dịch vụ</h4>
+                    <ul class="space-y-3 text-gray-300 font-medium">
+                        <li><a href="#" class="hover:text-sage-400 transition-colors hover-lift">Bảo mật thông tin</a></li>
+                        <li><a href="#" class="hover:text-sage-400 transition-colors hover-lift">Thiết kế ứng dụng</a></li>
+                        <li><a href="#" class="hover:text-sage-400 transition-colors hover-lift">Quản trị mạng</a></li>
+                        <li><a href="#" class="hover:text-sage-400 transition-colors hover-lift">Tư vấn công nghệ</a></li>
+                        <li><a href="#" class="hover:text-sage-400 transition-colors hover-lift">Cloud Solutions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="space-y-6">
+                    <h4 class="text-2xl font-bold text-white">Tuyển dụng</h4>
+                    <ul class="space-y-3 text-gray-300 font-medium">
+                        <li><a href="#" class="hover:text-sky-pastel-400 transition-colors hover-lift">Vị trí đang tuyển</a></li>
+                        <li><a href="#" class="hover:text-sky-pastel-400 transition-colors hover-lift">Quy trình tuyển dụng</a></li>
+                        <li><a href="#" class="hover:text-sky-pastel-400 transition-colors hover-lift">Văn hóa công ty</a></li>
+                        <li><a href="#" class="hover:text-sky-pastel-400 transition-colors hover-lift">Quyền lợi nhân viên</a></li>
+                        <li><a href="#" class="hover:text-sky-pastel-400 transition-colors hover-lift">Internship Program</a></li>
+                    </ul>
+                </div>
+                
+                <div class="space-y-6">
+                    <h4 class="text-2xl font-bold text-white">Liên hệ</h4>
+                    <ul class="space-y-3 text-gray-300 font-medium">
+                        <li class="flex items-center space-x-3">
+                            <span class="text-sage-400">📧</span>
+                            <span>careers@cyberfortis.com</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <span class="text-sage-400">📞</span>
+                            <span>1900 1234 (24/7)</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <span class="text-sage-400">📍</span>
+                            <span>HN • HCM • ĐN</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <span class="text-sage-400">🌐</span>
+                            <span>www.cyberfortis.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section-divider mb-8"></div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-gray-400 font-medium">
+                    &copy; 2025 CyberFortis. All rights reserved. Made with ❤️ in Vietnam
+                </p>
+                <div class="flex space-x-8 text-gray-400 font-medium">
+                    <a href="#" class="hover:text-sage-400 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-sage-400 transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-sage-400 transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-6">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-10 relative">
+    <button id="backLogin" class="absolute left-6 top-6 text-gray-600 hover:text-gray-800">← Quay lại</button>
+    <button data-close="#loginModal" class="absolute right-6 top-6 p-2 text-gray-400 hover:text-gray-600">✕</button>
+    <h3 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">Đăng nhập</h3>
+
+    <form id="loginForm" class="grid grid-cols-1 gap-6">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+        <input id="loginEmail" type="email" required placeholder="you@example.com"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-lg">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Mật khẩu</label>
+        <input id="loginPassword" type="password" required placeholder="••••••••"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-lg">
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <label class="inline-flex items-center gap-2"><input id="rememberMe" type="checkbox" class="rounded border-gray-300">Ghi nhớ đăng nhập</label>
+        <button type="button" id="openForgot" class="text-sky-600 hover:text-sky-700 font-semibold">Quên mật khẩu?</button>
+      </div>
+      <button type="submit" class="w-full btn-primary text-white py-4 rounded-xl font-bold shadow-lg">Đăng nhập</button>
+      <p class="text-center text-sm text-gray-500">Chưa có tài khoản?
+        <button type="button" id="toRegister" class="text-sky-600 hover:text-sky-700 font-semibold">Đăng ký</button>
+      </p>
+    </form>
+  </div>
+</div>
+<!-- REGISTER MODAL -->
+<div id="registerModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-6">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-10 relative">
+    <button id="backRegister" class="absolute left-6 top-6 text-gray-600 hover:text-gray-800">← Quay lại</button>
+    <button data-close="#registerModal" class="absolute right-6 top-6 p-2 text-gray-400 hover:text-gray-600">✕</button>
+    <h3 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">Đăng ký</h3>
+
+    <form id="registerForm" class="grid grid-cols-1 gap-6">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+        <input id="regEmail" type="email" required placeholder="you@example.com"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Mật khẩu (≥8, gồm chữ & số)</label>
+        <input id="regPassword" type="password" required placeholder="Ít nhất 8 ký tự, có số và chữ"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Xác nhận mật khẩu</label>
+        <input id="regPassword2" type="password" required placeholder="Nhập lại mật khẩu"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+      </div>
+      <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold shadow-lg">Tạo tài khoản</button>
+      <p class="text-center text-sm text-gray-500">Đã có tài khoản?
+        <button type="button" id="toLogin" class="text-sky-600 hover:text-sky-700 font-semibold">Đăng nhập</button>
+      </p>
+    </form>
+  </div>
+</div>
+<!-- FORGOT MODAL -->
+<div id="forgotModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-6">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-10 relative">
+    <button id="backForgot" class="absolute left-6 top-6 text-gray-600 hover:text-gray-800">← Quay lại</button>
+    <button data-close="#forgotModal" class="absolute right-6 top-6 p-2 text-gray-400 hover:text-gray-600">✕</button>
+    <h3 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">Đặt lại mật khẩu</h3>
+
+    <form id="forgotForm" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="md:col-span-3">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Email đã đăng ký</label>
+        <input id="forgotEmail" type="email" required placeholder="you@example.com"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-lg">
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Mã OTP (demo: 123456)</label>
+        <input id="forgotOtp" type="text" required placeholder="123456"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-lg">
+      </div>
+      <div class="md:col-span-1 flex items-end">
+        <button type="button" id="sendOtp"
+                class="w-full px-5 py-4 border-2 border-sky-500 text-sky-700 rounded-xl font-semibold hover:bg-sky-50">
+          Gửi OTP
+        </button>
+      </div>
+      <div class="md:col-span-3">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Mật khẩu mới</label>
+        <input id="forgotNewPw" type="password" required placeholder="Ít nhất 8 ký tự, có số và chữ"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-lg">
+      </div>
+      <div class="md:col-span-3">
+        <button type="submit" class="w-full btn-primary text-white py-4 rounded-xl font-bold shadow-lg">Đổi mật khẩu</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- CHANGE PASSWORD MODAL -->
+<div id="changePwModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-6">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-10 relative">
+    <button id="backChangePw" class="absolute left-6 top-6 text-gray-600 hover:text-gray-800">← Quay lại</button>
+    <button data-close="#changePwModal" class="absolute right-6 top-6 p-2 text-gray-400 hover:text-gray-600">✕</button>
+    <h3 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">Đổi mật khẩu</h3>
+
+    <form id="changePwForm" class="grid grid-cols-1 gap-6">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Mật khẩu hiện tại</label>
+        <input id="cpwOld" type="password" required placeholder="••••••••"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Mật khẩu mới (≥8, gồm chữ & số)</label>
+        <input id="cpwNew" type="password" required placeholder="Ít nhất 8 ký tự, có số và chữ"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Xác nhận mật khẩu mới</label>
+        <input id="cpwNew2" type="password" required placeholder="Nhập lại mật khẩu"
+               class="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg">
+      </div>
+      <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold shadow-lg">Cập nhật</button>
+    </form>
+  </div>
+</div>
+<script>
+(() => {
+  // ===== Helpers =====
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const show = el => { el?.classList.remove('hidden'); el?.classList.add('flex'); };
+  const hide = el => { el?.classList.add('hidden'); el?.classList.remove('flex'); };
+
+  // Toast đơn giản
+  const toast = (msg, ok=true) => {
+    let t = document.getElementById('toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toast';
+      t.className = 'fixed top-5 right-5 z-[120]';
+      document.body.appendChild(t);
+    }
+    t.innerHTML = `<div class="min-w-[260px] max-w-[380px] px-4 py-3 rounded-xl shadow-lg ${ok?'bg-emerald-600':'bg-red-600'} text-white font-semibold">${msg}</div>`;
+    t.classList.remove('hidden');
+    setTimeout(()=> t.classList.add('hidden'), 2200);
+  };
+
+  // ===== Mock Auth (LocalStorage) =====
+  const LS_USERS='cf_users', LS_SESSION='cf_session';
+  const loadUsers = () => JSON.parse(localStorage.getItem(LS_USERS) || '[]');
+  const saveUsers = u => localStorage.setItem(LS_USERS, JSON.stringify(u));
+  const getSession = () => JSON.parse(localStorage.getItem(LS_SESSION) || 'null');
+  const setSession = email => localStorage.setItem(LS_SESSION, JSON.stringify({email, ts: Date.now()}));
+  const clearSession = () => localStorage.removeItem(LS_SESSION);
+
+  const strongPw = pw => pw?.length>=8 && /[A-Za-z]/.test(pw) && /\d/.test(pw);
+
+  async function register(email, pw){
+    const users = loadUsers();
+    if (users.some(u => u.email.toLowerCase()===email.toLowerCase())) throw new Error('Email đã tồn tại');
+    if (!strongPw(pw)) throw new Error('Mật khẩu yếu (≥8, gồm chữ & số)');
+    users.push({email, pw}); // demo: pw plain. Sản phẩm thật: dùng API & hash phía server.
+    saveUsers(users);
+    setSession(email);
+  }
+  async function login(email, pw){
+    const user = loadUsers().find(u => u.email.toLowerCase()===email.toLowerCase());
+    if (!user) throw new Error('Tài khoản không tồn tại');
+    if (user.pw !== pw) throw new Error('Mật khẩu không đúng');
+    setSession(email);
+  }
+  async function changePassword(email, oldPw, newPw){
+    const users = loadUsers();
+    const i = users.findIndex(u => u.email.toLowerCase()===email.toLowerCase());
+    if (i<0) throw new Error('Không tìm thấy tài khoản');
+    if (users[i].pw !== oldPw) throw new Error('Mật khẩu hiện tại sai');
+    if (!strongPw(newPw)) throw new Error('Mật khẩu mới yếu (≥8, gồm chữ & số)');
+    users[i].pw = newPw; saveUsers(users);
+  }
+  async function resetPassword(email, otp, newPw){
+    if (otp!=='123456') throw new Error('OTP không đúng (demo: 123456)');
+    const users = loadUsers();
+    const i = users.findIndex(u => u.email.toLowerCase()===email.toLowerCase());
+    if (i<0) throw new Error('Không tìm thấy tài khoản');
+    if (!strongPw(newPw)) throw new Error('Mật khẩu mới yếu (≥8, gồm chữ & số)');
+    users[i].pw = newPw; saveUsers(users);
+  }
+// Đặt ngay sau khi khai báo helper và trước renderNav();
+if (JSON.parse(localStorage.getItem('cf_session')||'null')?.email) {
+  window.location.replace('UserView.html'); // replace để không tạo lịch sử lùi trang
+}
+
+  // ===== Navbar render =====
+  function renderNav(){
+    const logged = !!getSession()?.email;
+    const navLogin = $('#btnLoginNav');
+    const userMenu = $('#navUser');
+    // file này chưa có menu user → chỉ ẩn/hiện nút đăng nhập nếu muốn
+    if (navLogin) navLogin.classList.toggle('hidden', logged);
+  }
+
+  // ===== Wire buttons =====
+  $('#btnLoginNav')?.addEventListener('click', () => {
+    show($('#loginModal'));
+    setTimeout(()=> $('#loginEmail')?.focus(), 120);
+  });
+  $('#backLogin')?.addEventListener('click', () => { hide($('#loginModal')); $('#btnLoginNav')?.focus(); });
+  $('#backRegister')?.addEventListener('click', () => { hide($('#registerModal')); show($('#loginModal')); });
+  $('#backForgot')?.addEventListener('click', () => { hide($('#forgotModal')); show($('#loginModal')); });
+  $('#backChangePw')?.addEventListener('click', () => { hide($('#changePwModal')); });
+
+  // chuyển modal
+  $('#toRegister')?.addEventListener('click', ()=>{ hide($('#loginModal')); show($('#registerModal')); });
+  $('#toLogin')?.addEventListener('click', ()=>{ hide($('#registerModal')); show($('#loginModal')); });
+  $('#openForgot')?.addEventListener('click', ()=>{ hide($('#loginModal')); show($('#forgotModal')); });
+
+  // click nền đóng modal
+  ['loginModal','registerModal','forgotModal','changePwModal'].forEach(id=>{
+    const m = document.getElementById(id);
+    m?.addEventListener('click', e=>{ if(e.target===m) hide(m); });
+  });
+  // ESC để đóng
+  window.addEventListener('keydown', e=>{
+    if (e.key==='Escape') ['loginModal','registerModal','forgotModal','changePwModal'].forEach(id=>{
+      const m = document.getElementById(id);
+      if (m?.classList.contains('flex')) hide(m);
+    });
+  });
+
+  // ===== Form submit =====
+  $('#loginForm')?.addEventListener('submit', async e=>{
+    e.preventDefault();
+    try{
+      await login($('#loginEmail').value.trim(), $('#loginPassword').value);
+      hide($('#loginModal')); renderNav(); toast('Đăng nhập thành công');
+    }catch(err){ toast(err.message||'Đăng nhập thất bại', false); }
+  });
+
+  $('#registerForm')?.addEventListener('submit', async e=>{
+    e.preventDefault();
+    try{
+      const pw = $('#regPassword').value, pw2 = $('#regPassword2').value;
+      if (pw!==pw2) throw new Error('Xác nhận mật khẩu không khớp');
+      await register($('#regEmail').value.trim(), pw);
+      hide($('#registerModal')); renderNav(); toast('Tạo tài khoản thành công');
+    }catch(err){ toast(err.message||'Đăng ký thất bại', false); }
+  });
+
+  $('#forgotForm')?.addEventListener('submit', async e=>{
+    e.preventDefault();
+    try{
+      await resetPassword($('#forgotEmail').value.trim(), $('#forgotOtp').value.trim(), $('#forgotNewPw').value);
+      hide($('#forgotModal')); toast('Đã đổi mật khẩu. Hãy đăng nhập lại'); show($('#loginModal'));
+    }catch(err){ toast(err.message||'Không thể đổi mật khẩu', false); }
+  });
+
+  $('#changePwForm')?.addEventListener('submit', async e=>{
+    e.preventDefault();
+    try{
+      const sess = getSession(); if(!sess?.email) throw new Error('Bạn chưa đăng nhập');
+      const n1 = $('#cpwNew').value, n2 = $('#cpwNew2').value; if(n1!==n2) throw new Error('Xác nhận mật khẩu không khớp');
+      await changePassword(sess.email, $('#cpwOld').value, n1);
+      hide($('#changePwModal')); toast('Đã cập nhật mật khẩu');
+    }catch(err){ toast(err.message||'Không thể cập nhật mật khẩu', false); }
+  });
+
+  // ===== Guard "Ứng tuyển ngay" + auto chọn vị trí =====
+  function wireApply(){
+    const positionSelect = document.getElementById('positionSelect');
+    $$('.btn-apply').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const sess = getSession();
+        if (!sess?.email) { show($('#loginModal')); return; }
+        // đã đăng nhập → cuộn tới form & preselect
+        const job = btn.dataset.job?.trim();
+        const target = document.querySelector('#contact');
+        if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+        if (positionSelect && job) {
+          setTimeout(()=>{
+            const opts = Array.from(positionSelect.options);
+            const found = opts.find(o => o.text.trim().toLowerCase()===job.toLowerCase());
+            positionSelect.value = found ? found.text : '';
+          }, 300);
+        }
+      });
+    });
+  }
+
+  // init
+  renderNav();
+  wireApply();
+})();
+</script>
+    <script>
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            }
+        });
+
+        // Parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+            
+            parallaxElements.forEach(element => {
+                const speed = element.dataset.speed || 0.5;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Stats counter animation
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('.stats-counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent.replace(/\D/g, ''));
+                const increment = target / 100;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current) + (counter.textContent.includes('+') ? '+' : '');
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target + (counter.textContent.includes('+') ? '+' : '');
+                    }
+                };
+                
+                updateCounter();
+            });
+        };
+
+        // Trigger counter animation when in view
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        document.querySelectorAll('.stats-counter').forEach(counter => {
+            counterObserver.observe(counter);
+        });
+
+        // File upload handling
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('cvFile');
+
+        fileUpload.addEventListener('click', () => fileInput.click());
+
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.style.borderColor = '#3a9f3a';
+            fileUpload.style.backgroundColor = '#f0f9f0';
+        });
+
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.style.borderColor = '#dcf2dc';
+            fileUpload.style.backgroundColor = 'transparent';
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelect(file) {
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            
+            if (file.size > maxSize) {
+                alert('File quá lớn! Vui lòng chọn file nhỏ hơn 10MB.');
+                return;
+            }
+            
+            if (!allowedTypes.includes(file.type)) {
+                alert('Định dạng file không được hỗ trợ! Vui lòng chọn file PDF, DOC hoặc DOCX.');
+                return;
+            }
+            
+            fileUpload.innerHTML = `
+                <div class="space-y-4">
+                    <div class="text-6xl">✅</div>
+                    <div>
+                        <p class="text-sage-600 font-semibold text-xl">${file.name}</p>
+                        <p class="text-gray-500 font-medium">${(file.size / 1024 / 1024).toFixed(2)} MB - Đã tải lên thành công</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Form submission
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const loadingText = submitBtn.querySelector('.loading-text');
+            
+            // Show loading state
+            loadingText.textContent = 'Đang gửi';
+            loadingText.classList.add('loading-dots');
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('🎉 CV đã được gửi thành công!\n\nChúng tôi sẽ liên hệ với bạn trong vòng 24-48h.\nCảm ơn bạn đã quan tâm đến CyberFortis!');
+                
+                // Reset form
+                this.reset();
+                fileUpload.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="text-6xl">📎</div>
+                        <div>
+                            <p class="text-sage-600 font-semibold text-xl">Kéo thả file CV hoặc click để chọn</p>
+                            <p class="text-gray-500 font-medium">Hỗ trợ: PDF, DOC, DOCX (tối đa 10MB)</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Reset button
+                loadingText.textContent = 'Gửi ứng tuyển ngay';
+                loadingText.classList.remove('loading-dots');
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Button click handlers
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('button')) {
+                const button = e.target.closest('button');
+                const buttonText = button.textContent.trim();
+                
+                if (buttonText.includes('Ứng tuyển ngay') || buttonText.includes('Ứng tuyển')) {
+                    document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+                } else if (buttonText.includes('Khám phá cơ hội')) {
+                    document.querySelector('#jobs').scrollIntoView({ behavior: 'smooth' });
+                } else if (buttonText.includes('Về chúng tôi')) {
+                    document.querySelector('#about').scrollIntoView({ behavior: 'smooth' });
+                } else if (buttonText.includes('Xem tất cả')) {
+                    alert('Chuyển đến trang danh sách đầy đủ các vị trí tuyển dụng...');
+                } else if (buttonText.includes('Tư vấn career')) {
+                    alert('Đang kết nối với chuyên viên tư vấn career...');
+                }
+            }
+        });
+
+        // Enhanced hover effects for cards
+        document.querySelectorAll('.card-hover, .job-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add loading animation to page
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+    <script>
+(() => {
+  // ===== Helpers =====
+  const $  = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const show = el => { el?.classList.remove('hidden'); el?.classList.add('flex'); };
+  const hide = el => { el?.classList.add('hidden'); el?.classList.remove('flex'); };
+
+  // ===== Mở form Đăng nhập khi bấm nút trên navbar =====
+  $('#btnLoginNav')?.addEventListener('click', () => {
+    show($('#loginModal'));
+    // focus vào email sau 120ms cho mượt
+    setTimeout(() => $('#loginEmail')?.focus(), 120);
+  });
+
+  // ===== ĐÓNG form khi bấm dấu X (mọi modal có [data-close]) =====
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-close]');
+    if (!btn) return;
+    const sel = btn.getAttribute('data-close');
+    const modal = sel ? document.querySelector(sel) : null;
+    if (modal) hide(modal);
+  });
+
+  // ===== Đóng khi click ra ngoài hộp nội dung & khi nhấn ESC =====
+  ['loginModal','registerModal','forgotModal','changePwModal'].forEach(id => {
+    const m = document.getElementById(id);
+    m?.addEventListener('click', (e) => { if (e.target === m) hide(m); });
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      ['loginModal','registerModal','forgotModal','changePwModal']
+        .forEach(id => { const m = document.getElementById(id); if (m?.classList.contains('flex')) hide(m); });
+    }
+  });
+
+  // ===== Submit Đăng nhập -> chuyển thẳng sang UserView.html =====
+  // (Giữ nguyên validate/logic bạn có; chỉ thêm redirect sau khi login OK)
+  $('#loginForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    // TODO: nếu bạn có gọi API login, đặt redirect vào chỗ `.then(...)` thành công
+    // Demo: đóng modal rồi điều hướng
+    hide($('#loginModal'));
+    // Chờ 150ms cho UX mượt (có thể bỏ)
+    setTimeout(() => { window.location.href = 'UserView.html'; }, 150);
+  });
+
+  // ===== (Tuỳ chọn) Đăng ký xong cũng vào UserView.html =====
+  $('#registerForm')?.addEventListener('submit', (e) => {
+    // Bỏ comment nếu muốn:
+    // e.preventDefault();
+    // hide($('#registerModal'));
+    // setTimeout(() => { window.location.href = 'UserView.html'; }, 150);
+  });
+})();
+</script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+
+  function rewireApplyButtons() {
+    const positionSelect = document.getElementById('positionSelect');
+
+    $$('.btn-apply').forEach(oldBtn => {
+      // Clone để xóa toàn bộ event listener cũ (kể cả guard mở login)
+      const btn = oldBtn.cloneNode(true);
+      oldBtn.replaceWith(btn);
+
+      btn.addEventListener('click', () => {
+        const job = btn.dataset.job?.trim();
+        const target = document.querySelector('#contact');
+
+        // Kéo xuống form ứng tuyển
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Tự chọn đúng vị trí (nếu có data-job trùng option)
+        if (positionSelect && job) {
+          setTimeout(() => {
+            const opts = Array.from(positionSelect.options);
+            const found = opts.find(o => o.text.trim().toLowerCase() === job.toLowerCase());
+            positionSelect.value = found ? found.text : '';
+          }, 250);
+        }
+
+        // Focus field đầu tiên trong form cho user thao tác luôn
+        setTimeout(() => {
+          const firstField = $('#contact input, #contact select, #contact textarea');
+          firstField?.focus();
+        }, 400);
+      });
+    });
+  }
+
+  rewireApplyButtons();
+})();
+</script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f5cbaaf6ce5df8',t:'MTc1NTIzMDUzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

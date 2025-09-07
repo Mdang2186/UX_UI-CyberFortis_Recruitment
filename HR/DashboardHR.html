@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tổng quan tuyển dụng (Quản trị viên) - CyberFortis</title>
+
+  <!-- Tailwind, Icons, Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- App CSS -->
+<link rel="stylesheet" href="/assets/css/loading.css">
+  <link rel="stylesheet" href="assets/css/sidebar.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/dashboardHR.css">
+   
+   <script src="assets/js/intro-boot.js"
+        data-intro="IntroOnePageEmployee.html"
+        data-home="DashboardHR.html"
+        defer></script>
+
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar & Header placeholders (nạp động) -->
+<aside id="sidebar" class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-40"></aside>
+  <header id="header" class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-[60] h-16"></header>
+
+  <!-- Main -->
+  <main id="mainContent" class="main-content content-transition min-h-screen">
+    <!-- Search + Filters -->
+    <section class="px-6 pt-6"> 
+                 <div class="adv-filters bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/50 mb-8">
+
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex-1 min-w-64">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" placeholder="Tìm kiếm ứng viên hoặc vị trí…" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm">
+          </div>
+        </div>
+                    <div class="flex items-center space-x-3 flex-wrap">
+                        <button id="createJobBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all button-hover">
+                            <i class="fas fa-plus mr-2"></i>Tạo Job
+                        </button>
+                        <button id="scheduleInterviewBtn" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all button-hover">
+                            <i class="fas fa-calendar-plus mr-2"></i>Lên lịch PV
+                        </button>
+                        <button id="exportReportBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all button-hover">
+                            <i class="fas fa-file-export mr-2"></i>Xuất BC
+                        </button>
+                        <button id="sendEmailBtn" class="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-all button-hover">
+                            <i class="fas fa-envelope mr-2"></i>Gửi Email
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3 flex-wrap">
+                        <select id="timeFilter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                            <option value="today">Hôm nay</option>
+                            <option value="week">Tuần này</option>
+                            <option value="month" selected>Tháng này</option>
+                            <option value="quarter">Quý này</option>
+                        </select>
+                        <select id="departmentFilter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500">
+                            <option value="all">Tất cả phòng ban</option>
+                            <option value="tech">Công nghệ</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="sales">Kinh doanh</option>
+                            <option value="hr">Nhân sự</option>
+                        </select>
+                    </div>
+                </div>
+            </div>  
+            <!-- Stats Cards -->
+           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-12">
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Tổng Ứng viên</p>
+                        <p id="totalCandidates" class="text-3xl font-bold text-gray-900">1,247</p>
+                        <p class="text-green-600 text-sm mt-1 font-semibold">
+                            <i class="fas fa-arrow-up"></i> <span id="candidatesChange">+12%</span>
+                        </p>
+                    </div>
+                    <div class="bg-blue-100 p-4 rounded-2xl stat-icon-hover">
+                        <i class="fas fa-user-plus text-blue-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Vị trí Mở</p>
+                        <p id="openPositions" class="text-3xl font-bold text-gray-900">23</p>
+                        <p class="text-blue-600 text-sm mt-1 font-semibold">
+                            <i class="fas fa-briefcase"></i> <span id="priorityPositions">8 ưu tiên</span>
+                        </p>
+                    </div>
+                    <div class="bg-green-100 p-4 rounded-2xl stat-icon-hover">
+                        <i class="fas fa-briefcase text-green-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Phỏng vấn</p>
+                        <p id="interviewsToday" class="text-3xl font-bold text-gray-900">8</p>
+                        <p class="text-orange-600 text-sm mt-1 font-semibold">
+                            <i class="fas fa-clock"></i> <span id="upcomingInterviews">3 sắp tới</span>
+                        </p>
+                    </div>
+                    <div class="bg-orange-100 p-4 rounded-2xl stat-icon-hover">
+                        <i class="fas fa-calendar-check text-orange-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Tỷ lệ Hire</p>
+                        <p id="conversionRate" class="text-3xl font-bold text-gray-900">24%</p>
+                        <p class="text-green-600 text-sm mt-1 font-semibold">
+                            <i class="fas fa-arrow-up"></i> <span id="conversionChange">+3%</span>
+                        </p>
+                    </div>
+                    <div class="bg-purple-100 p-4 rounded-2xl stat-icon-hover">
+                        <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Offer Accept</p>
+                        <p id="offerAccepted" class="text-3xl font-bold text-gray-900">89</p>
+                        <p class="text-green-600 text-sm mt-1 font-semibold">
+                            <i class="fas fa-handshake"></i> <span id="acceptanceRate">78%</span>
+                        </p>
+                    </div>
+                    <div class="bg-indigo-100 p-4 rounded-2xl stat-icon-hover">
+                        <i class="fas fa-handshake text-indigo-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Thời gian TB</p>
+                        <p id="avgTime" class="text-3xl font-bold text-gray-900">28</p>
+                        <p class="text-gray-600 text-sm mt-1 font-semibold">
+                            <i class="fas fa-calendar"></i> <span>ngày</span>
+                        </p>
+                    </div>
+                    <div class="bg-pink-100 p-4 rounded-2xl stat-icon-hover">
+                        <i class="fas fa-hourglass-half text-pink-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Main Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Status Distribution Chart -->
+                    <!-- Source Analysis -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Nguồn Ứng viên</h3>
+                        <div class="chart-container">
+                            <canvas id="sourceChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Recruitment Funnel -->
+                    <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-1">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6">Quy trình Tuyển dụng</h2>
+                        <div class="chart-container">
+                            <canvas id="funnelChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Performance Metrics -->
+                    <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-1">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6">Hiệu suất theo Phòng ban</h2>
+                        <div class="chart-container">
+                            <canvas id="departmentChart"></canvas>
+                        </div>
+                    </div>  
+
+                <!-- Sidebar --> 
+                    <!-- Interview Schedule -->
+                   <!-- Interview Schedule -->
+<!-- Interview Schedule -->
+<div class="bg-white rounded-lg shadow-md p-6 lg:col-span-1 h-[26rem] flex flex-col">
+  <h2 class="text-xl font-bold text-gray-900 mb-6">Lịch Phỏng vấn Hôm nay</h2>
+
+  <!-- Danh sách chiếm phần còn lại + lăn chuột -->
+  <div id="interviewSchedule"
+       class="space-y-4 flex-1 overflow-y-auto min-h-0 pr-1 overscroll-contain">
+    <!-- Schedule populated by JS -->
+  </div>
+
+  <button class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all button-hover">
+    Xem tất cả lịch
+  </button>
+</div>
+
+
+
+            </div>
+
+            <!-- Analytics Section -->
+            
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+                    <!-- Hiring Trend -->
+                     
+                    <!-- Top Positions -->
+                    <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-1">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6">Vị trí Hot</h2>
+                        <div id="topPositions" class="space-y-4">
+                            <!-- Positions populated by JS -->
+                        </div>
+                    </div> 
+                    <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-3">
+                         <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Quản lý Vị trí Tuyển dụng</h2>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 button-hover">
+                        <i class="fas fa-plus mr-2"></i>Tạo vị trí mới
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="positionsGrid">
+                    <!-- Position cards populated by JS -->
+                </div>
+                    </div>
+
+                </div> 
+<!-- Reports Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Báo cáo & Thống kê</h2>
+                    <div class="flex space-x-3">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 button-hover">
+                            <i class="fas fa-file-pdf mr-2"></i>Xuất PDF
+                        </button>
+                        <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 button-hover">
+                            <i class="fas fa-file-excel mr-2"></i>Xuất Excel
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Báo cáo tháng</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Tổng ứng viên mới</span>
+                                <span class="text-xl font-bold text-blue-600" id="monthlyNewCandidates">1,247</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Số lượng tuyển dụng</span>
+                                <span class="text-xl font-bold text-emerald-600" id="monthlyHires">89</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Chi phí trung bình</span>
+                                <span class="text-xl font-bold text-blue-500" id="avgCost">15.2M</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">KPI Dashboard</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">Mục tiêu tuyển dụng</span>
+                                    <span class="font-bold" id="hiringTarget">89/120</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 74%" id="hiringProgress"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">Chất lượng ứng viên</span>
+                                    <span class="font-bold" id="qualityScore">8.5/10</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-emerald-600 h-2 rounded-full transition-all duration-500" style="width: 85%" id="qualityProgress"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">Thời gian tuyển dụng</span>
+                                    <span class="font-bold" id="timeTarget">28/35 ngày</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 80%" id="timeProgress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!-- Candidates Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Danh sách Ứng viên</h2>
+                    <div class="flex space-x-3">
+                        <select id="candidateStatusFilter" class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                            <option value="all">Tất cả trạng thái</option>
+                            <option value="new">Mới nộp</option>
+                            <option value="processing">Đang xử lý</option>
+                            <option value="interview">Phỏng vấn</option>
+                            <option value="offer">Offer</option>
+                        </select>
+                        <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-emerald-700 button-hover">
+                            <i class="fas fa-download mr-2"></i>Xuất Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ứng viên</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vị trí</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Trạng thái</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ngày nộp</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Điểm</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="candidatesTable">
+                            <!-- Table content populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+ 
+            
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Create Job Modal -->
+    <div id="createJobModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Tạo Job mới</h2>
+                <button class="modal-close text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tên vị trí</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500" placeholder="VD: Senior Frontend Developer">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phòng ban</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+                            <option>Công nghệ</option>
+                            <option>Marketing</option>
+                            <option>Kinh doanh</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mức độ ưu tiên</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500">
+                            <option>Cao</option>
+                            <option>Trung bình</option>
+                            <option>Thấp</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Mô tả công việc</label>
+                    <textarea rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Mô tả chi tiết về vị trí..."></textarea>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" class="modal-close px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Hủy
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Tạo Job
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Interview Modal -->
+    <div id="scheduleInterviewModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Lên lịch Phỏng vấn</h2>
+                <button class="modal-close text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Ứng viên</label>
+                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500">
+                        <option>Nguyễn Văn A - Frontend Developer</option>
+                        <option>Trần Thị B - Backend Developer</option>
+                        <option>Lê Văn C - UI/UX Designer</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ngày phỏng vấn</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Thời gian</label>
+                        <input type="time" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Ghi chú</label>
+                    <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500" placeholder="Ghi chú thêm..."></textarea>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" class="modal-close px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Hủy
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                        Lên lịch
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Export Report Modal -->
+    <div id="exportReportModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Xuất Báo cáo</h2>
+                <button class="modal-close text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Loại báo cáo</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="reportType" value="summary" class="mr-3" checked>
+                            <span>Báo cáo tổng quan</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="reportType" value="detailed" class="mr-3">
+                            <span>Báo cáo chi tiết</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Từ ngày</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Đến ngày</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" class="modal-close px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Hủy
+                    </button>
+                    <button type="button" id="exportBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Xuất báo cáo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Email Modal -->
+    <div id="sendEmailModal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900">Gửi Email</h2>
+                <button class="modal-close text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Người nhận</label>
+                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500">
+                        <option>Tất cả ứng viên đang chờ</option>
+                        <option>Ứng viên đã phỏng vấn</option>
+                        <option>Ứng viên được offer</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tiêu đề</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500" placeholder="Tiêu đề email...">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nội dung</label>
+                    <textarea rows="5" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500" placeholder="Nội dung email..."></textarea>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" class="modal-close px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Hủy
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                        Gửi Email
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+    </div>
+
+
+  <!-- NẠP SIDEBAR & HEADER -->
+  <!-- NẠP SIDEBAR & HEADER -->
+<script>
+  Promise.all([
+    fetch('Header.html').then(r=>r.text()).then(h=>document.getElementById('header').innerHTML=h),
+    fetch('Sidebar.html').then(r=>r.text()).then(h=>document.getElementById('sidebar').innerHTML=h),
+  ]).then(()=>{
+    if (window.SidebarInit) window.SidebarInit();
+    if (window.HeaderInit)  window.HeaderInit();   // <-- thêm dòng này
+  });
+</script>
+<script src="assets/js/layout-loader.js" data-layout-version="1.0.2" defer></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    LayoutLoader.mount({
+      headerSel:'#header',  headerUrl:'Header.html',
+      sidebarSel:'#sidebar', sidebarUrl:'Sidebar.html'
+      // KHÔNG khai báo footer ở đây
+    });
+  });
+</script>
+
+
+<link rel="stylesheet" href="assets/css/footer.css">
+<script src="assets/js/footer-loader.js" data-footer-version="1.0.0" defer></script>
+<link rel="stylesheet" href="assets/widgets/cf-chat/cf-chat.css">
+<script src="assets/widgets/cf-chat/cf-chat.js" data-cf-chat data-accent="#107eb9" data-accent2="#10b981" defer></script>
+
+  <!-- App JS -->
+
+<script defer src="/assets/js/loading.js"></script>
+  <script src="assets/js/sidebar.js" defer></script>
+  <script src="assets/js/header.js" defer></script>
+<script src="assets/js/dashboardHR.js" defer></script>
+</body>
+</html>

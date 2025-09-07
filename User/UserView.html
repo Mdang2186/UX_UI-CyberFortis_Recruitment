@@ -705,8 +705,7 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Cài đặt</a>
                             <a href="#" onclick="toggleChat()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Hỗ trợ</a>
                             <hr class="my-2">
-                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Đăng xuất</a>
-                        </div>
+<a href="#" id="btnLogout" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Đăng xuất</a>                        </div>
                     </div>
 
                     <!-- Mobile Menu Button -->
@@ -3424,5 +3423,32 @@ Nguyễn Văn An</textarea>
             });
         });
     </script>
+    <script>
+(function () {
+  const SESSION_KEY = 'cf_session'; // cùng key với trang Intro
+
+  // Route guard: chưa đăng nhập -> đá về Intro
+  try {
+    const sess = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+    if (!sess || !sess.email) {
+      window.location.replace('IntroPerfomanceTuyenDung.html');
+      return;
+    }
+  } catch {
+    window.location.replace('IntroPerfomanceTuyenDung.html');
+    return;
+  }
+
+  // Đăng xuất → xoá session + quay về Intro
+  document.getElementById('btnLogout')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem(SESSION_KEY);
+    // Nếu bạn muốn xoá luôn danh sách user mock khi demo, bỏ comment dòng dưới:
+    // localStorage.removeItem('cf_users');
+    window.location.replace('IntroPerfomanceTuyenDung.html'); // replace để không tạo lịch sử lùi
+  });
+})();
+</script>
+
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96fa308be2457153',t:'MTc1NTI3NjYxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

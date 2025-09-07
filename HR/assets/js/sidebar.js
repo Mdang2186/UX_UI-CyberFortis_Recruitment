@@ -55,7 +55,7 @@
   const slug = (s)=> norm(s).replace(/\.(html|aspx)$/,'').replace(/[^a-z0-9]+/g,'');
   function currentKey(){
     const file = (location.pathname.split('/').filter(Boolean).pop()||'').split('#')[0].split('?')[0];
-    return slug(file) || 'dashboardadmin';
+    return slug(file) || 'dashboardhr';
   }
   function setActive(){
     const key = currentKey();
