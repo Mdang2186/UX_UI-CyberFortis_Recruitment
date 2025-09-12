@@ -288,11 +288,9 @@
                 
                 <div class="flex items-center gap-3">
   <!-- Đăng nhập (outline xanh) -->
-  <button id="btnLoginNav"
-          class="px-6 py-3 rounded-xl font-semibold border-2 border-sage-400 text-sage-700
-                 hover:bg-sage-50 transition">
-    Đăng nhập
-  </button>
+<button id="btnLoginNav" class="px-6 py-3 rounded-xl font-semibold border-2 border-emerald-500 text-emerald-700 hover:bg-emerald-50">
+  Đăng nhập
+</button>
 
   <!-- Ứng tuyển ngay (giữ gradient, thêm .btn-apply) -->
   <button class="btn-primary btn-apply text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg"
@@ -1800,6 +1798,7 @@ if (JSON.parse(localStorage.getItem('cf_session')||'null')?.email) {
   rewireApplyButtons();
 })();
 </script>
+<script src="assets/js/auth-core.js"></script>
 
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f5cbaaf6ce5df8',t:'MTc1NTIzMDUzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
