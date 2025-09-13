@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProCV - Quản lý hồ sơ tuyển dụng</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Dark mode toggle
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+    // Modal
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+    // Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2000);
+    }
+    // ChartJS
+    window.onload = function() {
+      new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Dev', 'Tester', 'HR', 'PM'],
+          datasets: [{ label: 'Số hồ sơ', data: [12, 9, 5, 3], backgroundColor: '#2563eb' }]
+        },
+        options: { plugins: { legend: { display: false } } }
+      });
+      new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Đạt', 'Không đạt'],
+          datasets: [{ data: [8, 4], backgroundColor: ['#22c55e', '#ef4444'] }]
+        }
+      });
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+  <!-- Toast -->
+  <div id="toast" class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg hidden z-50"></div>
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex-shrink-0 hidden md:block">
+      <div class="p-6 text-2xl font-bold text-blue-600">ProCV</div>
+      <nav class="mt-8 space-y-2">
+        <a href="#" class="flex items-center px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700">
+          <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Bảng điều khiển</span>
+        </a>
+        <a href="#" class="flex items-center px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700">
+          <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Ứng viên</span>
+        </a>
+        <a href="#" class="flex items-center px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700">
+          <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 17v-6h6v6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h3.5a2 2 0 012 2V9h3.5a2 2 0 012 2v10a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Vị trí tuyển dụng</span>
+        </a>
+        <a href="#" class="flex items-center px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700">
+          <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Lịch phỏng vấn</span>
+        </a>
+        <a href="#" class="flex items-center px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700">
+          <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17a4 4 0 100-8 4 4 0 000 8zm0 0v4m0 0H7m4 0h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Báo cáo</span>
+        </a>
+      </nav>
+    </aside>
+    <!-- Main -->
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <header class="flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center space-x-2">
+          <button class="md:hidden p-2" aria-label="Mở menu">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <input type="text" placeholder="Tìm kiếm..." class="px-3 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" />
+        </div>
+        <div class="flex items-center space-x-4">
+          <button onclick="toggleDarkMode()" aria-label="Chuyển chế độ sáng/tối" class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+            <svg class="w-6 h-6 text-yellow-400 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m8.66-8.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M4.05 4.93l-.71-.71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button aria-label="Thông báo" class="relative p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <span class="font-semibold">Nguyễn Văn A</span>
+          <img src="https://i.pravatar.cc/32" alt="avatar" class="w-8 h-8 rounded-full border-2 border-blue-600" />
+        </div>
+      </header>
+      <!-- Content -->
+      <main class="p-4 space-y-6">
+        <!-- Dashboard Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-gray-800 rounded shadow p-4 flex flex-col items-center">
+            <span class="text-gray-500">Tổng số hồ sơ</span>
+            <span class="text-2xl font-bold text-blue-600">120</span>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded shadow p-4 flex flex-col items-center">
+            <span class="text-gray-500">Số hồ sơ đạt</span>
+            <span class="text-2xl font-bold text-green-600">35</span>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded shadow p-4 flex flex-col items-center">
+            <span class="text-gray-500">Tỷ lệ phỏng vấn</span>
+            <span class="text-2xl font-bold text-yellow-500">29%</span>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded shadow p-4 flex flex-col items-center">
+            <span class="text-gray-500">Vị trí đang tuyển</span>
+            <span class="text-2xl font-bold text-purple-600">4</span>
+          </div>
+        </div>
+        <!-- Charts -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white dark:bg-gray-800 rounded shadow p-4">
+            <div class="font-semibold mb-2">Số hồ sơ theo vị trí</div>
+            <canvas id="barChart" height="120"></canvas>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded shadow p-4">
+            <div class="font-semibold mb-2">Tỷ lệ đạt vs không đạt</div>
+            <canvas id="pieChart" height="120"></canvas>
+          </div>
+        </div>
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-2">
+          <button onclick="openModal('modalAddPosition')" class="flex items-center bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700" aria-label="Thêm vị trí">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Thêm vị trí
+          </button>
+          <button onclick="showToast('Đã tải báo cáo PDF!')" class="flex items-center border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100" aria-label="Tải báo cáo PDF">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Tải báo cáo PDF
+          </button>
+          <button onclick="openModal('modalSchedule')" class="flex items-center bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700" aria-label="Lên lịch phỏng vấn">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Lên lịch phỏng vấn
+          </button>
+        </div>
+        <!-- Data Table -->
+        <div class="bg-white dark:bg-gray-800 rounded shadow p-4 overflow-x-auto">
+          <div class="flex justify-between items-center mb-2">
+            <div class="font-semibold">Danh sách ứng viên</div>
+            <div class="flex gap-2">
+              <button onclick="openModal('modalAddCandidate')" class="flex items-center bg-blue-600 text-white px-3 py-1 rounded" aria-label="Thêm ứng viên">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Thêm ứng viên
+              </button>
+              <button onclick="showToast('Đã tải CV hàng loạt!')" class="border border-gray-300 text-gray-700 px-3 py-1 rounded" aria-label="Tải CV hàng loạt">Tải CV hàng loạt</button>
+              <button onclick="openModal('modalFilter')" class="border border-gray-300 text-gray-700 px-3 py-1 rounded" aria-label="Lọc nâng cao">Lọc nâng cao</button>
+            </div>
+          </div>
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="bg-gray-100 dark:bg-gray-700">
+                <th class="px-2 py-1 text-left">Họ tên</th>
+                <th class="px-2 py-1 text-left">Email</th>
+                <th class="px-2 py-1 text-left">Số điện thoại</th>
+                <th class="px-2 py-1 text-left">Vị trí ứng tuyển</th>
+                <th class="px-2 py-1 text-left">Trạng thái</th>
+                <th class="px-2 py-1 text-left">Nguồn</th>
+                <th class="px-2 py-1 text-left">Ngày nộp</th>
+                <th class="px-2 py-1 text-left">Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b dark:border-gray-700">
+                <td class="px-2 py-1">Trần Thị B</td>
+                <td class="px-2 py-1">tranb@gmail.com</td>
+                <td class="px-2 py-1">0901234567</td>
+                <td class="px-2 py-1">Tester</td>
+                <td class="px-2 py-1"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">Mới</span></td>
+                <td class="px-2 py-1">Website</td>
+                <td class="px-2 py-1">25/06/2025</td>
+                <td class="px-2 py-1 flex gap-1">
+                  <button class="bg-blue-600 text-white px-2 py-1 rounded text-xs" aria-label="Xem">Xem</button>
+                  <button class="border border-gray-300 text-gray-700 px-2 py-1 rounded text-xs" aria-label="Sửa">Sửa</button>
+                  <button onclick="showToast('Đã xoá!')" class="bg-red-600 text-white px-2 py-1 rounded text-xs" aria-label="Xoá">Xoá</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-2 py-1">Ngô Văn C</td>
+                <td class="px-2 py-1">ngoc@gmail.com</td>
+                <td class="px-2 py-1">0987654321</td>
+                <td class="px-2 py-1">Dev</td>
+                <td class="px-2 py-1"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs">Đã duyệt</span></td>
+                <td class="px-2 py-1">LinkedIn</td>
+                <td class="px-2 py-1">24/06/2025</td>
+                <td class="px-2 py-1 flex gap-1">
+                  <button class="bg-blue-600 text-white px-2 py-1 rounded text-xs" aria-label="Xem">Xem</button>
+                  <button class="border border-gray-300 text-gray-700 px-2 py-1 rounded text-xs" aria-label="Sửa">Sửa</button>
+                  <button onclick="showToast('Đã xoá!')" class="bg-red-600 text-white px-2 py-1 rounded text-xs" aria-label="Xoá">Xoá</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+  <!-- Modal Thêm vị trí -->
+  <div id="modalAddPosition" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded shadow-lg w-full max-w-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div class="text-lg font-semibold">Thêm vị trí mới</div>
+        <button onclick="closeModal('modalAddPosition')" aria-label="Đóng" class="text-gray-500 hover:text-red-600">&times;</button>
+      </div>
+      <form>
+        <div class="mb-3">
+          <label class="block mb-1">Tên vị trí</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Nhập tên vị trí"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Mô tả</label>
+          <textarea class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Nhập mô tả"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Kỹ năng yêu cầu</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Nhập kỹ năng"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Trạng thái</label>
+          <select class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+            <option>Mở</option>
+            <option>Đóng</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeModal('modalAddPosition')" class="border border-gray-300 text-gray-700 px-4 py-2 rounded">Huỷ</button>
+          <button type="button" onclick="showToast('Đã thêm vị trí!');closeModal('modalAddPosition')" class="bg-blue-600 text-white px-4 py-2 rounded">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal Lên lịch phỏng vấn -->
+  <div id="modalSchedule" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded shadow-lg w-full max-w-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div class="text-lg font-semibold">Lên lịch phỏng vấn</div>
+        <button onclick="closeModal('modalSchedule')" aria-label="Đóng" class="text-gray-500 hover:text-red-600">&times;</button>
+      </div>
+      <form>
+        <div class="mb-3">
+          <label class="block mb-1">Chọn ứng viên</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Tên ứng viên"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Người phỏng vấn</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Tên người phỏng vấn"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Thời gian</label>
+          <input type="datetime-local" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Hình thức</label>
+          <select class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+            <option>Zoom</option>
+            <option>Trực tiếp</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeModal('modalSchedule')" class="border border-gray-300 text-gray-700 px-4 py-2 rounded">Huỷ</button>
+          <button type="button" onclick="showToast('Đã lên lịch!');closeModal('modalSchedule')" class="bg-blue-600 text-white px-4 py-2 rounded">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal Thêm ứng viên -->
+  <div id="modalAddCandidate" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded shadow-lg w-full max-w-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div class="text-lg font-semibold">Thêm ứng viên</div>
+        <button onclick="closeModal('modalAddCandidate')" aria-label="Đóng" class="text-gray-500 hover:text-red-600">&times;</button>
+      </div>
+      <form>
+        <div class="mb-3">
+          <label class="block mb-1">Họ tên</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Nhập họ tên"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Email</label>
+          <input type="email" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Nhập email"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Số điện thoại</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Nhập số điện thoại"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Vị trí ứng tuyển</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="Nhập vị trí"/>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeModal('modalAddCandidate')" class="border border-gray-300 text-gray-700 px-4 py-2 rounded">Huỷ</button>
+          <button type="button" onclick="showToast('Đã thêm ứng viên!');closeModal('modalAddCandidate')" class="bg-blue-600 text-white px-4 py-2 rounded">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal Lọc nâng cao -->
+  <div id="modalFilter" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white dark:bg-gray-800 rounded shadow-lg w-full max-w-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div class="text-lg font-semibold">Lọc nâng cao</div>
+        <button onclick="closeModal('modalFilter')" aria-label="Đóng" class="text-gray-500 hover:text-red-600">&times;</button>
+      </div>
+      <form>
+        <div class="mb-3">
+          <label class="block mb-1">Tên</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Email</label>
+          <input type="email" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Kỹ năng</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Vị trí</label>
+          <input type="text" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600"/>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Trạng thái</label>
+          <select class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+            <option>Mới</option>
+            <option>Đã duyệt</option>
+            <option>Phỏng vấn vòng 1</option>
+            <option>Đạt</option>
+            <option>Không đạt</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1">Khoảng ngày</label>
+          <input type="date" class="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:border-gray-600"/>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeModal('modalFilter')" class="border border-gray-300 text-gray-700 px-4 py-2 rounded">Huỷ</button>
+          <button type="button" onclick="showToast('Đã lọc!');closeModal('modalFilter')" class="bg-blue-600 text-white px-4 py-2 rounded">Lọc</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
